@@ -18,7 +18,7 @@ process.on('SIGINT', () => {
     Shutdown();
 });
    
-process.on('uncaughtException', err => {
+process.on('uncaughtException', (err : Error) => {
     console.log('Uncaught exception');
     console.error(err);
     Shutdown();

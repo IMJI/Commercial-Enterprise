@@ -1,7 +1,4 @@
-import { BindOptions } from 'dgram';
-import { Resolver } from 'dns';
 import * as oracledb from 'oracledb';
-import { resolve } from 'path';
 import Config from './Config';
 
 class Database {
