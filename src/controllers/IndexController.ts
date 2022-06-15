@@ -1,5 +1,5 @@
 import * as path from 'path';
-import { Request, Response, NextFunction } from "express";
+import { Request, Response, NextFunction } from 'express';
 
 class IndexController {
     public static Get(req : Request, res : Response, next : NextFunction) : void {

@@ -3,7 +3,7 @@ import { Request, Response, NextFunction } from 'express';
 
 class LoginController {
     public static Get(req : Request, res : Response, next : NextFunction) : void {
-        res.sendFile(path.join(__dirname + '/../../pages/index.html'));
+        res.sendFile(path.join(__dirname + '/../../pages/login.html'));
     }
 
     public static Post(req : Request, res : Response, next : NextFunction) : void {
