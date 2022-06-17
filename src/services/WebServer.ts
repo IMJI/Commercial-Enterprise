@@ -1,7 +1,11 @@
 import * as express from 'express';
 import * as http from 'http';
+import * as bodyParser from 'body-parser';
+import * as path from 'path';
+import * as morgan from 'morgan';
 import Config from './Config';
 import WebRouter from '../routes/WebRouter';
+import { ReviveJSON } from './Utils';
 
 class WebServer {
     private express : express.Application;
@@ -15,6 +19,7 @@ class WebServer {
     public async Initialize() : Promise<void> {
         return new Promise<void>((resolve, reject) => {
             const port : number = Config.PORT;
+            this.MoundMiddlewares();
             this.MountRoutes(WebRouter);
             this.server = this.express.listen(port, () => {
                 console.log('Web Server is listening at', port);
@@ -27,7 +32,16 @@ class WebServer {
         });
     }
 
-    public MountRoutes(router : express.Router) : void {
+    private MoundMiddlewares() : void {
+        this.express.use('/public', express.static(path.join(__dirname + '/../../public')));
+        this.express.use(morgan('combined'));
+        this.express.use(bodyParser.json());
+        this.express.use(express.json({
+            reviver: ReviveJSON
+        }));
+    }
+
+    private MountRoutes(router : express.Router) : void {
         this.express.use('/', router);
     }
 
