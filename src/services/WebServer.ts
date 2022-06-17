@@ -32,19 +32,6 @@ class WebServer {
         });
     }
 
-    private MoundMiddlewares() : void {
-        this.express.use('/public', express.static(path.join(__dirname + '/../../public')));
-        this.express.use(morgan('combined'));
-        this.express.use(bodyParser.json());
-        this.express.use(express.json({
-            reviver: ReviveJSON
-        }));
-    }
-
-    private MountRoutes(router : express.Router) : void {
-        this.express.use('/', router);
-    }
-
     public async Close() : Promise<void> {
         return new Promise((resolve, reject) => {
             this.server.close((err : Error) => {
@@ -56,6 +43,19 @@ class WebServer {
                 resolve();
             });
         });
+    }
+
+    private MoundMiddlewares() : void {
+        this.express.use('/public', express.static(path.join(__dirname + '/../../public')));
+        this.express.use(morgan('combined'));
+        this.express.use(bodyParser.json());
+        this.express.use(express.json({
+            reviver: ReviveJSON
+        }));
+    }
+
+    private MountRoutes(router : express.Router) : void {
+        this.express.use('/', router);
     }
 }
 

@@ -1,5 +1,7 @@
 import App from './services/App';
+import Config from './services/Config';
 
+process.env.UV_THREADPOOL_SIZE = String(Config.DEFAULT_THREAD_POOL_SIZE);
 App.Startup();
 
 async function Shutdown() : Promise<void> {
