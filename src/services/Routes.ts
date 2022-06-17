@@ -1,16 +1,10 @@
-import { Application } from 'express';
+import { join } from 'path';
 
-class Routes {
-    public static Mount(server : Application) : void {
-        this.MountWebRoutes(server);
-        this.MountAPIRoutes(server);
-    }
+const pathToPagesDir = join(__dirname + '/../../pages/');
 
-    private static MountWebRoutes(server : Application) : void {
-        // return server.use('/', )
-    }
-
-    private static MountAPIRoutes(server : Application) : void {
-        
-    }
+const Routes : object = {
+    index: pathToPagesDir + 'index.html',
+    login: pathToPagesDir + 'login.html'
 }
+
+export default Routes;

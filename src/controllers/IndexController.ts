@@ -1,9 +1,9 @@
-import * as path from 'path';
 import { Request, Response, NextFunction } from 'express';
+import Routes from '../services/Routes';
 
 class IndexController {
     public static Get(req : Request, res : Response, next : NextFunction) : void {
-        res.sendFile(path.join(__dirname + '/../../pages/index.html'));
+        res.sendFile(Routes['index']);
     }
 }
 
