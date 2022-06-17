@@ -4,8 +4,21 @@ import WebServer from './WebServer';
 class App {
     public async Startup() : Promise<void> {
         console.log('Starting application...');
-        Database.Initialize();
-        WebServer.Initialize();
+        try {
+            console.log('Initializing database module');
+            await Database.Initialize();
+        } catch (err) {
+            console.error(err);
+            process.exit(1);
+        }
+    
+        try {
+            console.log('Initializing web server module');
+            await WebServer.Initialize();
+        } catch (err) {
+            console.error(err);
+            process.exit(1);
+        }
     }
 
     public async Shutdown(error? : Error) : Promise<void> {
@@ -26,7 +39,7 @@ class App {
             console.log('Encountered error', e);
             err = err || e;
         }
-
+        if (err) console.log(err.message);
         // console.log('Exiting process...');
         // if (err) process.exit(1);
         // else process.exit(0);

@@ -3,9 +3,10 @@ import App from './services/App';
 App.Startup();
 
 async function Shutdown() : Promise<void> {
-    console.log('Exiting process...');
-    await App.Shutdown();
-    process.exit(0);
+    await App.Shutdown().then(() => {    
+        console.log('Exiting process...');
+        process.exit(0);
+    });
 }
 
 process.on('SIGTERM', () => {

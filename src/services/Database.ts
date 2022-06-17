@@ -34,7 +34,7 @@ class Database {
 
     public static async Close() : Promise<void> {
         await this.pool.close();
-        console.log('Database closed')
+        console.log('Database closed');
     }
 
     private static async Connect() : Promise<oracledb.Connection> {

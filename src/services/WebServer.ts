@@ -5,23 +5,26 @@ import WebRouter from '../routes/WebRouter';
 
 class WebServer {
     private express : express.Application;
-    private httpServer : http.Server;
+    private server : http.Server;
 
     constructor() {
         this.express = express();
-        this.httpServer = http.createServer(express);
+        this.server = http.createServer(express);
     }
 
-    public Initialize() : void {
-        const port : number = Config.PORT;
-
-        this.MountRoutes(WebRouter);
-
-        this.httpServer.listen(port, () => {
-            console.log('Web Server is listening at', port);
-        }).on('error', (error : Error) => {
-            console.log('Error:', error.message);
-        })
+    public async Initialize() : Promise<void> {
+        return new Promise<void>((resolve, reject) => {
+            const port : number = Config.PORT;
+            this.MountRoutes(WebRouter);
+            this.server = this.express.listen(port, () => {
+                console.log('Web Server is listening at', port);
+                resolve();
+            })
+            .on('error', (error : Error) => {
+                console.log('Error:', error.message);
+                reject(error);
+            })
+        });
     }
 
     public MountRoutes(router : express.Router) : void {
@@ -30,7 +33,7 @@ class WebServer {
 
     public async Close() : Promise<void> {
         return new Promise((resolve, reject) => {
-            this.httpServer.close((err : Error) => {
+            this.server.close((err : Error) => {
                 if (err) {
                     reject(err);
                     console.log('Web server closed')
