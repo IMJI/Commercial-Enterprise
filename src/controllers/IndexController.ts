@@ -1,9 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
-import Routes from '../services/Routes';
+import Pages from '../services/Pages';
 
 class IndexController {
     public static Get(req : Request, res : Response, next : NextFunction) : void {
-        res.sendFile(Routes['index']);
+        res.sendFile(Pages['index']);
     }
 }
 
