@@ -1,13 +1,14 @@
 import * as oracledb from 'oracledb';
 import Config from './Config';
+import Logger from './logger/Logger';
 
 class Database {
     private static pool : oracledb.Pool;
     
     public static async Initialize() : Promise<void> {
         this.pool = await oracledb.createPool(Config.DB_POOL);
-        if (this.pool) console.log('Database initialized')
-        else console.log('Database initialization error')
+        if (this.pool) Logger.Info('Database initialized');
+        else Logger.Fatal('Database initialization error: Cannot craete pool');
     }
 
     public static async Execute(statement : string, binds : oracledb.BindParameters = [], opts : oracledb.ExecuteOptions = {}) {
@@ -25,7 +26,7 @@ class Database {
                 if (connection) {
                     try { await connection.close(); }
                     catch(error : any) {
-                        console.log(error);
+                        Logger.Error(error.message || error);
                     }
                 }
             }
@@ -34,7 +35,7 @@ class Database {
 
     public static async Close() : Promise<void> {
         await this.pool.close();
-        console.log('Database closed');
+        Logger.Info('Database closed');
     }
 
     private static async Connect() : Promise<oracledb.Connection> {

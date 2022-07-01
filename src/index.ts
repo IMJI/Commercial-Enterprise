@@ -1,28 +1,34 @@
 import App from './services/App';
 import Config from './services/Config';
+import Logger from './services/logger/Logger'
 
-process.env.UV_THREADPOOL_SIZE = String(Config.DEFAULT_THREAD_POOL_SIZE);
+process.env.UV_THREADPOOL_SIZE = String(Config.DEFAULT_THREAD_POOL_SIZE + Config.DB_POOL['poolMax']);
+Logger.Initialize({
+    dir: './logs',
+    rowsRotation: 1
+});
 App.Startup();
 
 async function Shutdown() : Promise<void> {
-    await App.Shutdown().then(() => {    
-        console.log('Exiting process...');
+    await App.Shutdown().then(() => {
+        Logger.Info('Exiting process...');
+        Logger.Close();
         process.exit(0);
     });
 }
 
 process.on('SIGTERM', () => {
-    console.log('Received SIGTERM'); 
+    Logger.Info('Received SIGTERM'); 
     Shutdown();
 });
    
 process.on('SIGINT', () => {
-    console.log('Received SIGINT');
+    Logger.Info('Received SIGINT');
     Shutdown();
 });
    
 process.on('uncaughtException', (err : Error) => {
-    console.log('Uncaught exception');
-    console.error(err);
+    Logger.Error('Uncaught exception');
+    Logger.Fatal(err.name + ' ' + err.message);
     Shutdown();
 });

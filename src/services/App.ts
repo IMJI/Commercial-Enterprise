@@ -1,45 +1,46 @@
 import Database from './Database';
 import WebServer from './WebServer';
+import Logger from './logger/Logger'
 
 class App {
     public async Startup() : Promise<void> {
-        console.log('Starting application...');
+        Logger.Info('Starting application...');
         try {
-            console.log('Initializing database module');
+            Logger.Info('Initializing database module');
             await Database.Initialize();
         } catch (err) {
-            console.error(err);
+            Logger.Fatal(err.message);
             process.exit(1);
         }
     
         try {
-            console.log('Initializing web server module');
+            Logger.Info('Initializing web server module');
             await WebServer.Initialize();
         } catch (err) {
-            console.error(err);
+            Logger.Fatal(err.message);
             process.exit(1);
         }
     }
 
     public async Shutdown(error? : Error) : Promise<void> {
         let err : Error = error;
-        console.log('Shutting down...');
+        Logger.Info('Shutting down...');
         try {
-            console.log('Closing web server module');
+            Logger.Info('Closing web server module');
             await WebServer.Close();
         } catch (e : any) {
-            console.log('Encountered error', e);
+            Logger.Error('Encountered error' + e);
             err = err || e;
         }
     
         try {
-            console.log('Closing database module');
+            Logger.Info('Closing database module');
             await Database.Close(); 
         } catch (e : any) {
-            console.log('Encountered error', e);
+            Logger.Error('Encountered error' + e);
             err = err || e;
         }
-        if (err) console.log(err.message);
+        if (err) Logger.Error(err.message);
         // console.log('Exiting process...');
         // if (err) process.exit(1);
         // else process.exit(0);

@@ -6,6 +6,7 @@ import * as morgan from 'morgan';
 import Config from './Config';
 import WebRouter from '../routes/WebRouter';
 import { ReviveJSON } from './Utils';
+import Logger from './logger/Logger';
 
 class WebServer {
     private express : express.Application;
@@ -22,11 +23,11 @@ class WebServer {
             this.MoundMiddlewares();
             this.MountRoutes(WebRouter);
             this.server = this.express.listen(port, () => {
-                console.log('Web Server is listening at', port);
+                Logger.Info('Web Server is listening at ' + port);
                 resolve();
             })
             .on('error', (error : Error) => {
-                console.log('Error:', error.message);
+                Logger.Fatal('Error: ' + error.message);
                 reject(error);
             })
         });
@@ -35,9 +36,10 @@ class WebServer {
     public async Close() : Promise<void> {
         return new Promise((resolve, reject) => {
             this.server.close((err : Error) => {
+                Logger.Info('Web server closed');
                 if (err) {
+                    Logger.Fatal('Error: ' + err.message);
                     reject(err);
-                    console.log('Web server closed')
                     return;
                 }
                 resolve();
@@ -47,7 +49,12 @@ class WebServer {
 
     private MoundMiddlewares() : void {
         this.express.use('/public', express.static(path.join(__dirname + '/../../public')));
-        this.express.use(morgan('combined'));
+        this.express.use(morgan('tiny', {
+            stream: {
+                write: (str : string) => { Logger.Trace(str.replace('\n', '')); }
+            }
+        }));
+        // throw new Error('Error message :(');
         this.express.use(bodyParser.json());
         this.express.use(express.json({
             reviver: ReviveJSON
