@@ -1,10 +1,13 @@
 import * as chalk from 'chalk';
 import * as path from 'path';
 import * as fs from 'fs';
+import { performance } from 'node:perf_hooks';
 import LogLevels from './LogLevels';
 import ILoggerConfig from './ILoggerConfig';
 import IDateObject from '../../interfaces/IDateObject';
-import { DateToObject, GetCallerFile, PrettyDate } from '../Utils'
+import { DateToObject, GetCallerFile, PrettyDate, Time } from '../Utils'
+import TimeRotations from './TimeRotations';
+import TimeStamp from './TimeStamp';
 
 let colors : object = {
     INFO: chalk.blue,
@@ -22,7 +25,11 @@ class Logger {
     private static cacheSize : number;
     private static showSummary : boolean;
     private static rowsRotation : number;
-    private static timeRotation : string;
+    private static timeRotation : TimeRotations;
+    private static showInConsole : LogLevels[];
+    private static writeToFile : LogLevels[];
+    private static writeCombinedLog : boolean;
+    private static writeSeparatedLog : boolean;
 
     private static cache : string[] = [];
     private static uptimeStart : number;
@@ -36,6 +43,8 @@ class Logger {
     };
     private static lastRotation : number;
     private static rowsCount : number = 0;
+    private static perf : number;
+    private static timeStamps = [];
 
     public static IsInitialized : boolean = false;
 
@@ -45,24 +54,50 @@ class Logger {
         this.dir = config.dir || './logs';
         this.cacheSize = config.maxCacheSize || 0;
         this.showSummary = config.showSummary || true;
-        this.format = config.format || '$YYYY-$MM-$DD $HR:$MIN:$SEC:$MS $FILE $LEVEL $MESSAGE';
+        this.format = config.format || '$YYYY-$MM-$DD $HR:$MIN:$SEC:$MS $FILE $PERF $LEVEL $MESSAGE';
         this.filePath = path.join(this.dir, `latest.log`);
         this.rowsRotation = config.rowsRotation || 0;
-        this.timeRotation = config.timeRotation || '';
+        this.timeRotation = config.timeRotation || 0;
+        this.showInConsole = config.showInConsole || [LogLevels.Info, LogLevels.Debug, LogLevels.Trace, LogLevels.Warning, LogLevels.Error, LogLevels.Fatal];
+        this.writeToFile = config.writeToFile || [LogLevels.Info, LogLevels.Debug, LogLevels.Trace, LogLevels.Warning, LogLevels.Error, LogLevels.Fatal];
+        this.writeCombinedLog = config.writeCombinedLog || true;
+        this.writeSeparatedLog = config.writeSeparatedLog || false;
         
         if (this.rowsRotation || this.timeRotation) this.lastRotation = Date.now();
         if (!fs.existsSync(this.dir)) fs.mkdirSync(this.dir);
+        this.perf = performance.now();
         this.IsInitialized = true;
     }
 
     private static CheckRotation() : void {
-        if (this.rowsRotation) {
-            
+        if (this.rowsRotation && this.rowsCount >= this.rowsRotation) {
+            this.RotateFiles();
+            this.rowsCount = 0;
+        }
+        if (this.timeRotation && this.TimeRotationCheck()) {
+            this.RotateFiles();
         }
     }
 
+    private static TimeRotationCheck() : boolean {
+        if (this.timeRotation === TimeRotations.Everyday) {
+            return this.lastRotation + Time.Day < Date.now();
+        } else if (this.timeRotation === TimeRotations.Everyhour) {
+            return this.lastRotation + Time.Hour < Date.now();
+        }
+        return false;
+    }
+
+    private static RotateFiles() : void {
+        this.WriteCache();
+        let filename : string = new Date(this.lastRotation).toISOString().replace(/:/g, '-').split('.')[0];
+        fs.copyFileSync(this.filePath, path.join(this.dir, `${filename}.log`));
+        fs.truncateSync(this.filePath, 0);
+        this.lastRotation = Date.now();
+    }
+
     private static WriteCache() : void {
-        fs.appendFileSync(this.filePath, this.cache.map(l => `${l}\n`).join(''));
+        if (this.writeCombinedLog) fs.appendFileSync(this.filePath, this.cache.map(l => `${l}\n`).join(''));
         this.cache = [];
     }
 
@@ -81,9 +116,14 @@ class Logger {
             .replace('$HR', String(date.hourTwoDigits))
             .replace('$MIN', String(date.minutesTwoDigits))
             .replace('$SEC', String(date.secondsTwoDigits))
-            .replace('$MS', String(date.milisecondsTwoDigits))
-        let consoleOut = fileOut.replace('$LEVEL', chalk.bold(colors[level](`[${level}]`)));
-        fileOut = fileOut.replace('$LEVEL', level);
+            .replace('$MS', String(date.milisecondsFourDigits));
+            
+        let consoleOut = fileOut
+            .replace('$LEVEL', chalk.bold(colors[level](`[${level}]`)))
+            .replace('$PERF', chalk.greenBright(`+${PrettyDate(performance.now() - this.perf)}`));
+        fileOut = fileOut
+            .replace('$LEVEL', `[${level}]`)
+            .replace('$PERF', `+${PrettyDate(performance.now() - this.perf)}`);
         return { fileOut, consoleOut }
     }
 
@@ -91,9 +131,11 @@ class Logger {
         this.CheckRotation();
         if (!this.IsInitialized) throw new Error('Logger was not initialized.');
         let output : object = this.FormatString(level, message);
-        console.log(output['consoleOut']);
-        this.cache.push(output['fileOut']);
+        if (this.showInConsole.find(loglvl => loglvl === level)) console.log(output['consoleOut']);
+        if (this.writeToFile.find(loglvl => loglvl === level)) this.cache.push(output['fileOut']);
         this.messages[level]++;
+        this.rowsCount++;
+        this.perf = performance.now();
         if (this.cache.length >= this.cacheSize) {
             this.WriteCache();
         }
@@ -109,7 +151,21 @@ class Logger {
     public static Close() : void {
         this.Debug('Logging finished!');
         if (this.showSummary) this.Debug(this.Summary());
-        this.WriteCache();
+        if (this.timeRotation || this.rowsRotation) this.RotateFiles();
+    }
+
+    public static StartTimer(name : string) : void {
+        let ts : TimeStamp = new TimeStamp(name);
+        this.timeStamps.push(ts);
+        this.Debug(`Timer ${name} started`)
+    }
+
+    public static StopTimer(name : string) : void {
+        let ts : TimeStamp = this.timeStamps.find((ts : TimeStamp) => ts.Name === name);
+        if (ts) {
+            this.Debug(`Timer ${name} finished at ${PrettyDate(ts.Stamp())}`);
+            this.timeStamps.splice(this.timeStamps.indexOf(ts), 1);
+        }
     }
 }
 
