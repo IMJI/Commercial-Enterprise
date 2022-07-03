@@ -4,6 +4,7 @@ import Logger from './logger/Logger'
 
 class App {
     public async Startup() : Promise<void> {
+        Logger.StartTimer('App Startup');
         Logger.Info('Starting application...');
         try {
             Logger.Info('Initializing database module');
@@ -20,6 +21,7 @@ class App {
             Logger.Fatal(err.message);
             process.exit(1);
         }
+        Logger.StopTimer('App Startup');
     }
 
     public async Shutdown(error? : Error) : Promise<void> {

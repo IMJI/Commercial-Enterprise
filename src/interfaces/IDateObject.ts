@@ -14,7 +14,7 @@ interface IDateObject {
     seconds : number,
     secondsTwoDigits : string,
     miliseconds : number
-    milisecondsTwoDigits : string
+    milisecondsFourDigits : string
 }
 
 export default IDateObject;

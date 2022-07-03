@@ -31,19 +31,19 @@ export function DateToObject(date : Date) : IDateObject {
         year: date.getFullYear(),
         yearShort: date.getFullYear() % 100,
         month: date.getMonth() + 1,
-        monthTwoDigits: date.getMonth() + 1 < 9 ? `0${date.getMonth() + 1}` : `${date.getMonth() + 1}`,
+        monthTwoDigits: date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}` : `${date.getMonth() + 1}`,
         monthName: months[date.getMonth()][0],
         monthShortname: months[date.getMonth()][1],
         day: date.getDate(),
-        dayTwoDigits: date.getDate() < 9 ? `0${date.getDate()}` : `${date.getDate()}`,
+        dayTwoDigits: date.getDate() < 10 ? `0${date.getDate()}` : `${date.getDate()}`,
         hour : date.getHours(),
-        hourTwoDigits: date.getHours() < 9 ? `0${date.getHours()}` : `${date.getHours()}`,
+        hourTwoDigits: date.getHours() < 10 ? `0${date.getHours()}` : `${date.getHours()}`,
         minutes : date.getMinutes(),
-        minutesTwoDigits: date.getMinutes() < 9 ? `0${date.getMinutes()}` : `${date.getMinutes()}`,
+        minutesTwoDigits: date.getMinutes() < 10 ? `0${date.getMinutes()}` : `${date.getMinutes()}`,
         seconds : date.getSeconds(),
-        secondsTwoDigits: date.getSeconds() < 9 ? `0${date.getSeconds()}` : `${date.getSeconds()}`,
+        secondsTwoDigits: date.getSeconds() < 10 ? `0${date.getSeconds()}` : `${date.getSeconds()}`,
         miliseconds: date.getMilliseconds(),
-        milisecondsTwoDigits: date.getMilliseconds() + 1 < 9 ? `0${date.getMilliseconds() + 1}` : `${date.getMilliseconds() + 1}`,
+        milisecondsFourDigits: date.getMilliseconds() < 100 ? `0${date.getMilliseconds()}` : `${date.getMilliseconds()}`,
     }
 }
 
@@ -69,4 +69,13 @@ export function PrettyDate(dateInMs : number) {
     if (days || hours || mins || secs) prettyDate += `${secs}s `;
     prettyDate += `${ms}ms`;
     return prettyDate;
+}
+
+export class Time {
+    public static Millisecond : number = 1;
+    public static Second : number = 1000;
+    public static Minute : number = 1000 * 60;
+    public static Hour : number = 1000 * 60 * 60;
+    public static Day : number = 1000 * 60 * 60 * 24;
+    public static Week : number = 1000 * 60 * 60 * 24 * 7;
 }

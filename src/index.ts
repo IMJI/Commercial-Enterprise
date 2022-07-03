@@ -1,11 +1,14 @@
 import App from './services/App';
 import Config from './services/Config';
 import Logger from './services/logger/Logger'
+import LogLevels from './services/logger/LogLevels';
+import TimeRotations from './services/logger/TimeRotations';
 
 process.env.UV_THREADPOOL_SIZE = String(Config.DEFAULT_THREAD_POOL_SIZE + Config.DB_POOL['poolMax']);
 Logger.Initialize({
     dir: './logs',
-    rowsRotation: 1
+    // showInConsole: [LogLevels.Info, LogLevels.Debug],
+    // writeToFile: [LogLevels.Trace]
 });
 App.Startup();
 
