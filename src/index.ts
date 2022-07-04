@@ -7,6 +7,7 @@ import TimeRotations from './services/logger/TimeRotations';
 process.env.UV_THREADPOOL_SIZE = String(Config.DEFAULT_THREAD_POOL_SIZE + Config.DB_POOL['poolMax']);
 Logger.Initialize({
     dir: './logs',
+    format: '$YYYY-$MM-$DD $HR:$MIN:$SEC:$MS $LEVEL $MESSAGE'
     // showInConsole: [LogLevels.Info, LogLevels.Debug],
     // writeToFile: [LogLevels.Trace]
 });
