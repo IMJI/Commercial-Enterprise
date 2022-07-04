@@ -8,8 +8,6 @@ process.env.UV_THREADPOOL_SIZE = String(Config.DEFAULT_THREAD_POOL_SIZE + Config
 Logger.Initialize({
     dir: './logs',
     format: '$YYYY-$MM-$DD $HR:$MIN:$SEC:$MS $LEVEL $MESSAGE'
-    // showInConsole: [LogLevels.Info, LogLevels.Debug],
-    // writeToFile: [LogLevels.Trace]
 });
 App.Startup();
 

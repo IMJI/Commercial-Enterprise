@@ -3,11 +3,16 @@ import * as path from 'path';
 import * as fs from 'fs';
 import { performance } from 'node:perf_hooks';
 import LogLevels from './LogLevels';
-import ILoggerConfig from './ILoggerConfig';
+import LoggerConfig from './LoggerConfig';
 import IDateObject from '../../interfaces/IDateObject';
 import { DateToObject, GetCallerFile, PrettyDate, Time } from '../Utils'
 import TimeRotations from './TimeRotations';
 import TimeStamp from './TimeStamp';
+
+type LogMessage = {
+    level: LogLevels;
+    message: string;
+}
 
 let colors : object = {
     INFO: chalk.blue,
@@ -30,8 +35,9 @@ class Logger {
     private static hideFromFile : LogLevels[];
     private static writeCombinedLog : boolean;
     private static writeSeparatedLog : boolean;
+    private static separatedLogLevels : LogLevels[];
 
-    private static cache : string[] = [];
+    private static cache : LogMessage[] = [];
     private static uptimeStart : number;
     private static messages = {
         'INFO': 0,
@@ -45,10 +51,11 @@ class Logger {
     private static rowsCount : number = 0;
     private static perf : number;
     private static timeStamps = [];
+    private static separetedLogFilenames = [];
 
     public static IsInitialized : boolean = false;
 
-    public static Initialize(config? : ILoggerConfig) {
+    public static Initialize(config? : LoggerConfig) {
         this.uptimeStart = Date.now();
 
         this.dir = config.dir || './logs';
@@ -62,7 +69,13 @@ class Logger {
         this.hideFromFile = config.hideFromFile || [];
         this.writeCombinedLog = config.writeCombinedLog || true;
         this.writeSeparatedLog = config.writeSeparatedLog || false;
+        this.separatedLogLevels = config.separatedLogLevels || [];
         
+        if (this.writeSeparatedLog) {
+            for (let loglvl in LogLevels) {
+                if (this.separatedLogLevels.find((l : string) => l === loglvl.toUpperCase())) this.separetedLogFilenames.push(loglvl);
+            }
+        }
         if (this.rowsRotation || this.timeRotation) this.lastRotation = Date.now();
         if (!fs.existsSync(this.dir)) fs.mkdirSync(this.dir);
         this.perf = performance.now();
@@ -93,11 +106,21 @@ class Logger {
         let filename : string = new Date(this.lastRotation).toISOString().replace(/:/g, '-').split('.')[0];
         fs.copyFileSync(this.filePath, path.join(this.dir, `${filename}.log`));
         fs.truncateSync(this.filePath, 0);
+        this.separetedLogFilenames.forEach(lfn => {
+            let lfnPath : string = path.join(this.dir, `latest-${lfn}.log`);
+            fs.copyFileSync(lfnPath, path.join(this.dir, `${filename}-${lfn}.log`));
+            fs.truncateSync(lfnPath, 0);
+        });
         this.lastRotation = Date.now();
     }
 
     private static WriteCache() : void {
-        if (this.writeCombinedLog) fs.appendFileSync(this.filePath, this.cache.map(l => `${l}\n`).join(''));
+        if (this.writeCombinedLog) fs.appendFileSync(this.filePath, this.cache.map(l => `${l.message}\n`).join(''));
+        if (this.writeSeparatedLog) {
+            this.separetedLogFilenames.forEach((lfn : string) => {
+                fs.appendFileSync(path.join(this.dir, `latest-${lfn}.log`), this.cache.map(l => lfn.toUpperCase() === l.level ? `${l.message}\n` : '').join(''));
+            });
+        }
         this.cache = [];
     }
 
@@ -132,7 +155,7 @@ class Logger {
         if (!this.IsInitialized) throw new Error('Logger was not initialized.');
         let output : object = this.FormatString(level, message);
         if (!this.hideFromConsole.find(loglvl => loglvl === level)) console.log(output['consoleOut']);
-        if (!this.hideFromFile.find(loglvl => loglvl === level)) this.cache.push(output['fileOut']);
+        if (!this.hideFromFile.find(loglvl => loglvl === level)) this.cache.push({ level: level, message: output['fileOut'] });
         this.messages[level]++;
         this.rowsCount++;
         this.perf = performance.now();
