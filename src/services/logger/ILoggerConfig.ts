@@ -10,8 +10,8 @@ interface ILoggerConfig {
     timeRotation? : TimeRotations;
     writeCombinedLog? : boolean;
     writeSeparatedLog? : boolean;
-    showInConsole? : LogLevels[];
-    writeToFile? : LogLevels[];
+    hideFromConsole? : LogLevels[];
+    hideFromFile? : LogLevels[];
     separatedLogLevels? : LogLevels[];
 }
 

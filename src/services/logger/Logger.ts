@@ -26,8 +26,8 @@ class Logger {
     private static showSummary : boolean;
     private static rowsRotation : number;
     private static timeRotation : TimeRotations;
-    private static showInConsole : LogLevels[];
-    private static writeToFile : LogLevels[];
+    private static hideFromConsole : LogLevels[];
+    private static hideFromFile : LogLevels[];
     private static writeCombinedLog : boolean;
     private static writeSeparatedLog : boolean;
 
@@ -58,8 +58,8 @@ class Logger {
         this.filePath = path.join(this.dir, `latest.log`);
         this.rowsRotation = config.rowsRotation || 0;
         this.timeRotation = config.timeRotation || 0;
-        this.showInConsole = config.showInConsole || [LogLevels.Info, LogLevels.Debug, LogLevels.Trace, LogLevels.Warning, LogLevels.Error, LogLevels.Fatal];
-        this.writeToFile = config.writeToFile || [LogLevels.Info, LogLevels.Debug, LogLevels.Trace, LogLevels.Warning, LogLevels.Error, LogLevels.Fatal];
+        this.hideFromConsole = config.hideFromConsole || [];
+        this.hideFromFile = config.hideFromFile || [];
         this.writeCombinedLog = config.writeCombinedLog || true;
         this.writeSeparatedLog = config.writeSeparatedLog || false;
         
@@ -131,8 +131,8 @@ class Logger {
         this.CheckRotation();
         if (!this.IsInitialized) throw new Error('Logger was not initialized.');
         let output : object = this.FormatString(level, message);
-        if (this.showInConsole.find(loglvl => loglvl === level)) console.log(output['consoleOut']);
-        if (this.writeToFile.find(loglvl => loglvl === level)) this.cache.push(output['fileOut']);
+        if (!this.hideFromConsole.find(loglvl => loglvl === level)) console.log(output['consoleOut']);
+        if (!this.hideFromFile.find(loglvl => loglvl === level)) this.cache.push(output['fileOut']);
         this.messages[level]++;
         this.rowsCount++;
         this.perf = performance.now();
