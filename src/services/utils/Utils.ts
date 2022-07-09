@@ -1,5 +1,3 @@
-import IDateObject from '../interfaces/IDateObject';
-
 const iso8601RegExp = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/;
 
 export function ReviveJSON(key : string, value : any) : any {
@@ -8,42 +6,6 @@ export function ReviveJSON(key : string, value : any) : any {
         return new Date(value);
     } else {
         return value;
-    }
-}
-
-const months : string[][] = [
-    ['January', 'JAN'],
-    ['February', 'FEB'],
-    ['March', 'MAR'],
-    ['April', 'APR'],
-    ['May', 'MAY'],
-    ['June', 'JUN'],
-    ['July', 'JUL'],
-    ['August', 'AUG'],
-    ['September', 'SEP'],
-    ['October', 'OCT'],
-    ['November', 'NOV'],
-    ['December', 'DEC']
-]
-
-export function DateToObject(date : Date) : IDateObject {
-    return {
-        year: date.getFullYear(),
-        yearShort: date.getFullYear() % 100,
-        month: date.getMonth() + 1,
-        monthTwoDigits: date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}` : `${date.getMonth() + 1}`,
-        monthName: months[date.getMonth()][0],
-        monthShortname: months[date.getMonth()][1],
-        day: date.getDate(),
-        dayTwoDigits: date.getDate() < 10 ? `0${date.getDate()}` : `${date.getDate()}`,
-        hour : date.getHours(),
-        hourTwoDigits: date.getHours() < 10 ? `0${date.getHours()}` : `${date.getHours()}`,
-        minutes : date.getMinutes(),
-        minutesTwoDigits: date.getMinutes() < 10 ? `0${date.getMinutes()}` : `${date.getMinutes()}`,
-        seconds : date.getSeconds(),
-        secondsTwoDigits: date.getSeconds() < 10 ? `0${date.getSeconds()}` : `${date.getSeconds()}`,
-        miliseconds: date.getMilliseconds(),
-        milisecondsFourDigits: date.getMilliseconds() < 100 ? `0${date.getMilliseconds()}` : `${date.getMilliseconds()}`,
     }
 }
 

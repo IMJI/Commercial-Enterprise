@@ -1,8 +1,6 @@
 import App from './services/App';
 import Config from './services/Config';
-import Logger from './services/logger/Logger'
-import LogLevels from './services/logger/LogLevels';
-import TimeRotations from './services/logger/TimeRotations';
+import Logger from './services/logger/Logger';
 
 process.env.UV_THREADPOOL_SIZE = String(Config.DEFAULT_THREAD_POOL_SIZE + Config.DB_POOL['poolMax']);
 Logger.Initialize({

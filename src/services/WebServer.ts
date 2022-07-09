@@ -5,7 +5,7 @@ import * as path from 'path';
 import * as morgan from 'morgan';
 import Config from './Config';
 import WebRouter from '../routes/WebRouter';
-import { ReviveJSON } from './Utils';
+import { ReviveJSON } from './utils/Utils';
 import Logger from './logger/Logger';
 
 class WebServer {
@@ -54,7 +54,6 @@ class WebServer {
                 write: (str : string) => { Logger.Trace(str.replace('\n', '')); }
             }
         }));
-        // throw new Error('Error message :(');
         this.express.use(bodyParser.json());
         this.express.use(express.json({
             reviver: ReviveJSON

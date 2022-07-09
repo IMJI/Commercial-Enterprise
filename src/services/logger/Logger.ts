@@ -1,11 +1,11 @@
 import * as chalk from 'chalk';
 import * as path from 'path';
 import * as fs from 'fs';
-import { performance } from 'node:perf_hooks';
 import LogLevels from './LogLevels';
 import LoggerConfig from './LoggerConfig';
-import IDateObject from '../../interfaces/IDateObject';
-import { DateToObject, GetCallerFile, PrettyDate, Time } from '../Utils'
+// import IDateObject from '../../interfaces/IDateObject';
+import { DateObject } from '../utils/DateObject';
+import { GetCallerFile, PrettyDate, Time } from '../utils/Utils'
 import TimeRotations from './TimeRotations';
 import TimeStamp from './TimeStamp';
 
@@ -49,13 +49,14 @@ class Logger {
     };
     private static lastRotation : number;
     private static rowsCount : number = 0;
-    private static perf : number;
+    private static perfTimeStamp : TimeStamp;
     private static timeStamps = [];
     private static separetedLogFilenames = [];
 
     public static IsInitialized : boolean = false;
 
     public static Initialize(config? : LoggerConfig) {
+        if (this.IsInitialized) throw new Error('Logger has already been initialized');
         this.uptimeStart = Date.now();
 
         this.dir = config.dir || './logs';
@@ -78,7 +79,7 @@ class Logger {
         }
         if (this.rowsRotation || this.timeRotation) this.lastRotation = Date.now();
         if (!fs.existsSync(this.dir)) fs.mkdirSync(this.dir);
-        this.perf = performance.now();
+        this.perfTimeStamp = new TimeStamp('LOGPERF');
         this.IsInitialized = true;
     }
 
@@ -129,24 +130,24 @@ class Logger {
     }
 
     private static FormatString(level : string, message : string) : object {
-        let date : IDateObject = DateToObject(new Date());
+        let date : DateObject = new DateObject();
         let fileOut = this.format
             .replace('$MESSAGE', message)
             .replace('$FILE', GetCallerFile(4))
-            .replace('$YYYY', String(date.year))
-            .replace('$MM', String(date.monthTwoDigits))
-            .replace('$DD', String(date.dayTwoDigits))
-            .replace('$HR', String(date.hourTwoDigits))
-            .replace('$MIN', String(date.minutesTwoDigits))
-            .replace('$SEC', String(date.secondsTwoDigits))
-            .replace('$MS', String(date.milisecondsFourDigits));
-            
+            .replace('$YYYY', String(date.FullYear))
+            .replace('$MM', date.MonthString)
+            .replace('$DD', date.DayString)
+            .replace('$HR', date.HoursString)
+            .replace('$MIN', date.MinutesString)
+            .replace('$SEC', date.SecondsString)
+            .replace('$MS', date.MillisecondsString);
+        let perf = this.perfTimeStamp.Stamp();
         let consoleOut = fileOut
             .replace('$LEVEL', chalk.bold(colors[level](`[${level}]`)))
-            .replace('$PERF', chalk.greenBright(`+${PrettyDate(performance.now() - this.perf)}`));
+            .replace('$PERF', chalk.greenBright(`+${PrettyDate(perf)}`));
         fileOut = fileOut
             .replace('$LEVEL', `[${level}]`)
-            .replace('$PERF', `+${PrettyDate(performance.now() - this.perf)}`);
+            .replace('$PERF', `+${PrettyDate(perf)}`);
         return { fileOut, consoleOut }
     }
 
@@ -158,7 +159,6 @@ class Logger {
         if (!this.hideFromFile.find(loglvl => loglvl === level)) this.cache.push({ level: level, message: output['fileOut'] });
         this.messages[level]++;
         this.rowsCount++;
-        this.perf = performance.now();
         if (this.cache.length >= this.cacheSize) {
             this.WriteCache();
         }
@@ -175,6 +175,7 @@ class Logger {
         this.Debug('Logging finished!');
         if (this.showSummary) this.Debug(this.Summary());
         if (this.timeRotation || this.rowsRotation) this.RotateFiles();
+        this.IsInitialized = false;
     }
 
     public static StartTimer(name : string) : void {
@@ -193,3 +194,5 @@ class Logger {
 }
 
 export default Logger;
+
+export { Logger, LogLevels, LoggerConfig, TimeRotations }
