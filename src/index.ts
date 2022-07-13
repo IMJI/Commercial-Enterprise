@@ -5,7 +5,7 @@ import Logger from './services/logger/Logger';
 process.env.UV_THREADPOOL_SIZE = String(Config.DEFAULT_THREAD_POOL_SIZE + Config.DB_POOL['poolMax']);
 Logger.Initialize({
     dir: './logs',
-    format: '$YYYY-$MM-$DD $HR:$MIN:$SEC:$MS $LEVEL $MESSAGE'
+    format: '$YYYY-$MM-$DD $HR:$MIN:$SEC:$MS $FILE $LEVEL $MESSAGE'
 });
 App.Startup();
 
@@ -17,18 +17,18 @@ async function Shutdown() : Promise<void> {
     });
 }
 
-process.on('SIGTERM', () => {
+process.on('SIGTERM', async () => {
     Logger.Info('Received SIGTERM'); 
-    Shutdown();
+    await Shutdown();
 });
    
-process.on('SIGINT', () => {
+process.on('SIGINT', async () => {
     Logger.Info('Received SIGINT');
-    Shutdown();
+    await Shutdown();
 });
    
-process.on('uncaughtException', (err : Error) => {
+process.on('uncaughtException', async (err : Error) => {
     Logger.Error('Uncaught exception');
     Logger.Fatal(err.name + ' ' + err.message);
-    Shutdown();
+    await Shutdown();
 });

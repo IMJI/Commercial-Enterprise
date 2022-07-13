@@ -1,7 +1,8 @@
 node_modules
 dist
 src/services/Config.ts
-start.ps1
+config*
+*.pem
 
 # Logs
 logs
