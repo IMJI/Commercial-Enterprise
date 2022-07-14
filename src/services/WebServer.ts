@@ -1,14 +1,14 @@
 import * as express from 'express';
-import * as http from 'http';
 import * as https from 'https';
-import * as bodyParser from 'body-parser';
 import * as path from 'path';
 import * as fs from 'fs';
-import * as morgan from 'morgan';
 import Config from './Config';
 import WebRouter from '../routes/WebRouter';
-import { ReviveJSON } from './utils/Utils';
 import Logger from './logger/Logger';
+import HttpMiddleware from '../middlewares/Http';
+import LogMiddleware from '../middlewares/Log';
+import StaticMiddleware from '../middlewares/Static';
+import CorsMiddleware from '../middlewares/Cors';
 
 class WebServer {
     private static express : express.Application;
@@ -23,7 +23,7 @@ class WebServer {
                 cert: fs.readFileSync(path.join(__dirname, '../../cert.pem'))
             }
             this.express = express();
-            this.MoundMiddlewares();
+            this.MountMiddlewares();
             this.MountRoutes(WebRouter);
             this.server = https.createServer(this.serverOptions, this.express).listen(port, () => {
                 Logger.Info('Web Server is listening at ' + port);
@@ -50,17 +50,11 @@ class WebServer {
         });
     }
 
-    private static MoundMiddlewares() : void {
-        this.express.use('/public', express.static(path.join(__dirname + '/../../public')));
-        this.express.use(morgan('tiny', {
-            stream: {
-                write: (str : string) => { Logger.Trace(str.replace('\n', '')); }
-            }
-        }));
-        this.express.use(bodyParser.json());
-        this.express.use(express.json({
-            reviver: ReviveJSON
-        }));
+    private static MountMiddlewares() : void {
+        this.express = StaticMiddleware.Mount(this.express);        
+        this.express = HttpMiddleware.Mount(this.express);
+        if (Config.ENABLE_CORS) this.express = CorsMiddleware.Mount(this.express);
+        if (Config.ENABLE_HTTP_LOG) this.express = LogMiddleware.Mount(this.express);  
     }
 
     private static MountRoutes(router : express.Router) : void {

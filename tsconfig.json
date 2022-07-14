@@ -9,6 +9,7 @@
       "./node_modules/@types/node/index.d.ts",
       "./node_modules/@types/express/index.d.ts",
       "./node_modules/@types/morgan/index.d.ts",
+      "./node_modules/@types/cors/index.d.ts",
       "./node_modules/@types/oracledb/index.d.ts"
     ],
     "include": [
