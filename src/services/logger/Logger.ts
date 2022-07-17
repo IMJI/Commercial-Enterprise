@@ -2,8 +2,7 @@ import * as chalk from 'chalk';
 import * as path from 'path';
 import * as fs from 'fs';
 import LogLevels from './LogLevels';
-import LoggerConfig from './LoggerConfig';
-// import IDateObject from '../../interfaces/IDateObject';
+import { LoggerConfig } from '../Config';
 import { DateObject } from '../utils/DateObject';
 import { GetCallerFile, PrettyDate, Time } from '../utils/Utils'
 import TimeRotations from './TimeRotations';
@@ -55,22 +54,26 @@ class Logger {
 
     public static IsInitialized : boolean = false;
 
-    public static Initialize(config? : LoggerConfig) {
+    public static Initialize(config : LoggerConfig) {
         if (this.IsInitialized) throw new Error('Logger has already been initialized');
         this.uptimeStart = Date.now();
 
-        this.dir = config.dir || './logs';
-        this.cacheSize = config.maxCacheSize || 0;
-        this.showSummary = config.showSummary || true;
-        this.format = config.format || '$YYYY-$MM-$DD $HR:$MIN:$SEC:$MS $FILE $PERF $LEVEL $MESSAGE';
+        this.dir = config.dir;
+        this.cacheSize = config.maxCacheSize;
+        this.showSummary = config.showSummary;
+        this.format = config.format;
         this.filePath = path.join(this.dir, `latest.log`);
-        this.rowsRotation = config.rowsRotation || 0;
-        this.timeRotation = config.timeRotation || 0;
-        this.hideFromConsole = config.hideFromConsole || [];
-        this.hideFromFile = config.hideFromFile || [];
-        this.writeCombinedLog = config.writeCombinedLog || true;
-        this.writeSeparatedLog = config.writeSeparatedLog || false;
-        this.separatedLogLevels = config.separatedLogLevels || [];
+        this.rowsRotation = config.rowsRotation;
+        // this.timeRotation = config.timeRotation || 0;
+        // this.hideFromConsole = config.hideFromConsole || [];
+        // this.hideFromFile = config.hideFromFile || [];
+        this.timeRotation = 0;
+        this.hideFromConsole = [];
+        this.hideFromFile = [];
+        this.writeCombinedLog = config.writeCombinedLog;
+        this.writeSeparatedLog = config.writeSeparatedLog;
+        // this.separatedLogLevels = config.separatedLogLevels || [];
+        this.separatedLogLevels = [];
         
         if (this.writeSeparatedLog) {
             for (let loglvl in LogLevels) {

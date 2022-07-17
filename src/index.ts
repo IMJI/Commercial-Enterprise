@@ -11,10 +11,7 @@ function Startup() : void {
     if ([PROD, DEV].includes(process.env.NODE_ENV)) Config.Initialize(process.env.NODE_ENV);
     else throw new Error('Unknown NODE_ENV value. Use \'production\' or \'development\' values');
     process.env.UV_THREADPOOL_SIZE = String(Config.DEFAULT_THREAD_POOL_SIZE + Config.DB_POOL['poolMax']);
-    Logger.Initialize({
-        dir: './logs',
-        format: '$YYYY-$MM-$DD $HR:$MIN:$SEC:$MS $FILE $LEVEL $MESSAGE'
-    });
+    Logger.Initialize(Config.Logger);
     if (process.env.NODE_ENV === DEV) Logger.Warn('Application is running in DEVELOPMENT mode!');
     App.Startup();
 }

@@ -8,7 +8,9 @@
     "start": "tsc && node ./dist/index.js",
     "watch": "nodemon",
     "clear:logs": "del /S logs",
-    "clear:dist": "del /S dist"
+    "clear:dist": "del /S dist",
+    "env:prod": "break > ./.env && echo NODE_ENV=production > ./.env",
+    "env:dev": "break > ./.env && echo NODE_ENV=development > ./.env"
   },
   "dependencies": {
     "@types/cors": "^2.8.12",
@@ -22,10 +24,12 @@
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
     "helmet": "^5.1.0",
+    "js-yaml": "^4.1.0",
     "morgan": "^1.10.0",
     "oracledb": "^5.4.0"
   },
   "devDependencies": {
+    "@types/js-yaml": "^4.0.5",
     "nodemon": "^2.0.16",
     "ts-node": "^10.8.1",
     "typescript": "^4.7.4"
