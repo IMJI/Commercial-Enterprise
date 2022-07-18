@@ -7,7 +7,7 @@ class LogMiddleware {
     public static Mount(app : express.Application) : express.Application {
         Logger.Info('Booting HTTP log middleware...');
 
-        app.use(morgan(Config.HTTP_LOG_FORMAT, {
+        app.use(morgan(Config.WebServer.HTTPLogFormat, {
             stream: {
                 write: (str : string) => { Logger.Trace(str.replace('\n', '')); }
             }

@@ -6,7 +6,7 @@ class Database {
     private static pool : oracledb.Pool;
     
     public static async Initialize() : Promise<void> {
-        this.pool = await oracledb.createPool(Config.DB_POOL);
+        this.pool = await oracledb.createPool(Config.Database.dbPool);
         if (this.pool) Logger.Info('Database initialized');
         else Logger.Fatal('Database initialization error: Cannot craete pool');
     }

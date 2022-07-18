@@ -8,7 +8,7 @@ class CorsMiddleware {
         Logger.Info('Booting CORS middleware...');
 
         app.use(cors({
-            origin: Config.URL,
+            origin: Config.WebServer.url,
             optionsSuccessStatus: 200
         }));
 

@@ -17,7 +17,7 @@ class WebServer {
 
     public static async Initialize() : Promise<void> {
         return new Promise<void>((resolve, reject) => {
-            const port : number = Config.PORT;
+            const port : number = Config.WebServer.port;
             this.serverOptions = {
                 key: fs.readFileSync(path.join(__dirname, '../../key.pem')),
                 cert: fs.readFileSync(path.join(__dirname, '../../cert.pem'))
@@ -53,8 +53,8 @@ class WebServer {
     private static MountMiddlewares() : void {
         this.express = StaticMiddleware.Mount(this.express);        
         this.express = HttpMiddleware.Mount(this.express);
-        if (Config.ENABLE_CORS) this.express = CorsMiddleware.Mount(this.express);
-        if (Config.ENABLE_HTTP_LOG) this.express = LogMiddleware.Mount(this.express);  
+        if (Config.WebServer.enableCORS) this.express = CorsMiddleware.Mount(this.express);
+        if (Config.WebServer.enableHTTPLog) this.express = LogMiddleware.Mount(this.express);  
     }
 
     private static MountRoutes(router : express.Router) : void {

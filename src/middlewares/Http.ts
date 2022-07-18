@@ -10,11 +10,11 @@ class HttpMiddleware {
         Logger.Info('Booting HTTP middleware...');
 
         app.use(bodyParser.json({
-            limit: Config.MAX_UPLOAD_LIMIT
+            limit: Config.WebServer.maxUploadLimit
         }));
         app.use(bodyParser.urlencoded({
-			limit: Config.MAX_UPLOAD_LIMIT,
-			parameterLimit: Config.MAX_PARAMETER_LIMIT,
+			limit: Config.WebServer.maxUploadLimit,
+			parameterLimit: Config.WebServer.maxParameterLimit,
 			extended: false
 		}));
         app.use(helmet());
