@@ -2,6 +2,7 @@ import * as express from 'express';
 import * as https from 'https';
 import * as path from 'path';
 import * as fs from 'fs';
+import * as toobusy from 'toobusy-js';
 import Config from './Config';
 import WebRouter from '../routes/WebRouter';
 import Logger from './logger/Logger';
@@ -9,6 +10,7 @@ import HttpMiddleware from '../middlewares/Http';
 import LogMiddleware from '../middlewares/Log';
 import StaticMiddleware from '../middlewares/Static';
 import CorsMiddleware from '../middlewares/Cors';
+import StatusMonitorMiddleware from '../middlewares/StatusMonitor';
 
 class WebServer {
     private static express : express.Application;
@@ -38,6 +40,7 @@ class WebServer {
 
     public static async Close() : Promise<void> {
         return new Promise((resolve, reject) => {
+            toobusy.shutdown();
             this.server.close((err : Error) => {
                 Logger.Info('Web server closed');
                 if (err) {
@@ -55,6 +58,7 @@ class WebServer {
         this.express = HttpMiddleware.Mount(this.express);
         if (Config.WebServer.enableCORS) this.express = CorsMiddleware.Mount(this.express);
         if (Config.WebServer.enableHTTPLog) this.express = LogMiddleware.Mount(this.express);  
+        this.express = StatusMonitorMiddleware.Mount(this.express);
     }
 
     private static MountRoutes(router : express.Router) : void {

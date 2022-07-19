@@ -1,6 +1,7 @@
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import helmet from 'helmet';
+import * as toobusy from 'toobusy-js';
 import { ReviveJSON } from '../services/utils/Utils';
 import Logger from '../services/logger/Logger';
 import Config from '../services/Config';
@@ -21,6 +22,15 @@ class HttpMiddleware {
         app.use(express.json({
             reviver: ReviveJSON
         }));
+        toobusy.maxLag(Config.WebServer.maxLag);
+        toobusy.interval(Config.WebServer.lagCheckInterval);
+        app.use((req : express.Request, res : express.Response, next : express.NextFunction) => {
+            if (toobusy()) {
+                res.status(503).send('Server is busy right now. Try again later.');
+            } else {
+                next();
+            }
+        });
 
         return app;
     }
