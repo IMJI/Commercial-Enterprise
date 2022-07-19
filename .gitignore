@@ -1,6 +1,5 @@
 node_modules
 dist
-src/services/Config.ts
 config*
 *.pem
 
