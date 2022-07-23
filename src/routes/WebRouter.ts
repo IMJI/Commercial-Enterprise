@@ -1,6 +1,5 @@
 import { Router } from 'express';
 import LoginController from '../controllers/auth/LoginController';
-
 import IndexController from '../controllers/IndexController';
 
 const WebRouter : Router = Router();

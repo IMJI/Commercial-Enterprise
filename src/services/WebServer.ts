@@ -5,6 +5,7 @@ import * as fs from 'fs';
 import * as toobusy from 'toobusy-js';
 import Config from './Config';
 import WebRouter from '../routes/WebRouter';
+import ApiRouter from '../routes/ApiRouter';
 import Logger from './logger/Logger';
 import HttpMiddleware from '../middlewares/Http';
 import LogMiddleware from '../middlewares/Log';
@@ -27,6 +28,7 @@ class WebServer {
             this.express = express();
             this.MountMiddlewares();
             this.MountRoutes(WebRouter);
+            this.MountRoutes(ApiRouter);
             this.server = https.createServer(this.serverOptions, this.express).listen(port, () => {
                 Logger.Info('Web Server is listening at ' + port);
                 resolve();
