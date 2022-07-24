@@ -68,24 +68,33 @@ BEGIN
 END;
 /
 
--- Trigger logging changing status for outgoings
-CREATE OR REPLACE TRIGGER CE_LOGGING_STATUSES
-AFTER INSERT ON CE_STATUSES
+-- Trigger creating first status
+CREATE OR REPLACE TRIGGER CE_OUTGOING_STATUS
+AFTER INSERT ON CE_OUTGOING
 FOR EACH ROW
-DECLARE
-    manager NUMBER;
-    action VARCHAR2(64);
 BEGIN
-    SELECT MAN_ID INTO manager FROM CE_OUTGOING
-    WHERE OUT_ID = :NEW.OUT_ID;
-    IF (:NEW.STATUS_NAME = 'CANCELLED') THEN
-        action := 'CANCEL';
-    ELSE
-        action := 'CHANGE STATUS';
-    END IF;
-    INSERT INTO CE_LOG(MAN_ID, OUT_ID, LOG_DATE, LOG_ACTION) VALUES(manager, :NEW.OUT_ID, SYSDATE, action);
+    INSERT INTO CE_STATUSES(OUT_ID, DATE_FROM, STATUS_NAME) VALUES(:NEW.OUT_ID, SYSDATE, 'IN_PROCESSING');
 END;
 /
+
+-- Trigger logging changing status for outgoings
+-- CREATE OR REPLACE TRIGGER CE_LOGGING_STATUSES
+-- BEFORE INSERT ON CE_STATUSES
+-- FOR EACH ROW
+-- DECLARE
+--     manager NUMBER;
+--     action VARCHAR2(64);
+-- BEGIN
+--     SELECT MAN_ID INTO manager FROM CE_OUTGOING
+--     WHERE OUT_ID = :NEW.OUT_ID;
+--     IF (:NEW.STATUS_NAME = 'CANCELLED') THEN
+--         action := 'CANCEL';
+--     ELSE
+--         action := 'CHANGE STATUS';
+--     END IF;
+--     INSERT INTO CE_LOG(MAN_ID, OUT_ID, LOG_DATE, LOG_ACTION) VALUES(manager, :NEW.OUT_ID, SYSDATE, action);
+-- END;
+-- /
 
 -- Trigger for evaluating cost of outgoing
 CREATE OR REPLACE TRIGGER CE_EVAL_COST
