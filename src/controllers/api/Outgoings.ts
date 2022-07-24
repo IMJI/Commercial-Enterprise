@@ -1,9 +1,12 @@
 import { Request, Response, NextFunction } from 'express';
+import Outgoings from '../../db_apis/Outgoings';
 
 class OutgoingsController {
     public static async Get(req : Request, res : Response, next : NextFunction) : Promise<void> {
         try {
-            res.status(200).send('Outgoings Controller');
+            const context : object = {};
+            const rows = await Outgoings.Find(context);
+            res.status(200).json(rows);
         } catch(err) {
             next(err);
         }
