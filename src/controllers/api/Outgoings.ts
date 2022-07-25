@@ -16,6 +16,8 @@ class OutgoingsController {
         try {
             const context : OutgoingQuery = {};
             if (req.params.id) context.id = +req.params.id;
+            if (req.query.skip) context.skip = +req.query.skip;
+            if (req.query.limit) context.limit = +req.query.limit;
             const rows = await Outgoings.Find(context);
             if (req.params.id) {
                 if (rows.length === 1) {

@@ -12,7 +12,7 @@ type OutgoingModel = {
 }
 
 class Outgoings {
-    private static baseQuery : string = `
+    private static findQuery : string = `
         select o.out_id, m.man_id, m.first_name, m.last_name, m.patronymic, p.vendor_code, p.prod_name, c.cat_id, c.cat_name, s.status_name, t.tax_id, t.tax_name, cost, quantity
         from ce_outgoing o, ce_managers m, ce_products p, ce_categories c, ce_statuses s, ce_taxes t
         where o.man_id =  m.man_id
@@ -24,13 +24,20 @@ class Outgoings {
     `;
 
     public static async Find(context : OutgoingQuery) : Promise<OutgoingModel[]> {
-        let query : string = this.baseQuery;
+        let query : string = this.findQuery;
         let binds : oracledb.BindParameters = {};
 
         if (context.id) {
             binds.out_id = context.id;
             query += `\nand o.out_id = :out_id`;
         }
+        if (context.skip) {
+            binds.row_offset = context.skip;
+            query += '\noffset :row_offset rows';
+        }
+        let limit = (context.limit > 0) ? context.limit : 20;
+        binds.row_limit = limit;
+        query += '\nfetch next :row_limit rows only';
 
         const result : oracledb.Result<OutgoingModel> = await Database.Execute(query, binds);
         return result.rows;

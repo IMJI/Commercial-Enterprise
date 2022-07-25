@@ -4,6 +4,10 @@ import OutgoingsController from '../controllers/api/Outgoings';
 const ApiRouter : Router = Router();
 const apiPath = '/api';
 
-ApiRouter.get(`${apiPath}/outgoings/:id?`, OutgoingsController.Get);
+ApiRouter.route(`${apiPath}/outgoings/:id?`)
+    .get(OutgoingsController.Get)
+    .post(OutgoingsController.Post)
+    .put(OutgoingsController.Put)
+    .delete(OutgoingsController.Delete);
 
 export default ApiRouter;
