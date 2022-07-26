@@ -1,6 +1,6 @@
 enum SortingOrders {
-    Ascending,
-    Descending
+    Ascending = 'asc',
+    Descending = 'desc'
 }
 
 class Sort {

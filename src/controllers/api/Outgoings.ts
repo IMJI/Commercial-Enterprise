@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import Outgoings from '../../db_apis/Outgoings';
-import { Query } from '../../services/utils/Web';
+import { Query, Sort } from '../../services/utils/Web';
 
 interface OutgoingQuery extends Query {
     cost? : number;
@@ -18,6 +18,7 @@ class OutgoingsController {
             if (req.params.id) context.id = +req.params.id;
             if (req.query.skip) context.skip = +req.query.skip;
             if (req.query.limit) context.limit = +req.query.limit;
+            if (req.query.sort) context.sort = Sort.FromString(String(req.query.sort));
             const rows = await Outgoings.Find(context);
             if (req.params.id) {
                 if (rows.length === 1) {
@@ -26,7 +27,8 @@ class OutgoingsController {
                     res.status(404).end();
                 }
             } else {
-                res.status(200).json(rows);
+                const count = await Outgoings.Count(context);
+                res.status(200).json({ rows: rows, count: count });
             }
         } catch(err) {
             next(err);

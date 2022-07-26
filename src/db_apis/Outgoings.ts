@@ -1,6 +1,7 @@
 import * as oracledb from 'oracledb';
 import { OutgoingQuery } from '../controllers/api/Outgoings';
 import Database from '../services/Database';
+import { Sort } from '../services/utils/Web';
 
 type OutgoingModel = {
     OUT_ID : number;
@@ -31,6 +32,19 @@ class Outgoings {
             binds.out_id = context.id;
             query += `\nand o.out_id = :out_id`;
         }
+        if (context.sort === undefined && context.sort !== []) {
+            query += '\norder by o.out_id asc';
+        } else {
+            query += '\norder by ';
+            for (let i = 0; i < context.sort.length; i++) {
+                const sorting : Sort = context.sort[i];
+                if (i > 0) query += ', ';
+                query += `${sorting.Column} ${sorting.Order}`;
+            }
+            /* if (!sortableColumns.includes(column)) {
+                throw new Error('Invalid "sort" column');
+            } */            
+        }
         if (context.skip) {
             binds.row_offset = context.skip;
             query += '\noffset :row_offset rows';
@@ -38,9 +52,28 @@ class Outgoings {
         let limit = (context.limit > 0) ? context.limit : 20;
         binds.row_limit = limit;
         query += '\nfetch next :row_limit rows only';
-
+        console.log(query);
         const result : oracledb.Result<OutgoingModel> = await Database.Execute(query, binds);
         return result.rows;
+    }
+
+    private static countQuery : string = `
+        select count(o.out_id) as ROWS_COUNT
+        from ce_outgoing o, ce_managers m, ce_products p, ce_categories c, ce_statuses s, ce_taxes t
+        where o.man_id =  m.man_id
+            and o.vendor_code = p.vendor_code
+            and p.cat_id = c.cat_id
+            and o.out_id = s.out_id
+            and (s.date_to is null or s.status_name = 'CANCELLED')
+            and o.tax_id = t.tax_id
+    `;
+
+    public static async Count(context : OutgoingQuery) : Promise<number> {
+        let query : string = this.countQuery;
+        let binds : oracledb.BindParameters = {};
+
+        const result : oracledb.Result<number> = await Database.Execute(query, binds);
+        return result.rows[0]['ROWS_COUNT'];
     }
 }
 
