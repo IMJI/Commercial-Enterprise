@@ -45,7 +45,6 @@ class App {
             err = err || e;
         }
         if (err) Logger.Fatal(err.message);
-        // console.log('Exiting process...');
         // if (err) process.exit(1);
         // else process.exit(0);
     }
