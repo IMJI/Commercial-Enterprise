@@ -14,20 +14,30 @@ type WebServerConfig = {
     lagCheckInterval : number;
 }
 
-type DatabaseConfig = {
-    secretKey : string;
-    dbPool : DBPoolConfig;
-    defaultThreadPoolSize : number;
-    uvThreadPoolSize : number;
-}
+// type DatabaseConfig = {
+//     secretKey : string;
+//     dbPool : DBPoolConfig;
+//     defaultThreadPoolSize : number;
+//     uvThreadPoolSize : number;
+// }
 
-type DBPoolConfig = {
-    user : string;
-    password : string;
-    connectString : string;
-    poolMin : number;
-    poolMax : number;
-    poolIncrement : number;
+// type DBPoolConfig = {
+//     user : string;
+//     password : string;
+//     connectString : string;
+//     poolMin : number;
+//     poolMax : number;
+//     poolIncrement : number;
+// }
+
+type DatabaseConfig = {
+    type : 'oracle' | 'mysql',
+    host : string,
+    port : number,
+    username : string,
+    password : string,
+    database : string,
+    secretKey : string
 }
 
 type LoggerConfig = {
@@ -87,22 +97,14 @@ class Config {
     }
 
     private static InitDatabaseConfig(config : object) : DatabaseConfig {
-        const poolConfig : object = config['db-pool'];
-        const pool : DBPoolConfig = {
-            user: poolConfig['user'],
-            password: poolConfig['password'],
-            connectString: poolConfig['connect-string'],
-            poolMin: poolConfig['pool-min'] || 10,
-            poolMax: poolConfig['pool-max'] || 10,
-            poolIncrement: poolConfig['pool-increment'] || 0
-        }
-        const defaultThreadPoolSize : number = poolConfig['default-thread-pool-size'] || 4;
-        const uvThreadPoolSize : number = defaultThreadPoolSize + pool.poolMax;
         return {
-            secretKey: poolConfig['secret-key'],
-            dbPool: pool,
-            defaultThreadPoolSize: defaultThreadPoolSize,
-            uvThreadPoolSize: uvThreadPoolSize
+            type : config['type'],
+            host : config['host'],
+            port : config['port'],
+            username : config['username'],
+            password : config['password'],
+            database : config['database'],
+            secretKey: config['secret-key'],
         }
     }
 
@@ -120,4 +122,4 @@ class Config {
 }
 
 export default Config;
-export { Config, WebServerConfig, DatabaseConfig, DBPoolConfig, LoggerConfig, CacheConfig }
+export { Config, WebServerConfig, DatabaseConfig, LoggerConfig, CacheConfig }
