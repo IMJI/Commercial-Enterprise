@@ -28,10 +28,14 @@ class Sort {
 }
 
 interface Query {
-    id? : number;
-    limit? : number;
-    skip? : number;
-    sort? : Sort[];
+    id? : string;
+    limit? : string;
+    skip? : string;
+    sort? : string;
 }
 
-export { Query, Sort, SortingOrders }
+function QueryStringToSQLList(qs : string) : string {
+    return qs.split(',').map(a => { return `'${a}'`; }).join(',');
+}
+
+export { Query, Sort, SortingOrders, QueryStringToSQLList }
