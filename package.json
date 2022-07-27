@@ -30,11 +30,13 @@
     "js-yaml": "^4.1.0",
     "morgan": "^1.10.0",
     "oracledb": "^5.4.0",
-    "toobusy-js": "^0.5.1"
+    "reflect-metadata": "^0.1.13",
+    "toobusy-js": "^0.5.1",
+    "typeorm": "^0.3.7"
   },
   "devDependencies": {
     "@types/js-yaml": "^4.0.5",
-    "nodemon": "^2.0.16",
+    "nodemon": "^2.0.19",
     "ts-node": "^10.8.1",
     "typescript": "^4.7.4"
   }

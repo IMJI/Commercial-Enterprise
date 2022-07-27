@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import Database from './Database';
 import WebServer from './WebServer';
 import Logger from './logger/Logger'
