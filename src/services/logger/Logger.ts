@@ -178,6 +178,7 @@ class Logger {
         this.Debug('Logging finished!');
         if (this.showSummary) this.Debug(this.Summary());
         if (this.timeRotation || this.rowsRotation) this.RotateFiles();
+        else this.WriteCache();
         this.IsInitialized = false;
     }
 
