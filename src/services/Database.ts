@@ -3,6 +3,7 @@ import Config from './Config';
 import Logger from './logger/Logger';
 import { DataSource } from 'typeorm';
 import { resolve } from 'path';
+import Models from '../models/Models';
 
 class Database {
     private static pool : oracledb.Pool;
@@ -56,7 +57,7 @@ class Database {
             database: Config.Database.database,
             synchronize: false,
             logging: true,
-            entities: [],
+            entities: Models,
             subscribers: [],
             migrations: [],
         });
