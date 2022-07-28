@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "target": "es6",
     "module": "commonjs",
     "outDir": "dist/",
@@ -18,7 +20,5 @@
   "exclude": [
     "typings/*",
     "node_modules"
-  ],
-  "emitDecoratorMetadata": true,
-  "experimentalDecorators": true
+  ]
 }
