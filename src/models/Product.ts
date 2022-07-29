@@ -1,5 +1,7 @@
 import { Entity, Column, PrimaryColumn, OneToOne, JoinColumn } from 'typeorm';
 import Category from './Category';
+import Color from './Color';
+import Size from './Size';
 
 @Entity()
 class Product {
@@ -13,11 +15,13 @@ class Product {
     @JoinColumn()
     category : Category;
 
-    @Column({ length: 64 })
-    color : string;
+    @OneToOne(() => Color)
+    @JoinColumn()
+    color : Color;
 
-    @Column({ length: 64 })
-    size : string;
+    @OneToOne(() => Size)
+    @JoinColumn()
+    size : Size;
 
     @Column('text')
     description : string;
