@@ -10,6 +10,9 @@ class Tax {
 
     @Column('double')
     value : number;
+
+    @Column('boolean')
+    isDeleted : boolean;
 }
 
 export default Tax;

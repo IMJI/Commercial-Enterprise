@@ -7,6 +7,9 @@ class Category {
 
     @Column({ length: 64 })
     name : string;
+
+    @Column('boolean')
+    isDeleted : boolean;
 }
 
 export default Category;
