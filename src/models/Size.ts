@@ -9,7 +9,7 @@ class Size {
     @Column({ length: 64 })
     name : string;
 
-    @Column('double')
+    @Column()
     value : number
 
     @OneToOne(() => Product, (product : Product) => product.size)

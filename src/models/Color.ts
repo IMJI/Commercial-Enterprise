@@ -19,7 +19,6 @@ class Color {
     greenValue : number;
 
     @Column({
-        type: 'boolean',
         default: false
     })
     isDeleted : boolean;

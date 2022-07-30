@@ -8,10 +8,10 @@ class Tax {
     @Column({ length: 64 })
     name : string;
 
-    @Column('double')
+    @Column()
     value : number;
 
-    @Column('boolean')
+    @Column({ default: false })
     isDeleted : boolean;
 }
 

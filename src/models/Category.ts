@@ -9,7 +9,7 @@ class Category {
     @Column({ length: 64 })
     name : string;
 
-    @Column('boolean')
+    @Column({ default: false})
     isDeleted : boolean;
 
     @OneToMany(() => Product, (product : Product) => product.category)

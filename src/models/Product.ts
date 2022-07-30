@@ -23,13 +23,12 @@ class Product {
     size : Size;
 
     @Column({
-        type: 'text',
-        nullable: true
+        nullable: true,
+        length: 512
     })
     description : string;
 
     @Column({
-        type: 'boolean',
         default: false
     })
     isDeleted : boolean;

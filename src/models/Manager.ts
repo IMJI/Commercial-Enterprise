@@ -14,7 +14,7 @@ class Manager {
     @Column({ length: 64 })
     patronymic : string;
 
-    @Column('double')
+    @Column()
     percent : number;
 
     @Column('date')
