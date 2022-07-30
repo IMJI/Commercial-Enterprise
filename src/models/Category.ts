@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import Product from './Product';
 
 @Entity()
 class Category {
@@ -10,6 +11,9 @@ class Category {
 
     @Column('boolean')
     isDeleted : boolean;
+
+    @OneToMany(() => Product, (product : Product) => product.category)
+    products : Product[];
 }
 
 export default Category;

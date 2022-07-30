@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryColumn, OneToOne, JoinColumn } from 'typeorm';
+import { Entity, Column, PrimaryColumn, ManyToOne, OneToOne  } from 'typeorm';
 import Category from './Category';
 import Color from './Color';
 import Size from './Size';
@@ -11,22 +11,27 @@ class Product {
     @Column({ length: 64 })
     name : string;
 
-    @OneToOne(() => Category)
-    @JoinColumn()
+    @ManyToOne(() => Category, (category : Category) => category.products)
     category : Category;
 
-    @OneToOne(() => Color)
-    @JoinColumn()
+    @ManyToOne(() => Color, (color : Color) => color.products)
     color : Color;
 
-    @OneToOne(() => Size)
-    @JoinColumn()
+    // @ManyToOne(() => Size, (size : Size) => size.products)
+    // size : Size;
+    @OneToOne(() => Size, (size : Size) => size.product)
     size : Size;
 
-    @Column('text')
+    @Column({
+        type: 'text',
+        nullable: true
+    })
     description : string;
 
-    @Column('boolean')
+    @Column({
+        type: 'boolean',
+        default: false
+    })
     isDeleted : boolean;
 }
 

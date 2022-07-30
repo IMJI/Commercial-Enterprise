@@ -23,10 +23,10 @@ class Manager {
     @Column('date')
     dismissalDate : Date;
 
-    @ManyToOne(() => Manager, manager => manager.subordinates)
+    @ManyToOne(() => Manager, (manager : Manager) => manager.subordinates)
     parent : Manager;
 
-    @OneToMany(() => Manager, manager => manager.parent)
+    @OneToMany(() => Manager, (manager : Manager) => manager.parent)
     subordinates : Manager[];
 }
 

@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import Product from './Product';
 
 @Entity()
 class Color {
@@ -7,6 +8,24 @@ class Color {
 
     @Column({ length: 64 })
     name : string;
+
+    @Column('integer')
+    redValue : number;
+
+    @Column('integer')
+    blueValue : number;
+
+    @Column('integer')
+    greenValue : number;
+
+    @Column({
+        type: 'boolean',
+        default: false
+    })
+    isDeleted : boolean;
+
+    @OneToMany(() => Product, (product : Product) => product.color)
+    products : Product[];
 }
 
 export default Color;
