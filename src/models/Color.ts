@@ -9,13 +9,13 @@ class Color {
     @Column({ length: 64 })
     name : string;
 
-    @Column('integer')
+    @Column()
     redValue : number;
 
-    @Column('integer')
+    @Column()
     blueValue : number;
 
-    @Column('integer')
+    @Column()
     greenValue : number;
 
     @Column({

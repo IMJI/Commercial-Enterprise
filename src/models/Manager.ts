@@ -17,17 +17,23 @@ class Manager {
     @Column()
     percent : number;
 
-    @Column('date')
+    @Column()
     hireDate : Date;
 
-    @Column('date')
+    @Column()
     dismissalDate : Date;
 
-    @ManyToOne(() => Manager, (manager : Manager) => manager.subordinates)
-    parent : Manager;
+    @Column({
+        nullable: true
+    })
+    @ManyToOne(() => Manager, (manager : Manager) => manager.id)
+    parent : number;
 
-    @OneToMany(() => Manager, (manager : Manager) => manager.parent)
-    subordinates : Manager[];
+    // @Column({
+    //     nullable: true
+    // })
+//     @OneToMany(() => Manager, (manager : Manager) => manager.parent)
+//     subordinates : Manager[];
 }
 
 export default Manager;
