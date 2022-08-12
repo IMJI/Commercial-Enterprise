@@ -16,11 +16,7 @@ type OutgoingParams = {
 };
 
 class OutgoingsController {
-	public static async Get(
-		req: Request<OutgoingParams, unknown, unknown, OutgoingQuery>,
-		res: Response,
-		next: NextFunction
-	): Promise<void> {
+	public static async Get(req: Request<OutgoingParams, unknown, unknown, OutgoingQuery>, res: Response, next: NextFunction): Promise<void> {
 		try {
 			const context: OutgoingQuery = {};
 			if (req.params.id) context.id = req.params.id;

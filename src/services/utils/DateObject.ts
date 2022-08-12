@@ -12,38 +12,9 @@ const MonthNames: string[] = [
 	'November',
 	'December'
 ];
-const ShortMonthNames: string[] = [
-	'JAN',
-	'FEB',
-	'MAR',
-	'APR',
-	'MAY',
-	'JUN',
-	'JUL',
-	'AUG',
-	'SEP',
-	'OCT',
-	'NOV',
-	'DEC'
-];
-const DaysOfWeek: string[] = [
-	'Monday',
-	'Tuesday',
-	'Wednesday',
-	'Thursday',
-	'Friday',
-	'Saturday',
-	'Sunday'
-];
-const ShortDaysOfWeek: string[] = [
-	'MON',
-	'TUE',
-	'WED',
-	'THU',
-	'FRI',
-	'SAT',
-	'SUN'
-];
+const ShortMonthNames: string[] = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+const DaysOfWeek: string[] = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+const ShortDaysOfWeek: string[] = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
 
 class DateObject {
 	private _date: Date;

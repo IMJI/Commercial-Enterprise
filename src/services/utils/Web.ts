@@ -23,10 +23,7 @@ class Sort {
 		const sortingsStr: string[] = str.split(',');
 		sortingsStr.forEach((sorting) => {
 			const opts = sorting.split(':');
-			const order: SortingOrders =
-				opts[1].toLowerCase() === 'desc'
-					? SortingOrders.Descending
-					: SortingOrders.Ascending;
+			const order: SortingOrders = opts[1].toLowerCase() === 'desc' ? SortingOrders.Descending : SortingOrders.Ascending;
 			const s: Sort = new Sort(opts[0], order);
 			sortings.push(s);
 		});

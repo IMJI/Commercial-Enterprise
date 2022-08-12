@@ -20,9 +20,7 @@ class App {
 			Logger.Info('Initializing web server module');
 			await WebServer.Initialize();
 		} catch (err) {
-			Logger.Fatal(
-				'Encountered error while loading web server: ' + err.message
-			);
+			Logger.Fatal('Encountered error while loading web server: ' + err.message);
 			//process.exit(1);
 			await this.Shutdown();
 		}

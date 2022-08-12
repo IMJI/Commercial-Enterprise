@@ -74,14 +74,9 @@ class Config {
 
 	public static Initialize(nodeEnv: string): void {
 		let filePath: string;
-		if (nodeEnv === 'production')
-			filePath = path.join(__dirname + '../../../config.prod.yml');
-		else if (nodeEnv === 'development')
-			filePath = path.join(__dirname + '../../../config.dev.yml');
-		else
-			throw new Error(
-				"Incorrect NODE_ENV value. Can't initialize config module."
-			);
+		if (nodeEnv === 'production') filePath = path.join(__dirname + '../../../config.prod.yml');
+		else if (nodeEnv === 'development') filePath = path.join(__dirname + '../../../config.dev.yml');
+		else throw new Error("Incorrect NODE_ENV value. Can't initialize config module.");
 		const file = fs.readFileSync(filePath, 'utf8');
 		this.InitGlobalConfig(yaml.loadAll(file));
 	}
@@ -126,9 +121,7 @@ class Config {
 			dir: config['directory'] || './logs',
 			maxCacheSize: config['max-cache-size'] || 0,
 			showSummary: config['show-summary'] || false,
-			format:
-				config['format'] ||
-				'$YYYY-$MM-$DD $HR:$MIN:$SEC:$MS $FILE $PERF $LEVEL $MESSAGE',
+			format: config['format'] || '$YYYY-$MM-$DD $HR:$MIN:$SEC:$MS $FILE $PERF $LEVEL $MESSAGE',
 			rowsRotation: config['rows-rotation'] || 0,
 			writeCombinedLog: config['write-combined-log'] || true,
 			writeSeparatedLog: config['write-separated-log'] || false

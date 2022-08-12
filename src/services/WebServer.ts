@@ -60,10 +60,8 @@ class WebServer {
 	private static MountMiddlewares(): void {
 		this.express = StaticMiddleware.Mount(this.express);
 		this.express = HttpMiddleware.Mount(this.express);
-		if (Config.WebServer.enableCORS)
-			this.express = CorsMiddleware.Mount(this.express);
-		if (Config.WebServer.enableHTTPLog)
-			this.express = LogMiddleware.Mount(this.express);
+		if (Config.WebServer.enableCORS) this.express = CorsMiddleware.Mount(this.express);
+		if (Config.WebServer.enableHTTPLog) this.express = LogMiddleware.Mount(this.express);
 		this.express = StatusMonitorMiddleware.Mount(this.express);
 	}
 
