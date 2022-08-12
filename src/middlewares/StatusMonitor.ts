@@ -4,16 +4,16 @@ import Logger from '../services/logger/Logger';
 import Config from '../services/Config';
 
 class StatusMonitorMiddleware {
-    public static Mount(app : express.Application) : express.Application {
-        Logger.Info('Booting Status Monitor middleware...');
+	public static Mount(app: express.Application): express.Application {
+		Logger.Info('Booting Status Monitor middleware...');
 
-        const monitorOptions : expressStatusMonitor.ExpressStatusMonitorConfig = {
+		const monitorOptions: expressStatusMonitor.ExpressStatusMonitorConfig = {
 			title: 'Status Monitor',
 			path: '/sm',
 			spans: [
 				{
-					interval: 1, 		// Every second
-					retention: 60		// Keep 60 data-points in memory
+					interval: 1, // Every second
+					retention: 60 // Keep 60 data-points in memory
 				},
 				{
 					interval: 5,
@@ -44,8 +44,8 @@ class StatusMonitorMiddleware {
 
 		app.use(expressStatusMonitor(monitorOptions));
 
-        return app;
-    }
+		return app;
+	}
 }
 
 export default StatusMonitorMiddleware;

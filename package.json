@@ -12,7 +12,8 @@
     "env:prod": "break > ./.env && echo NODE_ENV=production > ./.env",
     "env:dev": "break > ./.env && echo NODE_ENV=development > ./.env",
     "lint": "eslint . --ext .ts",
-    "lint:fix": "eslint . --ext .ts --fix"
+    "lint:fix": "eslint . --ext .ts --fix",
+    "prettier": "prettier --config .prettierrc src/**/*.ts --write"
   },
   "dependencies": {
     "@types/cors": "^2.8.12",
@@ -35,6 +36,7 @@
     "js-yaml": "^4.1.0",
     "morgan": "^1.10.0",
     "oracledb": "^5.4.0",
+    "prettier": "^2.7.1",
     "reflect-metadata": "^0.1.13",
     "toobusy-js": "^0.5.1",
     "typeorm": "^0.3.7"

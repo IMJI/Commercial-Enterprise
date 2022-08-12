@@ -3,17 +3,17 @@ import Product from './Product';
 
 @Entity()
 class Category {
-    @PrimaryGeneratedColumn()
-    id : number;
+	@PrimaryGeneratedColumn()
+	id: number;
 
-    @Column({ length: 64 })
-    name : string;
+	@Column({ length: 64 })
+	name: string;
 
-    @Column({ default: false})
-    isDeleted : boolean;
+	@Column({ default: false })
+	isDeleted: boolean;
 
-    @OneToMany(() => Product, (product : Product) => product.category)
-    products : Product[];
+	@OneToMany(() => Product, (product: Product) => product.category)
+	products: Product[];
 }
 
 export default Category;

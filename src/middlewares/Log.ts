@@ -4,17 +4,21 @@ import Logger from '../services/logger/Logger';
 import Config from '../services/Config';
 
 class LogMiddleware {
-    public static Mount(app : express.Application) : express.Application {
-        Logger.Info('Booting HTTP log middleware...');
+	public static Mount(app: express.Application): express.Application {
+		Logger.Info('Booting HTTP log middleware...');
 
-        app.use(morgan(Config.WebServer.HTTPLogFormat, {
-            stream: {
-                write: (str : string) => { Logger.Trace(str.replace('\n', '')); }
-            }
-        }));
+		app.use(
+			morgan(Config.WebServer.HTTPLogFormat, {
+				stream: {
+					write: (str: string) => {
+						Logger.Trace(str.replace('\n', ''));
+					}
+				}
+			})
+		);
 
-        return app;
-    }
+		return app;
+	}
 }
 
 export default LogMiddleware;

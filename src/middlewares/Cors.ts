@@ -4,16 +4,18 @@ import Logger from '../services/logger/Logger';
 import Config from '../services/Config';
 
 class CorsMiddleware {
-    public static Mount(app : express.Application) : express.Application {
-        Logger.Info('Booting CORS middleware...');
+	public static Mount(app: express.Application): express.Application {
+		Logger.Info('Booting CORS middleware...');
 
-        app.use(cors({
-            origin: Config.WebServer.url,
-            optionsSuccessStatus: 200
-        }));
+		app.use(
+			cors({
+				origin: Config.WebServer.url,
+				optionsSuccessStatus: 200
+			})
+		);
 
-        return app;
-    }
+		return app;
+	}
 }
 
 export default CorsMiddleware;

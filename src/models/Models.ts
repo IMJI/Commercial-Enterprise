@@ -6,4 +6,4 @@ import Size from './Size';
 import Tax from './Tax';
 
 export default [Tax, Category, Size, Color, Product, Manager];
-export { Tax, Category, Size, Color, Product, Manager }
+export { Tax, Category, Size, Color, Product, Manager };
