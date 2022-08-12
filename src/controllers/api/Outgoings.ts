@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import Outgoings from '../../db_apis/Outgoings';
-import { Query, Sort } from '../../services/utils/Web';
+import { Query } from '../../services/utils/Web';
 
 interface OutgoingQuery extends Query {
     cost? : string;
@@ -16,7 +16,7 @@ type OutgoingParams = {
 }
 
 class OutgoingsController {
-    public static async Get(req : Request<OutgoingParams, {}, {}, OutgoingQuery>, res : Response, next : NextFunction) : Promise<void> {
+    public static async Get(req : Request<OutgoingParams, unknown, unknown, OutgoingQuery>, res : Response, next : NextFunction) : Promise<void> {
         try {
             const context : OutgoingQuery = {};
             if (req.params.id) context.id = req.params.id;
@@ -46,17 +46,17 @@ class OutgoingsController {
         }
     }
 
-    public static async Post(req : Request, res : Response, next : NextFunction) : Promise<void> {
+    // public static async Post(req : Request, res : Response, next : NextFunction) : Promise<void> {
 
-    }
+    // }
 
-    public static async Put(req : Request, res : Response, next : NextFunction) : Promise<void> {
+    // public static async Put(req : Request, res : Response, next : NextFunction) : Promise<void> {
 
-    }
+    // }
 
-    public static async Delete(req : Request, res : Response, next : NextFunction) : Promise<void> {
+    // public static async Delete(req : Request, res : Response, next : NextFunction) : Promise<void> {
 
-    }
+    // }
 }
 
 export default OutgoingsController;

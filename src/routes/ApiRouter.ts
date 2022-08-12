@@ -6,8 +6,8 @@ const apiPath = '/api';
 
 ApiRouter.route(`${apiPath}/outgoings/:id?`)
     .get(OutgoingsController.Get)
-    .post(OutgoingsController.Post)
-    .put(OutgoingsController.Put)
-    .delete(OutgoingsController.Delete);
+    // .post(OutgoingsController.Post)
+    // .put(OutgoingsController.Put)
+    // .delete(OutgoingsController.Delete);
 
 export default ApiRouter;

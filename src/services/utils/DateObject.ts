@@ -28,7 +28,7 @@ class DateObject {
     get SecondsString() : string { return this.Seconds < 10 ? `0${this.Seconds}` : this.Seconds.toString(); }
     get Milliseconds() : number { return this._date.getMilliseconds(); }
     get MillisecondsString() : string {
-        let msstr : string = '';
+        let msstr = '';
         if (this.Milliseconds < 100) msstr += '0';
         if (this.Milliseconds < 10) msstr += '0';
         return msstr + this.Milliseconds.toString();

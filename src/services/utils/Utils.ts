@@ -20,11 +20,11 @@ export function GetCallerFile(depth : number) : string {
 
 export function PrettyDate(dateInMs : number) {
     let prettyDate = '';
-    let ms : number = Math.floor(dateInMs % 1000);
-    let secs : number = Math.floor((dateInMs / 1000) % 60);
-    let mins : number = Math.floor((dateInMs / (1000 * 60)) % 60);
-    let hours : number = Math.floor((dateInMs / (1000 * 60 * 60)) % 24);
-    let days : number = Math.floor(dateInMs / (1000 * 60 * 60 * 24));
+    const ms : number = Math.floor(dateInMs % 1000);
+    const secs : number = Math.floor((dateInMs / 1000) % 60);
+    const mins : number = Math.floor((dateInMs / (1000 * 60)) % 60);
+    const hours : number = Math.floor((dateInMs / (1000 * 60 * 60)) % 24);
+    const days : number = Math.floor(dateInMs / (1000 * 60 * 60 * 24));
     if (days) prettyDate += `${days}d `;
     if (days || hours) prettyDate += `${hours}h `;
     if (days || hours || mins) prettyDate += `${mins}m `;
@@ -34,8 +34,8 @@ export function PrettyDate(dateInMs : number) {
 }
 
 export class Time {
-    public static Millisecond : number = 1;
-    public static Second : number = 1000;
+    public static Millisecond  = 1;
+    public static Second  = 1000;
     public static Minute : number = 1000 * 60;
     public static Hour : number = 1000 * 60 * 60;
     public static Day : number = 1000 * 60 * 60 * 24;

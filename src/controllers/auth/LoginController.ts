@@ -6,9 +6,9 @@ class LoginController {
         res.sendFile(Pages['login']);
     }
 
-    public static Post(req : Request, res : Response, next : NextFunction) : void {
+    // public static Post(req : Request, res : Response, next : NextFunction) : void {
         
-    }
+    // }
 }
 
 export default LoginController;

@@ -1,8 +1,8 @@
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response } from 'express';
 import Pages from '../services/Pages';
 
 class IndexController {
-    public static Get(req : Request, res : Response, next : NextFunction) : void {
+    public static Get(req : Request, res : Response) : void {
         res.sendFile(Pages['index']);
     }
 }

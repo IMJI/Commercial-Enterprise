@@ -10,7 +10,7 @@ class TimeStamp {
     }
 
     public Stamp() : number {
-        let now = performance.now();
+        const now = performance.now();
         this.stamps.push(now);
         return now - this.stamps[this.stamps.length - 2];
     }

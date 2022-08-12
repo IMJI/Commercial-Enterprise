@@ -13,7 +13,7 @@ type LogMessage = {
     message: string;
 }
 
-let colors : object = {
+const colors : object = {
     INFO: chalk.blue,
     DEBUG: chalk.cyan,
     TRACE: chalk.grey,
@@ -47,12 +47,12 @@ class Logger {
         'FATAL': 0
     };
     private static lastRotation : number;
-    private static rowsCount : number = 0;
+    private static rowsCount = 0;
     private static perfTimeStamp : TimeStamp;
     private static timeStamps = [];
     private static separetedLogFilenames = [];
 
-    public static IsInitialized : boolean = false;
+    public static IsInitialized = false;
 
     public static Initialize(config : LoggerConfig) {
         if (this.IsInitialized) throw new Error('Logger has already been initialized');
@@ -76,7 +76,7 @@ class Logger {
         this.separatedLogLevels = [];
         
         if (this.writeSeparatedLog) {
-            for (let loglvl in LogLevels) {
+            for (const loglvl in LogLevels) {
                 if (this.separatedLogLevels.find((l : string) => l === loglvl.toUpperCase())) this.separetedLogFilenames.push(loglvl);
             }
         }
@@ -107,11 +107,11 @@ class Logger {
 
     private static RotateFiles() : void {
         this.WriteCache();
-        let filename : string = new Date(this.lastRotation).toISOString().replace(/:/g, '-').split('.')[0];
+        const filename : string = new Date(this.lastRotation).toISOString().replace(/:/g, '-').split('.')[0];
         fs.copyFileSync(this.filePath, path.join(this.dir, `${filename}.log`));
         fs.truncateSync(this.filePath, 0);
         this.separetedLogFilenames.forEach(lfn => {
-            let lfnPath : string = path.join(this.dir, `latest-${lfn}.log`);
+            const lfnPath : string = path.join(this.dir, `latest-${lfn}.log`);
             fs.copyFileSync(lfnPath, path.join(this.dir, `${filename}-${lfn}.log`));
             fs.truncateSync(lfnPath, 0);
         });
@@ -133,7 +133,7 @@ class Logger {
     }
 
     private static FormatString(level : string, message : string) : object {
-        let date : DateObject = new DateObject();
+        const date : DateObject = new DateObject();
         let fileOut = this.format
             .replace('$MESSAGE', message)
             .replace('$FILE', GetCallerFile(4))
@@ -144,8 +144,8 @@ class Logger {
             .replace('$MIN', date.MinutesString)
             .replace('$SEC', date.SecondsString)
             .replace('$MS', date.MillisecondsString);
-        let perf = this.perfTimeStamp.Stamp();
-        let consoleOut = fileOut
+        const perf = this.perfTimeStamp.Stamp();
+        const consoleOut = fileOut
             .replace('$LEVEL', chalk.bold(colors[level](`[${level}]`)))
             .replace('$PERF', chalk.greenBright(`+${PrettyDate(perf)}`));
         fileOut = fileOut
@@ -157,7 +157,7 @@ class Logger {
     private static Log(level : LogLevels, message : string) : void {
         this.CheckRotation();
         if (!this.IsInitialized) throw new Error('Logger was not initialized.');
-        let output : object = this.FormatString(level, message);
+        const output : object = this.FormatString(level, message);
         if (!this.hideFromConsole.find(loglvl => loglvl === level)) console.log(output['consoleOut']);
         if (!this.hideFromFile.find(loglvl => loglvl === level)) this.cache.push({ level: level, message: output['fileOut'] });
         this.messages[level]++;
@@ -183,13 +183,13 @@ class Logger {
     }
 
     public static StartTimer(name : string) : void {
-        let ts : TimeStamp = new TimeStamp(name);
+        const ts : TimeStamp = new TimeStamp(name);
         this.timeStamps.push(ts);
         this.Debug(`Timer ${name} started`)
     }
 
     public static StopTimer(name : string) : void {
-        let ts : TimeStamp = this.timeStamps.find((ts : TimeStamp) => ts.Name === name);
+        const ts : TimeStamp = this.timeStamps.find((ts : TimeStamp) => ts.Name === name);
         if (ts) {
             this.Debug(`Timer ${name} finished at ${PrettyDate(ts.Stamp())}`);
             this.timeStamps.splice(this.timeStamps.indexOf(ts), 1);
