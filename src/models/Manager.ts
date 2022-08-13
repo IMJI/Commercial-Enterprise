@@ -1,7 +1,7 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne, BaseEntity } from 'typeorm';
 
 @Entity()
-class Manager {
+class Manager extends BaseEntity {
 	@PrimaryGeneratedColumn()
 	id: number;
 
@@ -23,17 +23,11 @@ class Manager {
 	@Column()
 	dismissalDate: Date;
 
-	@Column({
-		nullable: true
-	})
-	@ManyToOne(() => Manager, (manager: Manager) => manager.id)
-	parent: number;
+	@ManyToOne((type) => Manager, (manager) => manager.children)
+	parent?: Manager;
 
-	// @Column({
-	//     nullable: true
-	// })
-	//     @OneToMany(() => Manager, (manager : Manager) => manager.parent)
-	//     subordinates : Manager[];
+	@OneToMany((type) => Manager, (manager) => manager.parent)
+	children?: Manager[];
 }
 
 export default Manager;
