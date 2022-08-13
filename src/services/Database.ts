@@ -29,6 +29,7 @@ class Database {
 		await this.dataSource
 			.initialize()
 			.then(async () => {
+				Logger.Info(`Loaded ${Models.length} entities`);
 				Logger.Info('Database module started');
 				resolve();
 			})
