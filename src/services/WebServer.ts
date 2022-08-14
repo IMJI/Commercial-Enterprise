@@ -20,6 +20,7 @@ class WebServer {
 
 	public static async Initialize(): Promise<void> {
 		return new Promise<void>((resolve, reject) => {
+			Logger.Info('Initializing web server module');
 			const port: number = Config.WebServer.port;
 			this.serverOptions = {
 				key: fs.readFileSync(path.join(__dirname, '../../key.pem')),

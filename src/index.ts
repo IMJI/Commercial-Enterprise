@@ -12,7 +12,15 @@ function Startup(): void {
 	else throw new Error("Unknown NODE_ENV value. Use 'production' or 'development' values");
 	Logger.Initialize(Config.Logger);
 	if (process.env.NODE_ENV === DEV) Logger.Warn('Application is running in DEVELOPMENT mode!');
-	App.Startup();
+	Logger.StartTimer('App Startup');
+	App.Startup()
+		.then(() => {
+			Logger.StopTimer('App Startup');
+		})
+		.catch((error) => {
+			Logger.Fatal('Error while starting application');
+			process.exit(1);
+		});
 }
 
 async function Shutdown(): Promise<void> {

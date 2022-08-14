@@ -26,6 +26,7 @@ class Manager extends BaseEntity {
 	@ManyToOne((type) => Manager, (manager) => manager.children)
 	parent?: Manager;
 
+	//@Column() // DELETE ME
 	@OneToMany((type) => Manager, (manager) => manager.parent)
 	children?: Manager[];
 }
