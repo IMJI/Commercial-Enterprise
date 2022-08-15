@@ -44,6 +44,7 @@ class WebServer {
 	}
 
 	public static async Close(): Promise<void> {
+		Logger.Info('Closing web server module');
 		return new Promise((resolve, reject) => {
 			toobusy.shutdown();
 			this.server.close((err: Error) => {

@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import * as dotenv from 'dotenv';
 import App from './services/App';
 import Config from './services/Config';
@@ -24,27 +25,32 @@ function Startup(): void {
 }
 
 async function Shutdown(): Promise<void> {
-	await App.Shutdown().then(() => {
-		Logger.Info('Exiting process...');
-		Logger.Close();
-		process.exit(0);
-	});
+	App.Shutdown()
+		.then(() => {
+			Logger.Info('Exiting process...');
+			Logger.Close();
+			process.exit(0);
+		})
+		.catch((error) => {
+			Logger.Fatal(`Error while shutting down. ${error.message || error}`);
+			process.exit(1);
+		});
 }
 
-process.on('SIGTERM', async () => {
+process.on('SIGTERM', () => {
 	Logger.Info('Received SIGTERM');
-	await Shutdown();
+	Shutdown();
 });
 
-process.on('SIGINT', async () => {
+process.on('SIGINT', () => {
 	Logger.Info('Received SIGINT');
-	await Shutdown();
+	Shutdown();
 });
 
-process.on('uncaughtException', async (err: Error) => {
+process.on('uncaughtException', (err: Error) => {
 	Logger.Error('Uncaught exception');
 	Logger.Fatal(err.name + ' ' + err.message);
-	await Shutdown();
+	Shutdown();
 });
 
 Startup();

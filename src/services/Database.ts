@@ -47,6 +47,7 @@ class Database {
 	// }
 
 	public static async Close(): Promise<number> {
+		Logger.Info('Closing database module');
 		return new Promise((resolve, reject) => {
 			this.dataSource
 				.destroy()
