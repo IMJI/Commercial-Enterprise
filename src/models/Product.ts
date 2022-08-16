@@ -2,6 +2,7 @@ import { Entity, Column, PrimaryColumn, ManyToOne, OneToOne } from 'typeorm';
 import Category from './Category';
 import Color from './Color';
 import Size from './Size';
+// import Stock from './Stock';
 
 @Entity()
 class Product {
@@ -27,6 +28,9 @@ class Product {
 		length: 512
 	})
 	description: string;
+
+	// @OneToOne(() => Stock, (stock: Stock) => stock.product)
+	// stock: Stock;
 
 	@Column({
 		default: false

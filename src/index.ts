@@ -8,6 +8,7 @@ const PROD = 'production';
 const DEV = 'development';
 
 function Startup(): void {
+	process.stdin.resume();
 	dotenv.config();
 	if ([PROD, DEV].includes(process.env.NODE_ENV)) Config.Initialize(process.env.NODE_ENV);
 	else throw new Error("Unknown NODE_ENV value. Use 'production' or 'development' values");
@@ -18,7 +19,7 @@ function Startup(): void {
 		.then(() => {
 			Logger.StopTimer('App Startup');
 		})
-		.catch((error) => {
+		.catch(() => {
 			Logger.Fatal('Error while starting application');
 			process.exit(1);
 		});
