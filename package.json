@@ -5,7 +5,8 @@
   "author": "imjiimages",
   "license": "MIT",
   "scripts": {
-    "start": "npm run prettier && npm run lint && tsc && node ./dist/index.js",
+    "start": "tsc && node ./dist/index.js",
+    "dev": "npm run prettier && npm run lint && tsc && node ./dist/index.js",
     "watch": "nodemon",
     "clear:logs": "del /S logs",
     "clear:dist": "del /S dist",
