@@ -1,15 +1,18 @@
-// import { Entity, Column, BaseEntity, PrimaryColumn, JoinColumn, OneToOne } from 'typeorm';
-// import Product from './Product';
+import { Entity, Column, BaseEntity, PrimaryColumn, JoinColumn, OneToOne, PrimaryGeneratedColumn, Check } from 'typeorm';
+import Product from './Product';
 
-// @Entity()
-// class Stock extends BaseEntity {
-// 	@PrimaryColumn()
-// 	@OneToOne((type) => Product)
-// 	@JoinColumn()
-// 	product: Product;
+@Entity()
+class Stock extends BaseEntity {
+	@PrimaryGeneratedColumn()
+    id: number;
 
-// 	@Column()
-// 	quantity: number;
-// }
+	@OneToOne((type) => Product)
+	@JoinColumn()
+	product: Product;
 
-// export default Stock;
+	@Column()
+    @Check('"quantity" > 0')
+	quantity: number;
+}
+
+export default Stock;

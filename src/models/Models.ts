@@ -7,10 +7,10 @@ import Outgoing from './Outgoing';
 import Price from './Price';
 import Product from './Product';
 import Size from './Size';
-// import Stock from './Stock';
+import Stock from './Stock';
 import Tax from './Tax';
 import User from './User';
 import UserPassword from './UserPassword';
 
-export default [Tax, Category, Size, Color, Product, Manager, User, UserPassword, Outgoing, Log, Incoming, Price];
-export { Tax, Category, Size, Color, Product, Manager, User, UserPassword, Outgoing, Log, Incoming, Price };
+export default [Tax, Category, Size, Color, Product, Manager, User, UserPassword, Outgoing, Log, Incoming, Price, Stock];
+export { Tax, Category, Size, Color, Product, Manager, User, UserPassword, Outgoing, Log, Incoming, Price, Stock };
