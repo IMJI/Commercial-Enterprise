@@ -9,7 +9,7 @@ class Price extends BaseEntity {
     @PrimaryColumn()
     dateFrom: Date;
 
-    @Column()
+    @Column({ nullable: true })
     dateTo: Date;
 
     @Column()
