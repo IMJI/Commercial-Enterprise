@@ -32,7 +32,6 @@ class Database {
 				.initialize()
 				.then(() => {
 					Logger.Info(`Loaded ${Models.length} entities`);
-					Logger.Info('Database module started');
 					resolve(0);
 				})
 				.catch((error) => {
