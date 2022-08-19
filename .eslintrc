@@ -12,6 +12,8 @@
     "rules": {
         "@typescript-eslint/no-unused-vars": 0,
         "prefer-const": 1,
-        "@typescript-eslint/no-inferrable-types": 1
+        "@typescript-eslint/no-inferrable-types": 1,
+        "eqeqeq": 1,
+        "@typescript-eslint/naming-convention": 1
     }
 }
