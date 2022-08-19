@@ -4,8 +4,8 @@ import Logger from '../services/logger/Logger';
 import Config from '../services/Config';
 
 class StatusMonitorMiddleware {
-	public static Mount(app: express.Application): express.Application {
-		Logger.Info('Booting Status Monitor middleware...');
+	public static mount(app: express.Application): express.Application {
+		Logger.info('Booting Status Monitor middleware...');
 
 		const monitorOptions: expressStatusMonitor.ExpressStatusMonitorConfig = {
 			title: 'Status Monitor',
@@ -37,7 +37,7 @@ class StatusMonitorMiddleware {
 					protocol: 'https',
 					host: 'localhost',
 					path: '/',
-					port: Config.WebServer.port
+					port: Config.webServer.port
 				}
 			]
 		};

@@ -1,7 +1,7 @@
 import * as oracledb from 'oracledb';
 import { OutgoingQuery } from '../controllers/api/Outgoings';
 import Database from '../services/Database';
-import { QueryStringToSQLList, Sort } from '../services/utils/Web';
+import { queryStringToSQLList, Sort } from '../services/utils/Web';
 
 type OutgoingModel = {
 	OUT_ID: number;

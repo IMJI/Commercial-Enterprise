@@ -18,39 +18,39 @@ class WebServer {
 	private static server: https.Server;
 	private static serverOptions: https.ServerOptions;
 
-	public static async Initialize(): Promise<void> {
+	public static async initialize(): Promise<void> {
 		return new Promise<void>((resolve, reject) => {
-			Logger.Info('Initializing web server module');
-			const port: number = Config.WebServer.port;
+			Logger.info('Initializing web server module');
+			const port: number = Config.webServer.port;
 			this.serverOptions = {
 				key: fs.readFileSync(path.join(__dirname, '../../key.pem')),
 				cert: fs.readFileSync(path.join(__dirname, '../../cert.pem'))
 			};
 			this.express = express();
-			this.MountMiddlewares();
-			this.MountRoutes(WebRouter);
-			this.MountRoutes(ApiRouter);
+			this.mountMiddlewares();
+			this.mountRoutes(WebRouter);
+			this.mountRoutes(ApiRouter);
 			this.server = https
 				.createServer(this.serverOptions, this.express)
 				.listen(port, () => {
-					Logger.Info('Web Server is listening at ' + port);
+					Logger.info('Web Server is listening at ' + port);
 					resolve();
 				})
 				.on('error', (error: Error) => {
-					Logger.Error(error.message);
+					Logger.error(error.message);
 					reject(error);
 				});
 		});
 	}
 
-	public static async Close(): Promise<void> {
-		Logger.Info('Closing web server module');
+	public static async close(): Promise<void> {
+		Logger.info('Closing web server module');
 		return new Promise((resolve, reject) => {
 			toobusy.shutdown();
 			this.server.close((err: Error) => {
-				Logger.Info('Web server closed');
+				Logger.info('Web server closed');
 				if (err) {
-					Logger.Error(err.message);
+					Logger.error(err.message);
 					reject(err);
 					return;
 				}
@@ -59,15 +59,15 @@ class WebServer {
 		});
 	}
 
-	private static MountMiddlewares(): void {
-		this.express = StaticMiddleware.Mount(this.express);
-		this.express = HttpMiddleware.Mount(this.express);
-		if (Config.WebServer.enableCORS) this.express = CorsMiddleware.Mount(this.express);
-		if (Config.WebServer.enableHTTPLog) this.express = LogMiddleware.Mount(this.express);
-		this.express = StatusMonitorMiddleware.Mount(this.express);
+	private static mountMiddlewares(): void {
+		this.express = StaticMiddleware.mount(this.express);
+		this.express = HttpMiddleware.mount(this.express);
+		if (Config.webServer.enableCORS) this.express = CorsMiddleware.mount(this.express);
+		if (Config.webServer.enableHTTPLog) this.express = LogMiddleware.mount(this.express);
+		this.express = StatusMonitorMiddleware.mount(this.express);
 	}
 
-	private static MountRoutes(router: express.Router): void {
+	private static mountRoutes(router: express.Router): void {
 		this.express.use('/', router);
 	}
 }

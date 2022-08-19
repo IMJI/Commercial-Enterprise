@@ -1,29 +1,29 @@
 enum SortingOrders {
-	Ascending = 'asc',
-	Descending = 'desc'
+	ascending = 'asc',
+	descending = 'desc'
 }
 
 class Sort {
-	private column: string;
-	public get Column(): string {
-		return this.column;
+	private _column: string;
+	public get column(): string {
+		return this._column;
 	}
-	private order: SortingOrders;
-	public get Order(): SortingOrders {
-		return this.order;
+	private _order: SortingOrders;
+	public get order(): SortingOrders {
+		return this._order;
 	}
 
 	constructor(column: string, order: SortingOrders) {
-		this.column = column;
-		this.order = order;
+		this._column = column;
+		this._order = order;
 	}
 
-	public static FromString(str: string): Sort[] {
+	public static fromString(str: string): Sort[] {
 		const sortings: Sort[] = [];
 		const sortingsStr: string[] = str.split(',');
 		sortingsStr.forEach((sorting) => {
 			const opts = sorting.split(':');
-			const order: SortingOrders = opts[1].toLowerCase() === 'desc' ? SortingOrders.Descending : SortingOrders.Ascending;
+			const order: SortingOrders = opts[1].toLowerCase() === 'desc' ? SortingOrders.descending : SortingOrders.ascending;
 			const s: Sort = new Sort(opts[0], order);
 			sortings.push(s);
 		});
@@ -38,7 +38,7 @@ interface Query {
 	sort?: string;
 }
 
-function QueryStringToSQLList(qs: string): string {
+function queryStringToSQLList(qs: string): string {
 	return qs
 		.split(',')
 		.map((a) => {
@@ -47,4 +47,4 @@ function QueryStringToSQLList(qs: string): string {
 		.join(',');
 }
 
-export { Query, Sort, SortingOrders, QueryStringToSQLList };
+export { Query, Sort, SortingOrders, queryStringToSQLList };

@@ -2,9 +2,9 @@ import { Router } from 'express';
 import LoginController from '../controllers/auth/LoginController';
 import IndexController from '../controllers/IndexController';
 
-const WebRouter: Router = Router();
+const webRouter: Router = Router();
 
-WebRouter.get('/', IndexController.Get);
-WebRouter.get('/login', LoginController.Get);
+webRouter.get('/', IndexController.get);
+webRouter.get('/login', LoginController.get);
 
-export default WebRouter;
+export default webRouter;

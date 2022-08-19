@@ -5,7 +5,7 @@ import * as yaml from 'js-yaml';
 type WebServerConfig = {
 	port: number;
 	enableHTTPLog: boolean;
-	HTTPLogFormat: string;
+	httpLogFormat: string;
 	maxUploadLimit: string;
 	maxParameterLimit: number;
 	enableCORS: boolean;
@@ -56,45 +56,45 @@ type CacheConfig = {
 
 class Config {
 	private static webServerConfig: WebServerConfig;
-	static get WebServer(): WebServerConfig {
+	static get webServer(): WebServerConfig {
 		return this.webServerConfig;
 	}
 	private static databaseConfig: DatabaseConfig;
-	static get Database(): DatabaseConfig {
+	static get database(): DatabaseConfig {
 		return this.databaseConfig;
 	}
 	private static loggerConfig: LoggerConfig;
-	static get Logger(): LoggerConfig {
+	static get logger(): LoggerConfig {
 		return this.loggerConfig;
 	}
 	private static cacheConfig: CacheConfig;
-	static get Cache(): CacheConfig {
+	static get cache(): CacheConfig {
 		return this.cacheConfig;
 	}
 
-	public static Initialize(nodeEnv: string): void {
+	public static initialize(nodeEnv: string): void {
 		let filePath: string;
 		if (nodeEnv === 'production') filePath = path.join(__dirname + '../../../config.prod.yml');
 		else if (nodeEnv === 'development') filePath = path.join(__dirname + '../../../config.dev.yml');
 		else throw new Error("Incorrect NODE_ENV value. Can't initialize config module.");
 		const file = fs.readFileSync(filePath, 'utf8');
-		this.InitGlobalConfig(yaml.loadAll(file));
+		this.initGlobalConfig(yaml.loadAll(file));
 	}
 
-	private static InitGlobalConfig(data: object): void {
+	private static initGlobalConfig(data: object): void {
 		const config: object = data[0];
-		this.webServerConfig = this.InitWebServerConfig(config['server']);
-		this.loggerConfig = this.InitLoggerConfig(config['logger']);
-		this.databaseConfig = this.InitDatabaseConfig(config['database']);
+		this.webServerConfig = this.initWebServerConfig(config['server']);
+		this.loggerConfig = this.initLoggerConfig(config['logger']);
+		this.databaseConfig = this.initDatabaseConfig(config['database']);
 	}
 
-	private static InitWebServerConfig(config: object): WebServerConfig {
+	private static initWebServerConfig(config: object): WebServerConfig {
 		const port: number = config['port'] || process.env.PORT;
 		const url: string = config['url'] || `http://localhost:${port}`;
 		return {
 			port: port,
 			enableHTTPLog: config['enable-http-log'] || false,
-			HTTPLogFormat: config['http-log-format'] || 'tiny',
+			httpLogFormat: config['http-log-format'] || 'tiny',
 			maxUploadLimit: config['max-upload-limit'] || '10mb',
 			maxParameterLimit: config['max-parameter-limit'] || 10,
 			enableCORS: config['enable-cors'] || true,
@@ -104,7 +104,7 @@ class Config {
 		};
 	}
 
-	private static InitDatabaseConfig(config: object): DatabaseConfig {
+	private static initDatabaseConfig(config: object): DatabaseConfig {
 		return {
 			type: config['type'],
 			host: config['host'],
@@ -116,7 +116,7 @@ class Config {
 		};
 	}
 
-	private static InitLoggerConfig(config: object): LoggerConfig {
+	private static initLoggerConfig(config: object): LoggerConfig {
 		return {
 			dir: config['directory'] || './logs',
 			maxCacheSize: config['max-cache-size'] || 0,

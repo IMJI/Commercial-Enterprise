@@ -6,74 +6,74 @@ class App {
 	private static isDatabaseInitialized = false;
 	private static isWebServerInitialized = false;
 
-	private static DatabaseStartup(): Promise<void> {
+	private static databaseStartup(): Promise<void> {
 		return new Promise((resolve, reject) => {
-			Database.Initialize()
+			Database.initialize()
 				.then(() => {
-					Logger.Info('Database module started');
+					Logger.info('Database module started');
 					this.isDatabaseInitialized = true;
 					resolve();
 				})
 				.catch((error) => {
-					Logger.Error(`Error while initializing database module. ${error.message || error}`);
+					Logger.error(`Error while initializing database module. ${error.message || error}`);
 					reject(error);
 				});
 		});
 	}
 
-	private static WebServerStartup(): Promise<void> {
+	private static webServerStartup(): Promise<void> {
 		return new Promise((resolve, reject) => {
-			WebServer.Initialize()
+			WebServer.initialize()
 				.then(() => {
-					Logger.Info('Web server module started');
+					Logger.info('Web server module started');
 					this.isWebServerInitialized = true;
 					resolve();
 				})
 				.catch((error) => {
-					Logger.Error(`Error while initializing web server module. ${error.message || error}`);
+					Logger.error(`Error while initializing web server module. ${error.message || error}`);
 					reject(error);
 				});
 		});
 	}
 
-	public static async Startup(): Promise<void[]> {
-		Logger.Info('Starting application...');
-		return Promise.all([this.WebServerStartup(), this.DatabaseStartup()]);
+	public static async startup(): Promise<void[]> {
+		Logger.info('Starting application...');
+		return Promise.all([this.webServerStartup(), this.databaseStartup()]);
 	}
 
-	private static DatabaseShutdown(): Promise<void> {
+	private static databaseShutdown(): Promise<void> {
 		return new Promise((resolve, reject) => {
-			Database.Close()
+			Database.close()
 				.then(() => {
 					this.isDatabaseInitialized = false;
 					resolve();
 				})
 				.catch((error) => {
-					Logger.Error(`Error while closing database. ${error.message || error}`);
+					Logger.error(`Error while closing database. ${error.message || error}`);
 					reject(error);
 				});
 		});
 	}
 
-	private static WebServerShutdown(): Promise<void> {
+	private static webServerShutdown(): Promise<void> {
 		return new Promise((resolve, reject) => {
-			WebServer.Close()
+			WebServer.close()
 				.then(() => {
 					this.isWebServerInitialized = false;
 					resolve();
 				})
 				.catch((error) => {
-					Logger.Error(`Error while closing web server. ${error.message || error}`);
+					Logger.error(`Error while closing web server. ${error.message || error}`);
 					reject(error);
 				});
 		});
 	}
 
-	public static async Shutdown(error?: Error): Promise<void[]> {
-		Logger.Info('Shutting down...');
+	public static async shutdown(error?: Error): Promise<void[]> {
+		Logger.info('Shutting down...');
 		const shutdownList: Promise<void>[] = [];
-		if (this.isDatabaseInitialized) shutdownList.push(this.DatabaseShutdown());
-		if (this.isWebServerInitialized) shutdownList.push(this.WebServerShutdown());
+		if (this.isDatabaseInitialized) shutdownList.push(this.databaseShutdown());
+		if (this.isWebServerInitialized) shutdownList.push(this.webServerShutdown());
 		return Promise.all(shutdownList);
 	}
 }

@@ -4,7 +4,7 @@ import * as fs from 'fs';
 import LogLevels from './LogLevels';
 import { LoggerConfig } from '../Config';
 import { DateObject } from '../utils/DateObject';
-import { GetCallerFile, PrettyDate, Time } from '../utils/Utils';
+import { getCallerFile, prettyDate, Time } from '../utils/Utils';
 import TimeRotations from './TimeRotations';
 import TimeStamp from './TimeStamp';
 
@@ -14,12 +14,12 @@ type LogMessage = {
 };
 
 const colors: object = {
-	INFO: chalk.blue,
-	DEBUG: chalk.cyan,
-	TRACE: chalk.grey,
-	WARN: chalk.yellow,
-	ERROR: chalk.red,
-	FATAL: chalk.redBright
+	info: chalk.blue,
+	debug: chalk.cyan,
+	trace: chalk.grey,
+	warn: chalk.yellow,
+	error: chalk.red,
+	fatal: chalk.redBright
 };
 
 class Logger {
@@ -39,12 +39,12 @@ class Logger {
 	private static cache: LogMessage[] = [];
 	private static uptimeStart: number;
 	private static messages = {
-		INFO: 0,
-		DEBUG: 0,
-		TRACE: 0,
-		WARN: 0,
-		ERROR: 0,
-		FATAL: 0
+		info: 0,
+		debug: 0,
+		trace: 0,
+		warn: 0,
+		error: 0,
+		fatal: 0
 	};
 	private static lastRotation: number;
 	private static rowsCount = 0;
@@ -52,10 +52,10 @@ class Logger {
 	private static timeStamps = [];
 	private static separetedLogFilenames = [];
 
-	public static IsInitialized = false;
+	public static isInitialized = false;
 
-	public static Initialize(config: LoggerConfig) {
-		if (this.IsInitialized) throw new Error('Logger has already been initialized');
+	public static initialize(config: LoggerConfig) {
+		if (this.isInitialized) throw new Error('Logger has already been initialized');
 		this.uptimeStart = Date.now();
 
 		this.dir = config.dir;
@@ -83,30 +83,30 @@ class Logger {
 		if (this.rowsRotation || this.timeRotation) this.lastRotation = Date.now();
 		if (!fs.existsSync(this.dir)) fs.mkdirSync(this.dir);
 		this.perfTimeStamp = new TimeStamp('LOGPERF');
-		this.IsInitialized = true;
+		this.isInitialized = true;
 	}
 
-	private static CheckRotation(): void {
+	private static checkRotation(): void {
 		if (this.rowsRotation && this.rowsCount >= this.rowsRotation) {
-			this.RotateFiles();
+			this.rotateFiles();
 			this.rowsCount = 0;
 		}
-		if (this.timeRotation && this.TimeRotationCheck()) {
-			this.RotateFiles();
+		if (this.timeRotation && this.timeRotationCheck()) {
+			this.rotateFiles();
 		}
 	}
 
-	private static TimeRotationCheck(): boolean {
-		if (this.timeRotation === TimeRotations.Everyday) {
-			return this.lastRotation + Time.Day < Date.now();
-		} else if (this.timeRotation === TimeRotations.Everyhour) {
-			return this.lastRotation + Time.Hour < Date.now();
+	private static timeRotationCheck(): boolean {
+		if (this.timeRotation === TimeRotations.everyday) {
+			return this.lastRotation + Time.day < Date.now();
+		} else if (this.timeRotation === TimeRotations.everyhour) {
+			return this.lastRotation + Time.hour < Date.now();
 		}
 		return false;
 	}
 
-	private static RotateFiles(): void {
-		this.WriteCache();
+	private static rotateFiles(): void {
+		this.writeCache();
 		const filename: string = new Date(this.lastRotation).toISOString().replace(/:/g, '-').split('.')[0];
 		fs.copyFileSync(this.filePath, path.join(this.dir, `${filename}.log`));
 		fs.truncateSync(this.filePath, 0);
@@ -118,7 +118,7 @@ class Logger {
 		this.lastRotation = Date.now();
 	}
 
-	private static WriteCache(): void {
+	private static writeCache(): void {
 		if (this.writeCombinedLog) fs.appendFileSync(this.filePath, this.cache.map((l) => `${l.message}\n`).join(''));
 		if (this.writeSeparatedLog) {
 			this.separetedLogFilenames.forEach((lfn: string) => {
@@ -131,80 +131,80 @@ class Logger {
 		this.cache = [];
 	}
 
-	private static Summary(): string {
-		return `Uptime: ${PrettyDate(Date.now() - this.uptimeStart)}, Warnings: ${this.messages['WARN']}, Errors: ${this.messages['ERROR']}, Fatal: ${
+	private static summary(): string {
+		return `Uptime: ${prettyDate(Date.now() - this.uptimeStart)}, Warnings: ${this.messages['WARN']}, Errors: ${this.messages['ERROR']}, Fatal: ${
 			this.messages['FATAL']
 		}`;
 	}
 
-	private static FormatString(level: string, message: string): object {
+	private static formatString(level: string, message: string): object {
 		const date: DateObject = new DateObject();
 		let fileOut = this.format
 			.replace('$MESSAGE', message)
-			.replace('$FILE', GetCallerFile(4))
-			.replace('$YYYY', String(date.FullYear))
-			.replace('$MM', date.MonthString)
-			.replace('$DD', date.DayString)
-			.replace('$HR', date.HoursString)
-			.replace('$MIN', date.MinutesString)
-			.replace('$SEC', date.SecondsString)
-			.replace('$MS', date.MillisecondsString);
-		const perf = this.perfTimeStamp.Stamp();
-		const consoleOut = fileOut.replace('$LEVEL', chalk.bold(colors[level](`[${level}]`))).replace('$PERF', chalk.greenBright(`+${PrettyDate(perf)}`));
-		fileOut = fileOut.replace('$LEVEL', `[${level}]`).replace('$PERF', `+${PrettyDate(perf)}`);
+			.replace('$FILE', getCallerFile(4))
+			.replace('$YYYY', String(date.fullYear))
+			.replace('$MM', date.monthString)
+			.replace('$DD', date.dayString)
+			.replace('$HR', date.hoursString)
+			.replace('$MIN', date.minutesString)
+			.replace('$SEC', date.secondsString)
+			.replace('$MS', date.millisecondsString);
+		const perf = this.perfTimeStamp.stamp();
+		const consoleOut = fileOut.replace('$LEVEL', chalk.bold(colors[level.toLowerCase()](`[${level}]`))).replace('$PERF', chalk.greenBright(`+${prettyDate(perf)}`));
+		fileOut = fileOut.replace('$LEVEL', `[${level}]`).replace('$PERF', `+${prettyDate(perf)}`);
 		return { fileOut, consoleOut };
 	}
 
-	private static Log(level: LogLevels, message: string): void {
-		this.CheckRotation();
-		if (!this.IsInitialized) throw new Error('Logger was not initialized.');
-		const output: object = this.FormatString(level, message);
+	private static log(level: LogLevels, message: string): void {
+		this.checkRotation();
+		if (!this.isInitialized) throw new Error('Logger was not initialized.');
+		const output: object = this.formatString(level, message);
 		if (!this.hideFromConsole.find((loglvl) => loglvl === level)) console.log(output['consoleOut']);
 		if (!this.hideFromFile.find((loglvl) => loglvl === level)) this.cache.push({ level: level, message: output['fileOut'] });
 		this.messages[level]++;
 		this.rowsCount++;
 		if (this.cache.length >= this.cacheSize) {
-			this.WriteCache();
+			this.writeCache();
 		}
 	}
 
-	public static Info(message: string): void {
-		this.Log(LogLevels.Info, message);
+	public static info(message: string): void {
+		this.log(LogLevels.info, message);
 	}
-	public static Debug(message: string): void {
-		this.Log(LogLevels.Debug, message);
+	public static debug(message: string): void {
+		this.log(LogLevels.debug, message);
 	}
-	public static Trace(message: string): void {
-		this.Log(LogLevels.Trace, message);
+	public static trace(message: string): void {
+		this.log(LogLevels.trace, message);
 	}
-	public static Warn(message: string): void {
-		this.Log(LogLevels.Warning, message);
+	public static warn(message: string): void {
+		this.log(LogLevels.warning, message);
 	}
-	public static Error(message: string): void {
-		this.Log(LogLevels.Error, message);
+	public static error(message: string): void {
+		this.log(LogLevels.error, message);
 	}
-	public static Fatal(message: string): void {
-		this.Log(LogLevels.Fatal, message);
-	}
-
-	public static Close(): void {
-		this.Debug('Logging finished!');
-		if (this.showSummary) this.Debug(this.Summary());
-		if (this.timeRotation || this.rowsRotation) this.RotateFiles();
-		else this.WriteCache();
-		this.IsInitialized = false;
+	public static fatal(message: string): void {
+		this.log(LogLevels.fatal, message);
 	}
 
-	public static StartTimer(name: string): void {
+	public static close(): void {
+		// this.debug('Logging finished!');
+		if (this.showSummary) this.debug(this.summary());
+		if (this.timeRotation || this.rowsRotation) this.rotateFiles();
+		else this.writeCache();
+		this.isInitialized = false;
+	}
+
+	public static startTimer(name: string): void {
 		const ts: TimeStamp = new TimeStamp(name);
 		this.timeStamps.push(ts);
-		this.Debug(`Timer ${name} started`);
+		this.debug(`Timer ${name} started`);
 	}
 
-	public static StopTimer(name: string): void {
-		const ts: TimeStamp = this.timeStamps.find((ts: TimeStamp) => ts.Name === name);
+	public static stopTimer(name: string): void {
+		const ts: TimeStamp = this.timeStamps.find((ts: TimeStamp) => ts.name === name);
 		if (ts) {
-			this.Debug(`Timer ${name} finished at ${PrettyDate(ts.Stamp())}`);
+			this.debug(`Timer ${name} finished at ${prettyDate(ts.stamp())}`);
 			this.timeStamps.splice(this.timeStamps.indexOf(ts), 1);
 		}
 	}

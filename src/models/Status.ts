@@ -5,7 +5,7 @@ import Outgoing from './Outgoing';
 class Status extends BaseEntity {
     //@PrimaryColumn()
     @ManyToOne(() => Outgoing)
-    @PrimaryColumn()
+    //@PrimaryColumn()
     outgoing: Outgoing;
 
     @PrimaryColumn()

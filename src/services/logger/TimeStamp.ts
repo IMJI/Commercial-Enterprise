@@ -1,21 +1,21 @@
 import { performance } from 'node:perf_hooks';
 
 class TimeStamp {
-	public readonly Name: string;
+	public readonly name: string;
 	private stamps: number[] = [];
 
 	constructor(name: string) {
-		this.Name = name;
-		this.Stamp();
+		this.name = name;
+		this.stamp();
 	}
 
-	public Stamp(): number {
+	public stamp(): number {
 		const now = performance.now();
 		this.stamps.push(now);
 		return now - this.stamps[this.stamps.length - 2];
 	}
 
-	public GetStamps(): number[] {
+	public getStamps(): number[] {
 		return this.stamps;
 	}
 }

@@ -1,10 +1,10 @@
 enum LogLevels {
-	Info = 'INFO',
-	Debug = 'DEBUG',
-	Trace = 'TRACE',
-	Warning = 'WARN',
-	Error = 'ERROR',
-	Fatal = 'FATAL'
+	info = 'INFO',
+	debug = 'DEBUG',
+	trace = 'TRACE',
+	warning = 'WARN',
+	error = 'ERROR',
+	fatal = 'FATAL'
 }
 
 export default LogLevels;

@@ -1,6 +1,6 @@
 const iso8601RegExp = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/;
 
-export function ReviveJSON(key: string, value: any): any {
+export function reviveJSON(key: string, value: unknown): unknown {
 	// revive ISO 8601 date strings to instances of Date
 	if (typeof value === 'string' && iso8601RegExp.test(value)) {
 		return new Date(value);
@@ -9,7 +9,7 @@ export function ReviveJSON(key: string, value: any): any {
 	}
 }
 
-export function GetCallerFile(depth: number): string {
+export function getCallerFile(depth: number): string {
 	const err: any = new Error();
 	Error.prepareStackTrace = (_, stack) => stack;
 	const stack = err.stack;
@@ -18,7 +18,7 @@ export function GetCallerFile(depth: number): string {
 	return filepath[filepath.length - 1];
 }
 
-export function PrettyDate(dateInMs: number) {
+export function prettyDate(dateInMs: number) {
 	let prettyDate = '';
 	const ms: number = Math.floor(dateInMs % 1000);
 	const secs: number = Math.floor((dateInMs / 1000) % 60);
@@ -34,10 +34,10 @@ export function PrettyDate(dateInMs: number) {
 }
 
 export class Time {
-	public static Millisecond = 1;
-	public static Second = 1000;
-	public static Minute: number = 1000 * 60;
-	public static Hour: number = 1000 * 60 * 60;
-	public static Day: number = 1000 * 60 * 60 * 24;
-	public static Week: number = 1000 * 60 * 60 * 24 * 7;
+	public static millisecond = 1;
+	public static second = 1000;
+	public static minute: number = 1000 * 60;
+	public static hour: number = 1000 * 60 * 60;
+	public static day: number = 1000 * 60 * 60 * 24;
+	public static week: number = 1000 * 60 * 60 * 24 * 7;
 }

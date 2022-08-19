@@ -8,16 +8,16 @@ import Models from '../models/Models';
 class Database {
 	private static dataSource: DataSource;
 
-	public static async Initialize(): Promise<number> {
+	public static async initialize(): Promise<number> {
 		return new Promise((resolve, reject) => {
-			Logger.Info('Initializing database module');
+			Logger.info('Initializing database module');
 			this.dataSource = new DataSource({
-				type: Config.Database.type,
-				host: Config.Database.host,
-				port: Config.Database.port,
-				username: Config.Database.username,
-				password: Config.Database.password,
-				database: Config.Database.database,
+				type: Config.database.type,
+				host: Config.database.host,
+				port: Config.database.port,
+				username: Config.database.username,
+				password: Config.database.password,
+				database: Config.database.database,
 				synchronize: true,
 				logging: false,
 				entities: Models,
@@ -31,11 +31,11 @@ class Database {
 			this.dataSource
 				.initialize()
 				.then(() => {
-					Logger.Info(`Loaded ${Models.length} entities`);
+					Logger.info(`Loaded ${Models.length} entities`);
 					resolve(0);
 				})
 				.catch((error) => {
-					Logger.Error(error);
+					Logger.error(error);
 					reject(error);
 				});
 		});
@@ -45,17 +45,17 @@ class Database {
 
 	// }
 
-	public static async Close(): Promise<number> {
-		Logger.Info('Closing database module');
+	public static async close(): Promise<number> {
+		Logger.info('Closing database module');
 		return new Promise((resolve, reject) => {
 			this.dataSource
 				.destroy()
 				.then(() => {
-					Logger.Info('Database module closed');
+					Logger.info('Database module closed');
 					resolve(0);
 				})
 				.catch((error) => {
-					Logger.Error(error);
+					Logger.error(error);
 					reject(error);
 				});
 		});

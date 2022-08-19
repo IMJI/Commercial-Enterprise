@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import Pages from '../../services/Pages';
 
 class LoginController {
-	public static Get(req: Request, res: Response, next: NextFunction): void {
+	public static get(req: Request, res: Response, next: NextFunction): void {
 		res.sendFile(Pages['login']);
 	}
 

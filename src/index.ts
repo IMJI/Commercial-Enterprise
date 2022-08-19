@@ -7,51 +7,51 @@ import Logger from './services/logger/Logger';
 const PROD = 'production';
 const DEV = 'development';
 
-function Startup(): void {
+function startup(): void {
 	process.stdin.resume();
 	dotenv.config();
-	if ([PROD, DEV].includes(process.env.NODE_ENV)) Config.Initialize(process.env.NODE_ENV);
+	if ([PROD, DEV].includes(process.env.NODE_ENV)) Config.initialize(process.env.NODE_ENV);
 	else throw new Error("Unknown NODE_ENV value. Use 'production' or 'development' values");
-	Logger.Initialize(Config.Logger);
-	if (process.env.NODE_ENV === DEV) Logger.Warn('Application is running in DEVELOPMENT mode!');
-	Logger.StartTimer('App Startup');
-	App.Startup()
+	Logger.initialize(Config.logger);
+	if (process.env.NODE_ENV === DEV) Logger.warn('Application is running in DEVELOPMENT mode!');
+	Logger.startTimer('App Startup');
+	App.startup()
 		.then(() => {
-			Logger.StopTimer('App Startup');
+			Logger.stopTimer('App Startup');
 		})
 		.catch(() => {
-			Logger.Fatal('Error while starting application');
+			Logger.fatal('Error while starting application');
 			process.exit(1);
 		});
 }
 
-async function Shutdown(): Promise<void> {
-	App.Shutdown()
+async function shutdown(): Promise<void> {
+	App.shutdown()
 		.then(() => {
-			Logger.Info('Exiting process...');
-			Logger.Close();
+			Logger.info('Exiting process...');
+			Logger.close();
 			process.exit(0);
 		})
 		.catch((error) => {
-			Logger.Fatal(`Error while shutting down. ${error.message || error}`);
+			Logger.fatal(`Error while shutting down. ${error.message || error}`);
 			process.exit(1);
 		});
 }
 
 process.on('SIGTERM', () => {
-	Logger.Info('Received SIGTERM');
-	Shutdown();
+	Logger.info('Received SIGTERM');
+	shutdown();
 });
 
 process.on('SIGINT', () => {
-	Logger.Info('Received SIGINT');
-	Shutdown();
+	Logger.info('Received SIGINT');
+	shutdown();
 });
 
 process.on('uncaughtException', (err: Error) => {
-	Logger.Error('Uncaught exception');
-	Logger.Fatal(err.name + ' ' + err.message);
-	Shutdown();
+	Logger.error('Uncaught exception');
+	Logger.fatal(err.name + ' ' + err.message);
+	shutdown();
 });
 
-Startup();
+startup();

@@ -5,7 +5,7 @@ import { Query } from '../../services/utils/Web';
 interface OutgoingQuery extends Query {
 	cost?: string;
 	quantity?: string;
-	vendor_code?: string;
+	vendorCode?: string;
 	manager?: string;
 	category?: string;
 	tax?: string;
@@ -16,14 +16,14 @@ type OutgoingParams = {
 };
 
 class OutgoingsController {
-	public static async Get(req: Request<OutgoingParams, unknown, unknown, OutgoingQuery>, res: Response, next: NextFunction): Promise<void> {
+	public static async get(req: Request<OutgoingParams, unknown, unknown, OutgoingQuery>, res: Response, next: NextFunction): Promise<void> {
 		try {
 			const context: OutgoingQuery = {};
 			if (req.params.id) context.id = req.params.id;
 			if (req.query.skip) context.skip = req.query.skip;
 			if (req.query.limit) context.limit = req.query.limit;
 			// if (req.query.sort) context.sort = Sort.FromString(req.query.sort);
-			if (req.query.vendor_code) context.vendor_code = req.query.vendor_code;
+			if (req.query.vendorCode) context.vendorCode = req.query.vendorCode;
 			if (req.query.manager) context.manager = req.query.manager;
 			if (req.query.category) context.category = req.query.category;
 			if (req.query.tax) context.tax = req.query.tax;

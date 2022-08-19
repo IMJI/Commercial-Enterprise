@@ -1,7 +1,7 @@
 enum TimeRotations {
-	None = 0,
-	Everyday,
-	Everyhour
+	none = 0,
+	everyday,
+	everyhour
 }
 
 export default TimeRotations;

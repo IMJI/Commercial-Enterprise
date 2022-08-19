@@ -1,4 +1,4 @@
-const MonthNames: string[] = [
+const monthNames: string[] = [
 	'January',
 	'February',
 	'March',
@@ -12,111 +12,111 @@ const MonthNames: string[] = [
 	'November',
 	'December'
 ];
-const ShortMonthNames: string[] = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
-const DaysOfWeek: string[] = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-const ShortDaysOfWeek: string[] = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
+const shortMonthNames: string[] = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+const daysOfWeek: string[] = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+const shortDaysOfWeek: string[] = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
 
 class DateObject {
 	private _date: Date;
 
-	get FullYear(): number {
+	get fullYear(): number {
 		return this._date.getFullYear();
 	}
-	get ShortYear(): number {
-		return +this.FullYear.toString().substring(2);
+	get shortYear(): number {
+		return +this.fullYear.toString().substring(2);
 	}
-	get Month(): number {
+	get month(): number {
 		return this._date.getMonth() + 1;
 	}
-	get MonthString(): string {
-		return this.Month < 10 ? `0${this.Month}` : this.Month.toString();
+	get monthString(): string {
+		return this.month < 10 ? `0${this.month}` : this.month.toString();
 	}
-	get FullMonthName(): string {
-		return MonthNames[this.Month - 1];
+	get fullMonthName(): string {
+		return monthNames[this.month - 1];
 	}
-	get ShortMonthName(): string {
-		return ShortMonthNames[this.Month - 1];
+	get shortMonthName(): string {
+		return shortMonthNames[this.month - 1];
 	}
-	get Day(): number {
+	get day(): number {
 		return this._date.getDate();
 	}
-	get DayString(): string {
-		return this.Day < 10 ? `0${this.Day}` : this.Day.toString();
+	get dayString(): string {
+		return this.day < 10 ? `0${this.day}` : this.day.toString();
 	}
-	get DayOfWeek(): number {
+	get dayOfWeek(): number {
 		return this._date.getDay();
 	}
-	get FullDayOfWeekString(): string {
-		return DaysOfWeek[this.DayOfWeek - 1];
+	get fullDayOfWeekString(): string {
+		return daysOfWeek[this.dayOfWeek - 1];
 	}
-	get ShortDayOfWeekString(): string {
-		return ShortDaysOfWeek[this.DayOfWeek - 1];
+	get shortDayOfWeekString(): string {
+		return shortDaysOfWeek[this.dayOfWeek - 1];
 	}
-	get Hours(): number {
+	get hours(): number {
 		return this._date.getHours();
 	}
-	get HoursString(): string {
-		return this.Hours < 10 ? `0${this.Hours}` : this.Hours.toString();
+	get hoursString(): string {
+		return this.hours < 10 ? `0${this.hours}` : this.hours.toString();
 	}
-	get HoursAMPM(): number {
-		return this.Hours % 12 ? this.Hours % 12 : 12;
+	get hoursAmPm(): number {
+		return this.hours % 12 ? this.hours % 12 : 12;
 	}
-	get HoursAMPMString(): string {
-		return `${this.HoursAMPM} ${this.Hours >= 12 ? 'PM' : 'AM'}`;
+	get hoursAmPmString(): string {
+		return `${this.hoursAmPm} ${this.hours >= 12 ? 'PM' : 'AM'}`;
 	}
-	get Minutes(): number {
+	get minutes(): number {
 		return this._date.getMinutes();
 	}
-	get MinutesString(): string {
-		return this.Minutes < 10 ? `0${this.Minutes}` : this.Minutes.toString();
+	get minutesString(): string {
+		return this.minutes < 10 ? `0${this.minutes}` : this.minutes.toString();
 	}
-	get Seconds(): number {
+	get seconds(): number {
 		return this._date.getSeconds();
 	}
-	get SecondsString(): string {
-		return this.Seconds < 10 ? `0${this.Seconds}` : this.Seconds.toString();
+	get secondsString(): string {
+		return this.seconds < 10 ? `0${this.seconds}` : this.seconds.toString();
 	}
-	get Milliseconds(): number {
+	get milliseconds(): number {
 		return this._date.getMilliseconds();
 	}
-	get MillisecondsString(): string {
+	get millisecondsString(): string {
 		let msstr = '';
-		if (this.Milliseconds < 100) msstr += '0';
-		if (this.Milliseconds < 10) msstr += '0';
-		return msstr + this.Milliseconds.toString();
+		if (this.milliseconds < 100) msstr += '0';
+		if (this.milliseconds < 10) msstr += '0';
+		return msstr + this.milliseconds.toString();
 	}
-	get MillisecondsShortString(): string {
-		return this.MillisecondsString.substring(0, 2);
+	get millisecondsShortString(): string {
+		return this.millisecondsString.substring(0, 2);
 	}
 
 	constructor(date?: Date) {
 		this._date = date ?? new Date();
 	}
 
-	public Format(format: string): string {
+	public format(format: string): string {
 		return format
-			.replace('YYYY', this.FullYear.toString())
-			.replace('YY', this.ShortYear.toString())
-			.replace('M', this.Month.toString())
-			.replace('MM', this.MonthString)
-			.replace('MONTH', this.FullMonthName)
-			.replace('MON', this.ShortMonthName)
-			.replace('D', this.Day.toString())
-			.replace('DD', this.DayString)
-			.replace('DAYOFWEEK', this.FullDayOfWeekString)
-			.replace('DOW', this.ShortDayOfWeekString)
-			.replace('h', this.Hours.toString())
-			.replace('hh', this.HoursString)
-			.replace('h12', this.HoursAMPM.toString())
-			.replace('hh12', this.HoursAMPMString)
-			.replace('m', this.Minutes.toString())
-			.replace('mm', this.MinutesString)
-			.replace('s', this.Seconds.toString())
-			.replace('ss', this.SecondsString)
-			.replace('ms', this.Milliseconds.toString())
-			.replace('msms', this.MillisecondsString)
-			.replace('shortms', this.MillisecondsShortString);
+			.replace('YYYY', this.fullYear.toString())
+			.replace('YY', this.shortYear.toString())
+			.replace('M', this.month.toString())
+			.replace('MM', this.monthString)
+			.replace('MONTH', this.fullMonthName)
+			.replace('MON', this.shortMonthName)
+			.replace('D', this.day.toString())
+			.replace('DD', this.dayString)
+			.replace('DAYOFWEEK', this.fullDayOfWeekString)
+			.replace('DOW', this.shortDayOfWeekString)
+			.replace('h', this.hours.toString())
+			.replace('hh', this.hoursString)
+			.replace('h12', this.hoursAmPm.toString())
+			.replace('hh12', this.hoursAmPmString)
+			.replace('m', this.minutes.toString())
+			.replace('mm', this.minutesString)
+			.replace('s', this.seconds.toString())
+			.replace('ss', this.secondsString)
+			.replace('ms', this.milliseconds.toString())
+			.replace('msms', this.millisecondsString)
+			.replace('shortms', this.millisecondsShortString);
 	}
 }
 
-export { DateObject, DaysOfWeek, ShortDaysOfWeek, MonthNames, ShortMonthNames };
+export { DateObject, daysOfWeek, shortDaysOfWeek, monthNames, shortMonthNames };
