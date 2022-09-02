@@ -150,7 +150,9 @@ class Logger {
 			.replace('$SEC', date.secondsString)
 			.replace('$MS', date.millisecondsString);
 		const perf = this.perfTimeStamp.stamp();
-		const consoleOut = fileOut.replace('$LEVEL', chalk.bold(colors[level.toLowerCase()](`[${level}]`))).replace('$PERF', chalk.greenBright(`+${prettyDate(perf)}`));
+		const consoleOut = fileOut
+			.replace('$LEVEL', chalk.bold(colors[level.toLowerCase()](`[${level}]`)))
+			.replace('$PERF', chalk.greenBright(`+${prettyDate(perf)}`));
 		fileOut = fileOut.replace('$LEVEL', `[${level}]`).replace('$PERF', `+${prettyDate(perf)}`);
 		return { fileOut, consoleOut };
 	}
