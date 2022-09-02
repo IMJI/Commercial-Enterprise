@@ -3,19 +3,21 @@ import Outgoing from './Outgoing';
 
 @Entity()
 class Status extends BaseEntity {
-    //@PrimaryColumn()
-    @ManyToOne(() => Outgoing)
-    //@PrimaryColumn()
-    outgoing: Outgoing;
+	@PrimaryColumn()
+	outgoingId!: number;
 
-    @PrimaryColumn()
-    dateFrom: Date;
+	@ManyToOne((type) => Outgoing, (outgoing) => outgoing.id)
+	@JoinColumn({ name: 'outgoingId' })
+	public outgoing!: Outgoing;
 
-    @Column({ nullable: true })
-    dateTo?: Date;
+	@PrimaryColumn()
+	dateFrom!: Date;
 
-    @Column()
-    status: string;
+	@Column({ nullable: true })
+	dateTo?: Date;
+
+	@Column()
+	status!: string;
 }
 
 export default Status;

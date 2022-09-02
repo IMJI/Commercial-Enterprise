@@ -3,16 +3,16 @@ import { Entity, Column, PrimaryGeneratedColumn, BaseEntity } from 'typeorm';
 @Entity()
 class Tax extends BaseEntity {
 	@PrimaryGeneratedColumn()
-	id: number;
+	id!: number;
 
 	@Column({ length: 64 })
-	name: string;
+	name!: string;
 
 	@Column()
-	value: number;
+	value!: number;
 
 	@Column({ default: false })
-	isDeleted: boolean;
+	isDeleted!: boolean;
 }
 
 export default Tax;

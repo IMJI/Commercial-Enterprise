@@ -5,18 +5,18 @@ import UserPassword from './UserPassword';
 @Entity()
 class User {
 	@PrimaryGeneratedColumn()
-	id: number;
+	id!: number;
 
 	@OneToOne(() => UserPassword)
 	@JoinColumn()
-	manager: Manager;
+	manager!: Manager;
 
 	@Column()
-	role: string;
+	role!: string;
 
 	@OneToOne(() => UserPassword)
 	@JoinColumn()
-	password: UserPassword;
+	password!: UserPassword;
 }
 
 export default User;

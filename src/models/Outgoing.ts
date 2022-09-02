@@ -6,22 +6,22 @@ import Tax from './Tax';
 @Entity()
 class Outgoing extends BaseEntity {
 	@PrimaryGeneratedColumn()
-	id: number;
+	id!: number;
 
 	@ManyToOne((type) => Product)
-	product: Product;
+	product!: Product;
 
 	@ManyToOne((type) => Tax)
-	tax: Tax;
+	tax!: Tax;
 
 	@ManyToOne((type) => Manager)
-	manager: Manager;
+	manager!: Manager;
 
 	@Column()
-	quantity: number;
+	quantity!: number;
 
 	@Column()
-	cost: number;
+	cost!: number;
 }
 
 export default Outgoing;

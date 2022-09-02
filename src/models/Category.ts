@@ -4,13 +4,13 @@ import Product from './Product';
 @Entity()
 class Category {
 	@PrimaryGeneratedColumn()
-	id: number;
+	id!: number;
 
 	@Column({ length: 64 })
-	name: string;
+	name!: string;
 
 	@Column({ default: false })
-	isDeleted: boolean;
+	isDeleted!: boolean;
 
 	@OneToMany(() => Product, (product: Product) => product.category)
 	products: Product[];

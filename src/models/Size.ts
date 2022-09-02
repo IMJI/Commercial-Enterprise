@@ -4,13 +4,13 @@ import Product from './Product';
 @Entity()
 class Size {
 	@PrimaryGeneratedColumn()
-	id: number;
+	id!: number;
 
 	@Column({ length: 64 })
-	name: string;
+	name!: string;
 
 	@Column()
-	value: number;
+	value!: number;
 
 	@OneToOne(() => Product, (product: Product) => product.size)
 	@JoinColumn()

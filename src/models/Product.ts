@@ -2,40 +2,37 @@ import { Entity, Column, PrimaryColumn, ManyToOne, OneToOne } from 'typeorm';
 import Category from './Category';
 import Color from './Color';
 import Size from './Size';
-// import Stock from './Stock';
 
 @Entity()
 class Product {
 	@PrimaryColumn()
-	vendorCode: number;
+	vendorCode!: number;
 
 	@Column({ length: 64 })
-	name: string;
+	name!: string;
 
 	@ManyToOne(() => Category, (category: Category) => category.products)
-	category: Category;
+	category!: Category;
 
 	@ManyToOne(() => Color, (color: Color) => color.products)
-	color: Color;
+	color!: Color;
 
 	// @ManyToOne(() => Size, (size : Size) => size.products)
 	// size : Size;
 	@OneToOne(() => Size, (size: Size) => size.product)
-	size: Size;
+	size!: Size;
 
 	@Column({
 		nullable: true,
 		length: 512
 	})
-	description: string;
+	description?: string;
 
 	// @OneToOne(() => Stock, (stock: Stock) => stock.product)
 	// stock: Stock;
 
-	@Column({
-		default: false
-	})
-	isDeleted: boolean;
+	@Column({ default: false })
+	isDeleted!: boolean;
 }
 
 export default Product;

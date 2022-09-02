@@ -4,24 +4,24 @@ import Product from './Product';
 @Entity()
 class Color {
 	@PrimaryGeneratedColumn()
-	id: number;
+	id!: number;
 
 	@Column({ length: 64 })
-	name: string;
+	name!: string;
 
 	@Column()
-	redValue: number;
+	redValue!: number;
 
 	@Column()
-	blueValue: number;
+	blueValue!: number;
 
 	@Column()
-	greenValue: number;
+	greenValue!: number;
 
 	@Column({
 		default: false
 	})
-	isDeleted: boolean;
+	isDeleted!: boolean;
 
 	@OneToMany(() => Product, (product: Product) => product.color)
 	products: Product[];

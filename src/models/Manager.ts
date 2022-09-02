@@ -3,30 +3,32 @@ import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne, BaseEntit
 @Entity()
 class Manager extends BaseEntity {
 	@PrimaryGeneratedColumn()
-	id: number;
+	id!: number;
 
 	@Column({ length: 64 })
-	firstName: string;
+	firstName!: string;
 
 	@Column({ length: 64 })
-	lastName: string;
+	lastName!: string;
 
-	@Column({ length: 64 })
+	@Column({
+		length: 64,
+		nullable: true
+	})
 	patronymic: string;
 
 	@Column()
-	percent: number;
+	percent!: number;
 
 	@Column()
-	hireDate: Date;
+	hireDate!: Date;
 
 	@Column()
-	dismissalDate: Date;
+	dismissalDate!: Date;
 
 	@ManyToOne((type) => Manager, (manager) => manager.children)
 	parent?: Manager;
 
-	//@Column() // DELETE ME
 	@OneToMany((type) => Manager, (manager) => manager.parent)
 	children?: Manager[];
 }

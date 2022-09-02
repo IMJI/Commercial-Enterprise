@@ -5,19 +5,19 @@ import Outgoing from './Outgoing';
 @Entity()
 class Log extends BaseEntity {
 	@PrimaryGeneratedColumn()
-	id: number;
+	id!: number;
 
 	@ManyToOne((type) => Manager)
-	manager: Manager;
+	manager!: Manager;
 
 	@ManyToOne((type) => Outgoing)
-	outgoing: Outgoing;
+	outgoing!: Outgoing;
 
 	@CreateDateColumn()
-	timestamp: Date;
+	timestamp!: Date;
 
 	@Column({ length: 64 })
-	action: string;
+	action!: string;
 }
 
 export default Log;

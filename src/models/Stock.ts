@@ -4,15 +4,15 @@ import Product from './Product';
 @Entity()
 class Stock extends BaseEntity {
 	@PrimaryGeneratedColumn()
-    id: number;
+	id!: number;
 
 	@OneToOne((type) => Product)
 	@JoinColumn()
-	product: Product;
+	product!: Product;
 
 	@Column()
-    @Check('"quantity" > 0')
-	quantity: number;
+	@Check('"quantity" > 0')
+	quantity!: number;
 }
 
 export default Stock;
