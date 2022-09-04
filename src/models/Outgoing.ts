@@ -20,7 +20,11 @@ class Outgoing extends BaseEntity {
 	@Column()
 	quantity!: number;
 
-	@Column()
+	@Column({
+		type: 'numeric',
+		precision: 14,
+		scale: 2
+	})
 	cost!: number;
 }
 

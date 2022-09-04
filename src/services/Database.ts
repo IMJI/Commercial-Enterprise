@@ -6,12 +6,15 @@ import { resolve } from 'path';
 import Models from '../models/Models';
 
 class Database {
-	private static dataSource: DataSource;
+	private static _dataSource: DataSource;
+	public static get dataSource() {
+		return this._dataSource;
+	}
 
 	public static async initialize(): Promise<number> {
 		return new Promise((resolve, reject) => {
 			Logger.info('Initializing database module');
-			this.dataSource = new DataSource({
+			this._dataSource = new DataSource({
 				type: Config.database.type,
 				host: Config.database.host,
 				port: Config.database.port,

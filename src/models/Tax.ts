@@ -8,7 +8,11 @@ class Tax extends BaseEntity {
 	@Column({ length: 64 })
 	name!: string;
 
-	@Column()
+	@Column({
+		type: 'numeric',
+		precision: 3,
+		scale: 2
+	})
 	value!: number;
 
 	@Column({ default: false })

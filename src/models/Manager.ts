@@ -17,14 +17,18 @@ class Manager extends BaseEntity {
 	})
 	patronymic: string;
 
-	@Column()
+	@Column({
+		type: 'numeric',
+		precision: 3,
+		scale: 2
+	})
 	percent!: number;
 
 	@Column()
 	hireDate!: Date;
 
-	@Column()
-	dismissalDate!: Date;
+	@Column({ nullable: true })
+	dismissalDate: Date;
 
 	@ManyToOne((type) => Manager, (manager) => manager.children)
 	parent?: Manager;

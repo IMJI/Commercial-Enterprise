@@ -16,7 +16,11 @@ class Price extends BaseEntity {
 	@Column({ nullable: true })
 	dateTo?: Date;
 
-	@Column()
+	@Column({
+		type: 'numeric',
+		precision: 10,
+		scale: 2
+	})
 	value!: number;
 }
 
