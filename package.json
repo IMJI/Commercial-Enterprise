@@ -37,6 +37,7 @@
     "js-yaml": "^4.1.0",
     "morgan": "^1.10.0",
     "oracledb": "^5.4.0",
+    "pg": "^8.8.0",
     "prettier": "^2.7.1",
     "reflect-metadata": "^0.1.13",
     "toobusy-js": "^0.5.1",
