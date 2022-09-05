@@ -48,8 +48,11 @@ class OutgoingsController {
 		const dataSource = Database.dataSource;
 		const data = await dataSource
 			.getRepository(Outgoing)
-			.createQueryBuilder('Outgoing')
-			.where('Outgoing.id = :id', { id: 1 })
+			.createQueryBuilder('outgoing')
+			.leftJoinAndSelect('outgoing.tax', 'tax')
+			.leftJoinAndSelect('outgoing.manager', 'manager')
+			.leftJoinAndSelect('outgoing.product', 'product')
+			.where('outgoing.id = :id', { id: 1 })
 			.getOne()
 			.catch((err) => console.log(err))
 		res.status(200).json(data);
