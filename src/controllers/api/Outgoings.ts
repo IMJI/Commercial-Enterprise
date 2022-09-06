@@ -3,38 +3,11 @@ import { DataSource } from 'typeorm';
 import Outgoing from '../../models/Outgoing';
 import Database from '../../services/Database';
 import Logger from '../../services/logger/Logger';
-import { OutgoingQuery, OutgoingQueryParser, ParsedOutgoingQuery } from '../../structures/outgoing/OutgoingQueryParser';
-import { Params, ParsedParams, ParamsParser } from '../../structures/ParamsParser';
+import { OutgoingQuery, OutgoingQueryParser, ParsedOutgoingQuery } from './OutgoingQueryParser';
+import { Params, ParsedParams, ParamsParser } from '../../types/ParamsParser';
 
 class OutgoingsController {
 	public static async get(req: Request<Params, unknown, unknown, OutgoingQuery>, res: Response, next: NextFunction): Promise<void> {
-		// try {
-		// 	const context: OutgoingQuery = {};
-		// 	if (req.params.id) context.id = req.params.id;
-		// 	if (req.query.skip) context.skip = req.query.skip;
-		// 	if (req.query.limit) context.limit = req.query.limit;
-		// 	// if (req.query.sort) context.sort = Sort.FromString(req.query.sort);
-		// 	if (req.query.vendorCode) context.vendorCode = req.query.vendorCode;
-		// 	if (req.query.manager) context.manager = req.query.manager;
-		// 	if (req.query.category) context.category = req.query.category;
-		// 	if (req.query.tax) context.tax = req.query.tax;
-		// 	if (req.query.cost) context.cost = req.query.cost;
-		// 	if (req.query.quantity) context.quantity = req.query.quantity;
-
-		// 	const rows = await Outgoings.Find(context);
-		// 	if (req.params.id) {
-		// 		if (rows.length === 1) {
-		// 			res.status(200).json(rows[0]);
-		// 		} else {
-		// 			res.status(404).end();
-		// 		}
-		// 	} else {
-		// 		const count = await Outgoings.Count(context);
-		// 		res.status(200).json({ rows: rows, count: count });
-		// 	}
-		// } catch (err) {
-		// 	next(err);
-		// }
 		try {
 			const parsedParams: ParsedParams = ParamsParser.parse(req.params);
 			const parsedQuery: ParsedOutgoingQuery = OutgoingQueryParser.parse(req.query);
@@ -96,6 +69,7 @@ class OutgoingsController {
 		} catch (error) {
 			Logger.error(error);
 			res.status(503).send('Server error');
+			next(error);
 		}
 	}
 
