@@ -31,4 +31,4 @@ class Sort {
 	}
 }
 
-export { Sort, SortingOrders }
+export { Sort, SortingOrders };

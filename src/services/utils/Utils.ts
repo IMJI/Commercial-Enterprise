@@ -43,7 +43,7 @@ export class Time {
 }
 
 export function convertToNumber(str: string): number {
-	let num: number = +str;
+	const num: number = +str;
 	if (isNaN(num)) {
 		throw new Error(`Invalid numeric value: ${str}`);
 	}

@@ -1,21 +1,21 @@
-import { convertToNumber } from "../services/utils/Utils";
+import { convertToNumber } from '../services/utils/Utils';
 
 type Params = {
-    id?: string;
-}
+	id?: string;
+};
 
 type ParsedParams = {
-    id?: number;
-}
+	id?: number;
+};
 
 class ParamsParser {
-    public static Parse(params: Params): ParsedParams {
-        let parsedParams: ParsedParams = {};
-        if (params.id) {
-            parsedParams.id = convertToNumber(params.id);
-        }
-        return parsedParams;
-    }
+	public static parse(params: Params): ParsedParams {
+		const parsedParams: ParsedParams = {};
+		if (params.id) {
+			parsedParams.id = convertToNumber(params.id);
+		}
+		return parsedParams;
+	}
 }
 
-export { Params, ParsedParams, ParamsParser }
+export { Params, ParsedParams, ParamsParser };
