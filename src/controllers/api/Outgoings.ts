@@ -1,23 +1,13 @@
 import { Request, Response, NextFunction } from 'express';
+import { DataSource } from 'typeorm';
 import Outgoing from '../../models/Outgoing';
 import Database from '../../services/Database';
-import { Query } from '../../services/utils/Web';
-
-interface OutgoingQuery extends Query {
-	cost?: string;
-	quantity?: string;
-	vendorCode?: string;
-	manager?: string;
-	category?: string;
-	tax?: string;
-}
-
-type OutgoingParams = {
-	id: string;
-};
+import Logger from '../../services/logger/Logger';
+import { OutgoingQuery, OutgoingQueryParser, ParsedOutgoingQuery } from '../../structures/outgoing/OutgoingQueryParser';
+import { Params, ParsedParams, ParamsParser } from '../../structures/ParamsParser';
 
 class OutgoingsController {
-	public static async get(req: Request<OutgoingParams, unknown, unknown, OutgoingQuery>, res: Response, next: NextFunction): Promise<void> {
+	public static async get(req: Request<Params, unknown, unknown, OutgoingQuery>, res: Response, next: NextFunction): Promise<void> {
 		// try {
 		// 	const context: OutgoingQuery = {};
 		// 	if (req.params.id) context.id = req.params.id;
@@ -45,17 +35,45 @@ class OutgoingsController {
 		// } catch (err) {
 		// 	next(err);
 		// }
-		const dataSource = Database.dataSource;
-		const data = await dataSource
-			.getRepository(Outgoing)
-			.createQueryBuilder('outgoing')
-			.leftJoinAndSelect('outgoing.tax', 'tax')
-			.leftJoinAndSelect('outgoing.manager', 'manager')
-			.leftJoinAndSelect('outgoing.product', 'product')
-			.where('outgoing.id = :id', { id: 1 })
-			.getOne()
-			.catch((err) => console.log(err))
-		res.status(200).json(data);
+		try {
+			const parsedParams: ParsedParams = ParamsParser.Parse(req.params);
+			const parsedQuery: ParsedOutgoingQuery = OutgoingQueryParser.Parse(req.query);
+			const dataSource : DataSource = Database.dataSource;
+			let queryBuilder = dataSource
+				.getRepository(Outgoing)
+				.createQueryBuilder('outgoing')
+				.leftJoinAndSelect('outgoing.tax', 'tax')
+				.leftJoinAndSelect('outgoing.manager', 'manager')
+				.leftJoinAndSelect('outgoing.product', 'product')
+				.leftJoinAndSelect('product.category', 'category')
+				.where('1 = 1');
+	
+			if (parsedQuery.category) {
+				queryBuilder = queryBuilder
+					.andWhere('category.name IN (:...category)', { category: parsedQuery.category });
+			}
+
+			if (parsedParams.id) {
+				queryBuilder = queryBuilder.andWhere('outgoing.id = :id', { id: parsedParams.id });
+				queryBuilder.getOne()
+					.then((data) => {
+						if (data !== null) res.status(200).json(data);
+						else res.status(404).end();
+					})
+					.catch((error) => { throw error });
+			}
+			else {
+				queryBuilder.getMany()
+					.then((data) => {
+						if (data !== null) res.status(200).json(data);
+						else res.status(404).end();
+					})
+					.catch((error) => { throw error });
+			}
+		} catch(error) {
+			Logger.error(error);
+			res.status(503).send('Server error');
+		}
 	}
 
 	// public static async Post(req : Request, res : Response, next : NextFunction) : Promise<void> {
