@@ -41,3 +41,15 @@ export class Time {
 	public static day: number = 1000 * 60 * 60 * 24;
 	public static week: number = 1000 * 60 * 60 * 24 * 7;
 }
+
+export function convertToNumber(str: string): number {
+	let num: number = +str;
+	if (isNaN(num)) {
+		throw new Error(`Invalid numeric value: ${str}`);
+	}
+	return num;
+}
+
+export function convertArrayToNumber(strs: string[]): number[] {
+	return strs.map((str) => convertToNumber(str));
+}
