@@ -1,6 +1,6 @@
 import { convertArrayToNumber, convertToNumber } from '../../services/utils/Utils';
-import { Query, ParsedQuery, QueryParser } from '../QueryParser';
-import NumberRange from '../NumberRange';
+import { Query, ParsedQuery, QueryParser } from '../../types/QueryParser';
+import NumberRange from '../../types/NumberRange';
 
 interface OutgoingQuery extends Query {
 	cost?: string;
