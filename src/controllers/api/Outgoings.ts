@@ -5,6 +5,7 @@ import Database from '../../services/Database';
 import Logger from '../../services/logger/Logger';
 import { OutgoingQuery, OutgoingQueryParser, ParsedOutgoingQuery } from './OutgoingQueryParser';
 import { Params, ParsedParams, ParamsParser } from '../../types/ParamsParser';
+import { Sort } from '../../types/Sort';
 
 class OutgoingsController {
 	public static async get(req: Request<Params, unknown, unknown, OutgoingQuery>, res: Response, next: NextFunction): Promise<void> {
@@ -46,6 +47,24 @@ class OutgoingsController {
 
 			if (parsedParams.id) {
 				queryBuilder = queryBuilder.andWhere('outgoing.id = :id', { id: parsedParams.id });
+			}
+
+			// if (parsedQuery.sort) {
+			// 	parsedQuery.sort.forEach((sort: Sort) => {
+			// 		queryBuilder = queryBuilder.orderBy()
+			// 	});
+			// }
+
+			if (parsedQuery.limit) {
+				queryBuilder = queryBuilder.take(parsedQuery.limit);
+			}
+
+			if (parsedQuery.skip) {
+				queryBuilder = queryBuilder.skip(parsedQuery.skip);
+			}
+
+			if (parsedParams.id) {
+				//queryBuilder = queryBuilder.andWhere('outgoing.id = :id', { id: parsedParams.id });
 				queryBuilder
 					.getOne()
 					.then((data) => {
