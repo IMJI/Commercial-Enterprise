@@ -42,7 +42,7 @@ export class Time {
 	public static week: number = 1000 * 60 * 60 * 24 * 7;
 }
 
-export function convertToNumber(str: string, canBeNegative: boolean = true): number {
+export function convertToNumber(str: string, canBeNegative = true): number {
 	const num: number = +str;
 	if (isNaN(num)) {
 		throw new Error(`Invalid numeric value: ${str}`);
