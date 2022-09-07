@@ -17,10 +17,10 @@ abstract class QueryParser {
 	public static parse(query: Query): ParsedQuery {
 		const parsedQuery: ParsedQuery = {};
 		if (query.limit) {
-			parsedQuery.limit = convertToNumber(query.limit);
+			parsedQuery.limit = convertToNumber(query.limit, false);
 		}
 		if (query.skip) {
-			parsedQuery.skip = convertToNumber(query.skip);
+			parsedQuery.skip = convertToNumber(query.skip, false);
 		}
 		if (query.sort) {
 			parsedQuery.sort = Sort.fromString(query.sort);

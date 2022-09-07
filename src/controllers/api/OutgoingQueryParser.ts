@@ -32,11 +32,11 @@ class OutgoingQueryParser extends QueryParser {
 			else parsedQuery.tax = query.tax;
 		}
 		if (query.manager) {
-			if (typeof query.manager === 'string') parsedQuery.manager = [convertToNumber(query.manager)];
+			if (typeof query.manager === 'string') parsedQuery.manager = [convertToNumber(query.manager, false)];
 			else parsedQuery.manager = convertArrayToNumber(query.manager);
 		}
 		if (query.vendorCode) {
-			if (typeof query.vendorCode === 'string') parsedQuery.vendorCode = [convertToNumber(query.vendorCode)];
+			if (typeof query.vendorCode === 'string') parsedQuery.vendorCode = [convertToNumber(query.vendorCode, false)];
 			else parsedQuery.vendorCode = convertArrayToNumber(query.vendorCode);
 		}
 		if (query.cost) {

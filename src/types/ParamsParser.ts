@@ -12,7 +12,7 @@ class ParamsParser {
 	public static parse(params: Params): ParsedParams {
 		const parsedParams: ParsedParams = {};
 		if (params.id) {
-			parsedParams.id = convertToNumber(params.id);
+			parsedParams.id = convertToNumber(params.id, false);
 		}
 		return parsedParams;
 	}
