@@ -6,8 +6,18 @@ import Logger from '../../services/logger/Logger';
 import { OutgoingQuery, OutgoingQueryParser, ParsedOutgoingQuery } from './OutgoingQueryParser';
 import { Params, ParsedParams, ParamsParser } from '../../types/ParamsParser';
 import { Sort } from '../../types/Sort';
+import SortableColumn from '../../types/SortableColumns';
 
 class OutgoingsController {
+	private static readonly sortableColumns: SortableColumn[] = [
+		{ name: 'category', column: 'category.name' },
+		{ name: 'manager', column: 'manager.name' },
+		{ name: 'product', column: 'product.name' },
+		{ name: 'tax', column: 'tax.name' },
+		{ name: 'cost', column: 'outgoing.cost' },
+		{ name: 'quantity', column: 'outgoing.quantity' }
+	];
+
 	public static async get(req: Request<Params, unknown, unknown, OutgoingQuery>, res: Response, next: NextFunction): Promise<void> {
 		try {
 			const parsedParams: ParsedParams = ParamsParser.parse(req.params);
@@ -49,11 +59,15 @@ class OutgoingsController {
 				queryBuilder = queryBuilder.andWhere('outgoing.id = :id', { id: parsedParams.id });
 			}
 
-			// if (parsedQuery.sort) {
-			// 	parsedQuery.sort.forEach((sort: Sort) => {
-			// 		queryBuilder = queryBuilder.orderBy()
-			// 	});
-			// }
+			if (parsedQuery.sort) {
+				parsedQuery.sort.forEach((sort: Sort) => {
+					const sortingColumn = OutgoingsController.sortableColumns.find((s) => s.name === sort.column);
+					if (sortingColumn) {
+						//console.log(sortingColumn.column + ' ' + sort.order);
+						queryBuilder = queryBuilder.orderBy(sortingColumn.column, sort.order);
+					}
+				});
+			}
 
 			if (parsedQuery.limit) {
 				queryBuilder = queryBuilder.take(parsedQuery.limit);
@@ -64,7 +78,6 @@ class OutgoingsController {
 			}
 
 			if (parsedParams.id) {
-				//queryBuilder = queryBuilder.andWhere('outgoing.id = :id', { id: parsedParams.id });
 				queryBuilder
 					.getOne()
 					.then((data) => {
