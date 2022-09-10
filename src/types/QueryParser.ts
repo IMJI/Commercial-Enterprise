@@ -4,7 +4,7 @@ import { Sort } from './Sort';
 interface Query {
 	limit?: string;
 	skip?: string;
-	sort?: string;
+	sort?: string | string[];
 }
 
 interface ParsedQuery {
@@ -23,7 +23,7 @@ abstract class QueryParser {
 			parsedQuery.skip = convertToNumber(query.skip, false);
 		}
 		if (query.sort) {
-			parsedQuery.sort = Sort.fromString(query.sort);
+			parsedQuery.sort = Sort.fromString(typeof query.sort === 'string' ? [query.sort] : query.sort);
 		}
 		return parsedQuery;
 	}

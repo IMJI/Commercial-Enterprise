@@ -60,11 +60,14 @@ class OutgoingsController {
 			}
 
 			if (parsedQuery.sort) {
+				let isFirst = true;
 				parsedQuery.sort.forEach((sort: Sort) => {
 					const sortingColumn = OutgoingsController.sortableColumns.find((s) => s.name === sort.column);
 					if (sortingColumn) {
-						//console.log(sortingColumn.column + ' ' + sort.order);
-						queryBuilder = queryBuilder.orderBy(sortingColumn.column, sort.order);
+						if (isFirst) {
+							queryBuilder = queryBuilder.orderBy(sortingColumn.column, sort.order);
+							isFirst = false;
+						} else queryBuilder = queryBuilder.addOrderBy(sortingColumn.column, sort.order);
 					}
 				});
 			}

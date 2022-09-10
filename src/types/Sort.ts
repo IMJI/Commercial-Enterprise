@@ -18,10 +18,10 @@ class Sort {
 		this._order = order;
 	}
 
-	public static fromString(str: string): Sort[] {
+	public static fromString(strs: string[]): Sort[] {
 		const sortings: Sort[] = [];
-		const sortingsStr: string[] = str.split(',');
-		sortingsStr.forEach((sorting) => {
+		//const sortingsStr: string[] = str.split(',');
+		strs.forEach((sorting) => {
 			const opts = sorting.split(':');
 			const order: SortingOrders = opts[1].toLowerCase() === 'desc' ? SortingOrders.descending : SortingOrders.ascending;
 			const s: Sort = new Sort(opts[0], order);
