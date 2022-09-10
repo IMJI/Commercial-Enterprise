@@ -28,8 +28,8 @@ class WebServer {
 			};
 			this.express = express();
 			this.mountMiddlewares();
-			this.mountRoutes(WebRouter);
 			this.mountRoutes(ApiRouter);
+			this.mountRoutes(WebRouter);
 			this.server = https
 				.createServer(this.serverOptions, this.express)
 				.listen(port, () => {
