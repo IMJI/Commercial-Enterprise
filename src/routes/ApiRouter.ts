@@ -4,8 +4,7 @@ import OutgoingsController from '../controllers/api/Outgoings';
 const apiRouter: Router = Router();
 const apiPath = '/api';
 
-apiRouter.route(`${apiPath}/outgoings/:id?`).get(OutgoingsController.get);
-// .post(OutgoingsController.Post)
+apiRouter.route(`${apiPath}/outgoings/:id?`).get(OutgoingsController.get).post(OutgoingsController.post);
 // .put(OutgoingsController.Put)
 // .delete(OutgoingsController.Delete);
 

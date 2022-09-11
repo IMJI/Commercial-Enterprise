@@ -108,9 +108,25 @@ class OutgoingsController {
 		}
 	}
 
-	// public static async Post(req : Request, res : Response, next : NextFunction) : Promise<void> {
-
-	// }
+	public static async post(req: Request, res: Response, next: NextFunction): Promise<void> {
+		try {
+			console.log(req.body);
+			// let outgoing = getOutgoingFromRec(req);
+			// outgoing = await outgoings.create(outgoing);
+			// let queryBuilder = await this.dataSource
+			// 	.createQueryBuilder()
+			// 	.insert()
+			// 	.into(Outgoing)
+			// 	.values([
+			// 	])
+			// 	.execute()
+			res.status(201).json();
+		} catch (error) {
+			Logger.error(error);
+			res.status(503).send('Server error');
+			next(error);
+		}
+	}
 
 	// public static async Put(req : Request, res : Response, next : NextFunction) : Promise<void> {
 
