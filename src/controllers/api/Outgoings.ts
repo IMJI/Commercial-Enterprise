@@ -126,12 +126,12 @@ class OutgoingsController {
 				.leftJoinAndSelect('price.product', 'product')
 				.where('product.vendorCode = :vendorCode', { vendorCode: body.product })
 				.getOne()
-				.then(data => {
-					let outgoing = {
+				.then((data) => {
+					const outgoing = {
 						...body,
 						cost: data.value * body.quantity
-					}
-					let queryBuilder = dataSource
+					};
+					const queryBuilder = dataSource
 						.createQueryBuilder()
 						.insert()
 						.into(Outgoing)
