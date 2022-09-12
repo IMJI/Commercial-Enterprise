@@ -1,5 +1,6 @@
+import Joi = require('joi');
 import { Request, Response, NextFunction } from 'express';
-import { DataSource } from 'typeorm';
+import { DataSource, QueryBuilder } from 'typeorm';
 import Outgoing from '../../models/Outgoing';
 import Database from '../../services/Database';
 import Logger from '../../services/logger/Logger';
@@ -7,6 +8,11 @@ import { OutgoingQuery, OutgoingQueryParser, ParsedOutgoingQuery } from './Outgo
 import { Params, ParsedParams, ParamsParser } from '../../types/ParamsParser';
 import { Sort } from '../../types/Sort';
 import SortableColumn from '../../types/SortableColumns';
+import { OutgoingBody, outgoingBodyValidator } from './OutgoingBodyPareser';
+import Tax from '../../models/Tax';
+import Manager from '../../models/Manager';
+import Product from '../../models/Product';
+import Price from '../../models/Price';
 
 class OutgoingsController {
 	private static readonly sortableColumns: SortableColumn[] = [
@@ -108,19 +114,33 @@ class OutgoingsController {
 		}
 	}
 
-	public static async post(req: Request, res: Response, next: NextFunction): Promise<void> {
+	// REFACTOR
+	public static async post(req: Request<unknown, unknown, OutgoingBody, unknown>, res: Response, next: NextFunction): Promise<void> {
 		try {
 			console.log(req.body);
-			// let outgoing = getOutgoingFromRec(req);
-			// outgoing = await outgoings.create(outgoing);
-			// let queryBuilder = await this.dataSource
-			// 	.createQueryBuilder()
-			// 	.insert()
-			// 	.into(Outgoing)
-			// 	.values([
-			// 	])
-			// 	.execute()
-			res.status(201).json();
+			const dataSource: DataSource = Database.dataSource;
+			const body = Joi.attempt(req.body, outgoingBodyValidator);
+			const qbCost = dataSource
+				.getRepository(Price)
+				.createQueryBuilder('price')
+				.leftJoinAndSelect('price.product', 'product')
+				.where('product.vendorCode = :vendorCode', { vendorCode: body.product })
+				.getOne()
+				.then(data => {
+					let outgoing = {
+						...body,
+						cost: data.value * body.quantity
+					}
+					let queryBuilder = dataSource
+						.createQueryBuilder()
+						.insert()
+						.into(Outgoing)
+						.values(outgoing)
+						.execute()
+						.then(() => {
+							res.status(201).json();
+						});
+				});
 		} catch (error) {
 			Logger.error(error);
 			res.status(503).send('Server error');
