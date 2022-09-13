@@ -1,20 +1,24 @@
 abstract class Exception extends Error {
-	private _isFatal: boolean;
-	public get isFatal(): boolean {
-		return this._isFatal;
-	}
-
-	private _httpCode?: number;
-	public get httpCode(): number {
-		if (this._httpCode) return this._httpCode;
+	private _statusCode?: number;
+	public get statusCode(): number {
+		if (this._statusCode) return this._statusCode;
 		else return -1;
 	}
+	public get stack(): string {
+		return super.stack ? super.stack : '';
+	}
+	public get name(): string {
+		return super.name;
+	}
+	public get message(): string {
+		return super.message;
+	}
 
-	constructor(msg: string, isFatal = false, httpCode?: number) {
+	constructor(msg: string, statusCode?: number) {
 		super(msg);
+		super.name = this.constructor.name;
 		Object.setPrototypeOf(this, Exception.prototype);
-		this._isFatal = isFatal;
-		if (httpCode) this._httpCode = httpCode;
+		if (statusCode) this._statusCode = statusCode;
 	}
 }
 
