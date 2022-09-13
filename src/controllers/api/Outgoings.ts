@@ -34,6 +34,7 @@ class OutgoingsController {
 				.leftJoinAndSelect('outgoing.manager', 'manager')
 				.leftJoinAndSelect('outgoing.product', 'product')
 				.leftJoinAndSelect('product.category', 'category')
+				.leftJoinAndSelect('outgoing.statuses', 'statuses')
 				.where('1 = 1');
 
 			if (parsedQuery.category) {
