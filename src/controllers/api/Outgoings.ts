@@ -10,6 +10,7 @@ import { Sort } from '../../types/Sort';
 import SortableColumn from '../../types/SortableColumns';
 import { OutgoingBody, outgoingBodyValidator } from './OutgoingBodyPareser';
 import Price from '../../models/Price';
+import NotFoundException from '../../exception/NotFoundException';
 
 class OutgoingsController {
 	private static readonly sortableColumns: SortableColumn[] = [
@@ -88,20 +89,20 @@ class OutgoingsController {
 					.getOne()
 					.then((data) => {
 						if (data !== null) res.status(200).json(data);
-						else res.status(404).end();
+						else throw new NotFoundException(`No data was found for your request ${req.url}`);
 					})
 					.catch((error) => {
-						throw error;
+						next(error);
 					});
 			} else {
 				queryBuilder
 					.getMany()
 					.then((data) => {
-						if (data !== null) res.status(200).json(data);
-						else res.status(404).end();
+						if (data !== null && data.length > 0) res.status(200).json(data);
+						else throw new NotFoundException(`No data was found for your request ${req.url}`);
 					})
 					.catch((error) => {
-						throw error;
+						next(error);
 					});
 			}
 		} catch (error) {
