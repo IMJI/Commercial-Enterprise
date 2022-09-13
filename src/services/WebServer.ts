@@ -14,6 +14,7 @@ import CorsMiddleware from '../middlewares/Cors';
 import StatusMonitorMiddleware from '../middlewares/StatusMonitor';
 import ExceptionHandler from '../middlewares/ExceptionHandler';
 import NotFoundException from '../exception/NotFoundException';
+import NotFoundController from '../controllers/NotFoundController';
 
 class WebServer {
 	private static express: express.Application;
@@ -62,17 +63,12 @@ class WebServer {
 	}
 
 	private static mountMiddlewares(): void {
-		this.express = StaticMiddleware.mount(this.express); // Needs to be before routes
+		this.express = StaticMiddleware.mount(this.express);
 		this.express = HttpMiddleware.mount(this.express);
 		if (Config.webServer.enableCORS) this.express = CorsMiddleware.mount(this.express);
 		if (Config.webServer.enableHTTPLog) this.express = LogMiddleware.mount(this.express);
 		this.express = StatusMonitorMiddleware.mount(this.express);
-		this.express.use(
-			'/',
-			express.Router().get('*', () => {
-				throw new NotFoundException('Not found');
-			})
-		);
+		this.express.use('/', express.Router().get('*', NotFoundController.get));
 		this.express = ExceptionHandler.mount(this.express);
 	}
 
