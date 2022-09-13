@@ -182,8 +182,14 @@ class Logger {
 	public static warn(message: string): void {
 		this.log(LogLevels.warning, message);
 	}
-	public static error(message: string): void {
-		this.log(LogLevels.error, message);
+	public static error(err: Error): void;
+	public static error(message: string): void;
+	public static error(message: string | Error): void {
+		if (typeof message === 'string') this.log(LogLevels.error, message);
+		else {
+			if (message.stack) this.log(LogLevels.error, message.stack);
+			else this.log(LogLevels.error, `${message.name}: ${message.message}`);
+		}
 	}
 	public static fatal(message: string): void {
 		this.log(LogLevels.fatal, message);
