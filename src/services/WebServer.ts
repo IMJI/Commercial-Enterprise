@@ -12,6 +12,8 @@ import LogMiddleware from '../middlewares/Log';
 import StaticMiddleware from '../middlewares/Static';
 import CorsMiddleware from '../middlewares/Cors';
 import StatusMonitorMiddleware from '../middlewares/StatusMonitor';
+import ExceptionHandler from '../middlewares/ExceptionHandler';
+import NotFoundException from '../exception/NotFoundException';
 
 class WebServer {
 	private static express: express.Application;
@@ -27,9 +29,9 @@ class WebServer {
 				cert: fs.readFileSync(path.join(__dirname, '../../cert.pem'))
 			};
 			this.express = express();
-			this.mountMiddlewares();
 			this.mountRoutes(ApiRouter);
 			this.mountRoutes(WebRouter);
+			this.mountMiddlewares();
 			this.server = https
 				.createServer(this.serverOptions, this.express)
 				.listen(port, () => {
@@ -60,11 +62,18 @@ class WebServer {
 	}
 
 	private static mountMiddlewares(): void {
-		this.express = StaticMiddleware.mount(this.express);
+		this.express = StaticMiddleware.mount(this.express); // Needs to be before routes
 		this.express = HttpMiddleware.mount(this.express);
 		if (Config.webServer.enableCORS) this.express = CorsMiddleware.mount(this.express);
 		if (Config.webServer.enableHTTPLog) this.express = LogMiddleware.mount(this.express);
 		this.express = StatusMonitorMiddleware.mount(this.express);
+		this.express.use(
+			'/',
+			express.Router().get('*', () => {
+				throw new NotFoundException('Not found');
+			})
+		);
+		this.express = ExceptionHandler.mount(this.express);
 	}
 
 	private static mountRoutes(router: express.Router): void {

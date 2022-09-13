@@ -5,6 +5,7 @@ import * as toobusy from 'toobusy-js';
 import { reviveJSON } from '../services/utils/Utils';
 import Logger from '../services/logger/Logger';
 import Config from '../services/Config';
+import ServerIsBusyException from '../exception/ServerIsBusyException';
 
 class HttpMiddleware {
 	public static mount(app: express.Application): express.Application {
@@ -32,7 +33,7 @@ class HttpMiddleware {
 		toobusy.interval(Config.webServer.lagCheckInterval);
 		app.use((req: express.Request, res: express.Response, next: express.NextFunction) => {
 			if (toobusy()) {
-				res.status(503).send('Server is busy right now. Try again later.');
+				next(new ServerIsBusyException('Server is busy right now. Try again later.'));
 			} else {
 				next();
 			}

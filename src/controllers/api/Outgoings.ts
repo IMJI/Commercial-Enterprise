@@ -9,9 +9,6 @@ import { Params, ParsedParams, ParamsParser } from '../../types/ParamsParser';
 import { Sort } from '../../types/Sort';
 import SortableColumn from '../../types/SortableColumns';
 import { OutgoingBody, outgoingBodyValidator } from './OutgoingBodyPareser';
-import Tax from '../../models/Tax';
-import Manager from '../../models/Manager';
-import Product from '../../models/Product';
 import Price from '../../models/Price';
 
 class OutgoingsController {
@@ -108,8 +105,6 @@ class OutgoingsController {
 					});
 			}
 		} catch (error) {
-			Logger.error(error);
-			res.status(503).send('Server error');
 			next(error);
 		}
 	}
@@ -142,8 +137,6 @@ class OutgoingsController {
 						});
 				});
 		} catch (error) {
-			Logger.error(error);
-			res.status(503).send('Server error');
 			next(error);
 		}
 	}
