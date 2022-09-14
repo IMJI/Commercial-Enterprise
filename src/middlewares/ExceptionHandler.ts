@@ -1,16 +1,11 @@
 import * as express from 'express';
 import Exception from '../exception/Exception';
-import InvalidNumberException from '../exception/InvalidNumberException';
 import Logger from '../services/logger/Logger';
 import Pages from '../services/Pages';
 
 class ExceptionHandler {
 	public static mount(app: express.Application): express.Application {
 		Logger.info('Booting exception handler middleware...');
-		// app.use(function(err, req, res, next) {
-		//     console.error(err.stack);
-		//     res.status(500).send('Something broke!');
-		// });
 		app.use('/', this.logError);
 		app.use('/', this.errorResponder);
 		return app;
@@ -47,9 +42,6 @@ class ExceptionHandler {
 			}
 		}
 	}
-	//   const invalidPathHandler = (req, res, next) => {
-	//     res.redirect('/error')
-	//   }
 }
 
 export default ExceptionHandler;
