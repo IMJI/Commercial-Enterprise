@@ -1,6 +1,6 @@
 import Joi = require('joi');
 import { Request, Response, NextFunction } from 'express';
-import { DataSource, QueryBuilder } from 'typeorm';
+import { DataSource } from 'typeorm';
 import Outgoing from '../../models/Outgoing';
 import Database from '../../services/Database';
 import Logger from '../../services/logger/Logger';
@@ -114,7 +114,6 @@ class OutgoingsController {
 	// REFACTOR
 	public static async post(req: Request<unknown, unknown, OutgoingBody, unknown>, res: Response, next: NextFunction): Promise<void> {
 		try {
-			console.log(req.body);
 			const dataSource: DataSource = Database.dataSource;
 			const body = Joi.attempt(req.body, outgoingBodyValidator);
 			const qbCost = dataSource
