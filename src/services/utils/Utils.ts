@@ -1,3 +1,5 @@
+import InvalidNumberException from '../../exception/InvalidNumberException';
+
 const iso8601RegExp = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/;
 
 export function reviveJSON(key: string, value: unknown): unknown {
@@ -45,9 +47,9 @@ export class Time {
 export function convertToNumber(str: string, canBeNegative = true): number {
 	const num: number = +str;
 	if (isNaN(num)) {
-		throw new Error(`Invalid numeric value: ${str}`);
+		throw new InvalidNumberException(`Invalid numeric value: ${str}`);
 	}
-	if (!canBeNegative && num < 0) throw new Error(`Value can't be negative`);
+	if (!canBeNegative && num < 0) throw new InvalidNumberException(`Value can't be negative`);
 	return num;
 }
 
