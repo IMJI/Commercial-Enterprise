@@ -1,10 +1,12 @@
 import { Router } from 'express';
-import OutgoingsController from '../controllers/api/Outgoings';
+import OutgoingsController from '../controllers/dev_api/outgoings/OutgoingsController';
+// import OutgoingsController from '../controllers/api/Outgoings';
 
 const apiRouter: Router = Router();
 const apiPath = '/api';
 
-apiRouter.route(`${apiPath}/outgoings/:id?`).get(OutgoingsController.get).post(OutgoingsController.post);
+apiRouter.route(`${apiPath}/outgoings/:id?`).get(OutgoingsController.get);
+//.post(OutgoingsController.post);
 // .put(OutgoingsController.Put)
 // .delete(OutgoingsController.Delete);
 
