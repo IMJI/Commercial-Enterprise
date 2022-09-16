@@ -15,6 +15,7 @@ import StatusMonitorMiddleware from '../middlewares/StatusMonitor';
 import ExceptionHandler from '../middlewares/ExceptionHandler';
 import NotFoundException from '../exception/NotFoundException';
 import NotFoundController from '../controllers/NotFoundController';
+import ValidationMiddleware from '../middlewares/Validation';
 
 class WebServer {
 	private static express: express.Application;
@@ -30,8 +31,6 @@ class WebServer {
 				cert: fs.readFileSync(path.join(__dirname, '../../cert.pem'))
 			};
 			this.express = express();
-			this.mountRoutes(ApiRouter);
-			this.mountRoutes(WebRouter);
 			this.mountMiddlewares();
 			this.server = https
 				.createServer(this.serverOptions, this.express)
@@ -63,11 +62,14 @@ class WebServer {
 	}
 
 	private static mountMiddlewares(): void {
+		this.express = ValidationMiddleware.mount(this.express);
 		this.express = StaticMiddleware.mount(this.express);
 		this.express = HttpMiddleware.mount(this.express);
 		if (Config.webServer.enableCORS) this.express = CorsMiddleware.mount(this.express);
 		if (Config.webServer.enableHTTPLog) this.express = LogMiddleware.mount(this.express);
 		this.express = StatusMonitorMiddleware.mount(this.express);
+		this.mountRoutes(WebRouter);
+		this.mountRoutes(ApiRouter);
 		this.express.use('/', express.Router().get('*', NotFoundController.get));
 		this.express = ExceptionHandler.mount(this.express);
 	}
