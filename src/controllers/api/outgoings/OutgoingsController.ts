@@ -3,7 +3,7 @@ import NotFoundException from '../../../exception/NotFoundException';
 import Outgoing from '../../../models/Outgoing';
 import IController from '../../../types/IController';
 import { Params, ParamsParser, ParsedParams } from '../../../types/ParamsParser';
-import { OutgoingQuery, OutgoingQueryParser, ParsedOutgoingQuery } from '../../api/OutgoingQueryParser';
+import { OutgoingQuery, OutgoingQueryParser, ParsedOutgoingQuery } from '../../old_api/OutgoingQueryParser';
 import OutgoingReadAPI from './OutgoingReadAPI';
 
 class OutgoingsController implements IController<Outgoing> {

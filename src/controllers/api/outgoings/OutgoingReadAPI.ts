@@ -6,7 +6,7 @@ import { ParsedParams } from '../../../types/ParamsParser';
 import { ParsedQuery } from '../../../types/QueryParser';
 import { Sort } from '../../../types/Sort';
 import SortableColumn from '../../../types/SortableColumns';
-import { ParsedOutgoingQuery } from '../../api/OutgoingQueryParser';
+import { ParsedOutgoingQuery } from '../../old_api/OutgoingQueryParser';
 
 const sortableColumns: SortableColumn[] = [
 	{ name: 'category', column: 'category.name' },

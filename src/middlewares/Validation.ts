@@ -13,7 +13,8 @@ class ValidationMiddleware {
 
 	public static validateQuery<T>(req: express.Request, res: express.Response, next: express.NextFunction) {
 		console.log(req.query);
-        next();
+		// const validatedRequest = new
+		next();
 	}
 }
 
