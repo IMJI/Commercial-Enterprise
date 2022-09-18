@@ -18,9 +18,8 @@ const sortableColumns: SortableColumn[] = [
 ];
 
 class OutgoingCreateAPI implements IReadAPI<Outgoing> {
-	public read(query: ParsedOutgoingQuery, params: ParsedParams): Promise<SelectQueryBuilder<Outgoing>> {
+	public read(dataSource: DataSource, query: ParsedOutgoingQuery, params: ParsedParams): Promise<Outgoing | Outgoing[]> {
 		return new Promise((resolve, reject) => {
-			const dataSource: DataSource = Database.dataSource;
 			let queryBuilder = dataSource
 				.getRepository(Outgoing)
 				.createQueryBuilder('outgoing')
@@ -76,7 +75,15 @@ class OutgoingCreateAPI implements IReadAPI<Outgoing> {
 			if (query.skip) {
 				queryBuilder = queryBuilder.skip(query.skip);
 			}
-			resolve(queryBuilder);
+
+			try {
+				let data: Promise<Outgoing> | Promise<Outgoing[]>;
+				if (params.id) data = queryBuilder.getOne();
+				else data = queryBuilder.getMany();
+				resolve(data);
+			} catch (error) {
+				reject(error);
+			}
 		});
 	}
 }
