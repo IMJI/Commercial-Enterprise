@@ -1,3 +1,4 @@
+import { IsInt, IsOptional, IsPositive, IsString, MaxLength, MinLength } from 'class-validator';
 import { Entity, Column, PrimaryColumn, ManyToOne, OneToOne } from 'typeorm';
 import Category from './Category';
 import Color from './Color';
@@ -6,9 +7,14 @@ import Size from './Size';
 @Entity()
 class Product {
 	@PrimaryColumn()
+	@IsInt()
+	@IsPositive()
 	vendorCode!: number;
 
 	@Column({ length: 64 })
+	@IsString()
+	@MinLength(2)
+	@MaxLength(64)
 	name!: string;
 
 	@ManyToOne(() => Category, (category: Category) => category.products)
@@ -26,6 +32,10 @@ class Product {
 		nullable: true,
 		length: 512
 	})
+	@IsOptional()
+	@IsString()
+	@MinLength(2)
+	@MaxLength(512)
 	description?: string;
 
 	// @OneToOne(() => Stock, (stock: Stock) => stock.product)
