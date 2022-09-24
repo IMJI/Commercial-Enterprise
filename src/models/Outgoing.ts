@@ -1,3 +1,4 @@
+import { IsInt, IsNumber, IsPositive } from 'class-validator';
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, BaseEntity, OneToMany } from 'typeorm';
 import Manager from './Manager';
 import Product from './Product';
@@ -7,6 +8,7 @@ import Tax from './Tax';
 @Entity()
 class Outgoing extends BaseEntity {
 	@PrimaryGeneratedColumn()
+	@IsInt()
 	id!: number;
 
 	@ManyToOne((type) => Product)
@@ -19,6 +21,8 @@ class Outgoing extends BaseEntity {
 	manager!: Manager;
 
 	@Column()
+	@IsInt()
+	@IsPositive()
 	quantity!: number;
 
 	@Column({
@@ -26,6 +30,8 @@ class Outgoing extends BaseEntity {
 		precision: 14,
 		scale: 2
 	})
+	@IsNumber()
+	@IsPositive()
 	cost!: number;
 
 	@OneToMany((type) => Status, (status) => status.outgoing)
