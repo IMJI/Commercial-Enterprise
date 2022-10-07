@@ -1,4 +1,11 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne, BaseEntity } from 'typeorm';
+import {
+	Entity,
+	Column,
+	PrimaryGeneratedColumn,
+	OneToMany,
+	ManyToOne,
+	BaseEntity
+} from 'typeorm';
 
 @Entity()
 class Manager extends BaseEntity {

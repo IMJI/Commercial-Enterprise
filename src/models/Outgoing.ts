@@ -1,9 +1,16 @@
 import { IsInt, IsNumber, IsPositive } from 'class-validator';
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, BaseEntity, OneToMany } from 'typeorm';
+import {
+	Entity,
+	Column,
+	PrimaryGeneratedColumn,
+	ManyToOne,
+	BaseEntity,
+	OneToMany
+} from 'typeorm';
 import Manager from './Manager';
 import Product from './Product';
 import Status from './Status';
-import Tax from './Tax';
+import Tax from './tax/Tax';
 
 @Entity()
 class Outgoing extends BaseEntity {

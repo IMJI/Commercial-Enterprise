@@ -10,10 +10,15 @@ const DEV = 'development';
 function startup(): void {
 	process.stdin.resume();
 	dotenv.config();
-	if ([PROD, DEV].includes(process.env.NODE_ENV)) Config.initialize(process.env.NODE_ENV);
-	else throw new Error("Unknown NODE_ENV value. Use 'production' or 'development' values");
+	if ([PROD, DEV].includes(process.env.NODE_ENV))
+		Config.initialize(process.env.NODE_ENV);
+	else
+		throw new Error(
+			`Unknown NODE_ENV value. Use 'production' or 'development' values`
+		);
 	Logger.initialize(Config.logger);
-	if (process.env.NODE_ENV === DEV) Logger.warn('Application is running in DEVELOPMENT mode!');
+	if (process.env.NODE_ENV === DEV)
+		Logger.warn('Application is running in DEVELOPMENT mode!');
 	Logger.startTimer('App Startup');
 	App.startup()
 		.then(() => {

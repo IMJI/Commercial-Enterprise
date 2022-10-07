@@ -1,4 +1,11 @@
-import { IsInt, IsOptional, IsPositive, IsString, MaxLength, MinLength } from 'class-validator';
+import {
+	IsInt,
+	IsOptional,
+	IsPositive,
+	IsString,
+	MaxLength,
+	MinLength
+} from 'class-validator';
 import { Entity, Column, PrimaryColumn, ManyToOne, OneToOne } from 'typeorm';
 import Category from './Category';
 import Color from './Color';

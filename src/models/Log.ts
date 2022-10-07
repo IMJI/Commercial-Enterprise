@@ -1,4 +1,11 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, BaseEntity, CreateDateColumn } from 'typeorm';
+import {
+	Entity,
+	Column,
+	PrimaryGeneratedColumn,
+	ManyToOne,
+	BaseEntity,
+	CreateDateColumn
+} from 'typeorm';
 import Manager from './Manager';
 import Outgoing from './Outgoing';
 

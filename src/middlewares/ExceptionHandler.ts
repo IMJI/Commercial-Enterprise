@@ -11,13 +11,23 @@ class ExceptionHandler {
 		return app;
 	}
 
-	private static logError(error: Error, req: express.Request, res: express.Response, next: express.NextFunction) {
+	private static logError(
+		error: Error,
+		req: express.Request,
+		res: express.Response,
+		next: express.NextFunction
+	) {
 		const status = (error as Exception).statusCode;
 		if (!(status >= 400 && status <= 499)) Logger.error(error);
 		next(error);
 	}
 
-	private static errorResponder(error: Error, req: express.Request, res: express.Response, next: express.NextFunction) {
+	private static errorResponder(
+		error: Error,
+		req: express.Request,
+		res: express.Response,
+		next: express.NextFunction
+	) {
 		let status = 500;
 		const isApiPath = req.path.split('/')[1] === 'api';
 		if (error instanceof Exception) status = (error as Exception).statusCode;

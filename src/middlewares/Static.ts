@@ -6,7 +6,10 @@ class StaticMiddleware {
 	public static mount(app: express.Application): express.Application {
 		Logger.info('Booting static middleware...');
 
-		app.use('/public', express.static(path.join(__dirname + '/../../public')));
+		app.use(
+			'/public',
+			express.static(path.join(__dirname + '/../../resources'))
+		);
 
 		return app;
 	}

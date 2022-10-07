@@ -31,13 +31,23 @@ class HttpMiddleware {
 		);
 		toobusy.maxLag(Config.webServer.maxLag);
 		toobusy.interval(Config.webServer.lagCheckInterval);
-		app.use((req: express.Request, res: express.Response, next: express.NextFunction) => {
-			if (toobusy()) {
-				next(new ServerIsBusyException('Server is busy right now. Try again later.'));
-			} else {
-				next();
+		app.use(
+			(
+				req: express.Request,
+				res: express.Response,
+				next: express.NextFunction
+			) => {
+				if (toobusy()) {
+					next(
+						new ServerIsBusyException(
+							'Server is busy right now. Try again later.'
+						)
+					);
+				} else {
+					next();
+				}
 			}
-		});
+		);
 
 		return app;
 	}

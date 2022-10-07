@@ -11,7 +11,11 @@ class ValidationMiddleware {
 		return app;
 	}
 
-	public static validateQuery<T>(req: express.Request, res: express.Response, next: express.NextFunction) {
+	public static validateQuery<T>(
+		req: express.Request,
+		res: express.Response,
+		next: express.NextFunction
+	) {
 		console.log(req.query);
 		// const validatedRequest = new
 		next();

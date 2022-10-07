@@ -1,7 +1,13 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, BaseEntity } from 'typeorm';
+import {
+	Entity,
+	Column,
+	PrimaryGeneratedColumn,
+	ManyToOne,
+	BaseEntity
+} from 'typeorm';
 import Manager from './Manager';
 import Product from './Product';
-import Tax from './Tax';
+import Tax from './tax/Tax';
 
 @Entity()
 class Incoming extends BaseEntity {
