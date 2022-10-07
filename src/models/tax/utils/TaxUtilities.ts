@@ -3,9 +3,19 @@ import SortableColumn from '../../../types/utils/SortableColumns';
 
 const taxQueryScheme = Schemes.query.append({
 	name: Schemes.oneOrMoreShortString,
-	valueFrom: Schemes.money,
-	valueTo: Schemes.money,
+	valueFrom: Schemes.percent,
+	valueTo: Schemes.percent,
 	isDeleted: Schemes.bool
+});
+
+const taxBodyScheme = Schemes.query.append({
+	name: Schemes.shortString,
+	value: Schemes.percent
+});
+
+const taxBodyStrictScheme = Schemes.query.append({
+	name: Schemes.shortString.required(),
+	value: Schemes.percent.required()
 });
 
 const taxSortableColumns: SortableColumn[] = [
@@ -14,4 +24,9 @@ const taxSortableColumns: SortableColumn[] = [
 	{ name: 'isDeleted', column: 'tax.isDeleted' }
 ];
 
-export { taxQueryScheme, taxSortableColumns };
+export {
+	taxQueryScheme,
+	taxBodyScheme,
+	taxBodyStrictScheme,
+	taxSortableColumns
+};
