@@ -28,11 +28,7 @@ class TaxQueryBuilder {
 			builder = builder.andWhere('tax.isDeleted = :isDeleted', {
 				isDeleted: options.isDeleted
 			});
-		builder = BaseQueryBuilder.build<Tax>(
-			builder,
-			taxSortableColumns,
-			options
-		);
+		builder = BaseQueryBuilder.build<Tax>(builder, taxSortableColumns, options);
 
 		return builder;
 	}

@@ -15,7 +15,10 @@ class TaxController implements IController {
 			if (req.params.id) {
 				const result = await TaxReader.readOne(+req.params.id);
 				if (result) res.status(200).json(result);
-				else throw new NotFoundException(`Can't find tax with id = ${req.params.id}`);
+				else
+					throw new NotFoundException(
+						`Can't find tax with id = ${req.params.id}`
+					);
 			} else {
 				const findOptions = new TaxFindOptions(req.query);
 				const rows = await TaxReader.read(findOptions);

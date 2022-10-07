@@ -15,10 +15,10 @@ class ValidationMiddleware {
 				req.query = Joi.attempt(req.query, queryScheme);
 				req.body = Joi.attempt(req.body, bodyScheme);
 				next();
-			} catch(error) {
+			} catch (error) {
 				next(new ValidationException(error));
 			}
-		}
+		};
 	}
 }
 

@@ -8,7 +8,6 @@ const taxQueryScheme = Schemes.query.append({
 	isDeleted: Schemes.bool
 });
 
-
 const taxSortableColumns: SortableColumn[] = [
 	{ name: 'name', column: 'tax.name' },
 	{ name: 'value', column: 'tax.value' },
