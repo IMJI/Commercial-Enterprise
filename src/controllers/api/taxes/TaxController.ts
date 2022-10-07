@@ -1,9 +1,14 @@
 import { Request, Response, NextFunction } from 'express';
+import EntityCreationException from '../../../exception/EntityCreationException';
+import EntityDeletionException from '../../../exception/EntityDeletionException';
+import EntityIsNotSpecified from '../../../exception/EntityIsNotSpecified';
 import NotFoundException from '../../../exception/NotFoundException';
-import ValidationException from '../../../exception/ValidationException';
 import TaxFindOptions from '../../../models/tax/dto/TaxFindOptions';
 import IController from '../../../types/interfaces/IController';
+import TaxCreator from './TaxCreator';
+import TaxDeleter from './TaxDeleter';
 import TaxReader from './TaxReader';
+import TaxUpdater from './TaxUpdater';
 
 class TaxController implements IController {
 	public async get(
@@ -37,7 +42,13 @@ class TaxController implements IController {
 		res: Response,
 		next: NextFunction
 	): Promise<void> {
-		return;
+		try {
+			const result = await TaxCreator.create(req.body);
+			if (result) res.status(200).json(result);
+			else throw new EntityCreationException(`Can't create new tax`);
+		} catch (error) {
+			next(error);
+		}
 	}
 
 	public async put(
@@ -45,7 +56,15 @@ class TaxController implements IController {
 		res: Response,
 		next: NextFunction
 	): Promise<void> {
-		return;
+		try {
+			const id: number = +req.params.id;
+			if (!id) throw new EntityIsNotSpecified(`Specify entity to be updated`);
+			const result = await TaxUpdater.update(id, req.body);
+			if (result) res.status(200).json(result);
+			else throw new EntityCreationException(`Can't update tax by id: ${id}`);
+		} catch (error) {
+			next(error);
+		}
 	}
 
 	public async delete(
@@ -53,7 +72,15 @@ class TaxController implements IController {
 		res: Response,
 		next: NextFunction
 	): Promise<void> {
-		return;
+		try {
+			const id: number = +req.params.id;
+			if (!id) throw new EntityIsNotSpecified(`Specify entity to be deleted`);
+			const result = await TaxDeleter.delete(id);
+			if (result) res.status(200).json(result);
+			else throw new EntityDeletionException(`Can't delete tax by id: ${id}`);
+		} catch (error) {
+			next(error);
+		}
 	}
 }
 
