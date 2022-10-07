@@ -1,3 +1,5 @@
+import { toArray } from '../../services/utils/Utils';
+
 enum SortingOrders {
 	ascending = 'ASC',
 	descending = 'DESC'
@@ -18,12 +20,15 @@ class Sort {
 		this._order = order;
 	}
 
-	public static fromString(strs: string[]): Sort[] {
+	public static fromString(strs: string | string[]): Sort[] {
 		const sortings: Sort[] = [];
-		//const sortingsStr: string[] = str.split(',');
+		strs = toArray<string>(strs);
 		strs.forEach((sorting) => {
 			const opts = sorting.split(':');
-			const order: SortingOrders = opts[1].toLowerCase() === 'desc' ? SortingOrders.descending : SortingOrders.ascending;
+			const order: SortingOrders =
+				opts[1].toLowerCase() === 'desc'
+					? SortingOrders.descending
+					: SortingOrders.ascending;
 			const s: Sort = new Sort(opts[0], order);
 			sortings.push(s);
 		});
