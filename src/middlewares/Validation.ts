@@ -1,24 +1,24 @@
 import * as express from 'express';
-import Outgoing from '../models/Outgoing';
-import Logger from '../services/logger/Logger';
+import Joi = require('joi');
+import ValidationException from '../exception/ValidationException';
+import Schemes from '../services/utils/Schemes';
 
 class ValidationMiddleware {
-	public static mount(app: express.Application): express.Application {
-		Logger.info('Booting validation middleware...');
-
-		app.use('/api/outgoings', this.validateQuery<Outgoing>);
-
-		return app;
-	}
-
-	public static validateQuery<T>(
-		req: express.Request,
-		res: express.Response,
-		next: express.NextFunction
-	) {
-		console.log(req.query);
-		// const validatedRequest = new
-		next();
+	public static validate(queryScheme: Joi.Schema, bodyScheme: Joi.Schema) {
+		return function (
+			req: express.Request,
+			res: express.Response,
+			next: express.NextFunction
+		) {
+			try {
+				req.params.id = Joi.attempt(req.params.id, Schemes.id);
+				req.query = Joi.attempt(req.query, queryScheme);
+				req.body = Joi.attempt(req.body, bodyScheme);
+				next();
+			} catch(error) {
+				next(new ValidationException(error));
+			}
+		}
 	}
 }
 
