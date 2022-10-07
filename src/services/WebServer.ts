@@ -13,9 +13,7 @@ import StaticMiddleware from '../middlewares/Static';
 import CorsMiddleware from '../middlewares/Cors';
 import StatusMonitorMiddleware from '../middlewares/StatusMonitor';
 import ExceptionHandler from '../middlewares/ExceptionHandler';
-import NotFoundException from '../exception/NotFoundException';
 import NotFoundController from '../controllers/NotFoundController';
-import ValidationMiddleware from '../middlewares/Validation';
 
 class WebServer {
 	private static express: express.Application;
@@ -62,7 +60,6 @@ class WebServer {
 	}
 
 	private static mountMiddlewares(): void {
-		this.express = ValidationMiddleware.mount(this.express);
 		this.express = StaticMiddleware.mount(this.express);
 		this.express = HttpMiddleware.mount(this.express);
 		if (Config.webServer.enableCORS)
