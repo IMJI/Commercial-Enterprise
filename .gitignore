@@ -1,6 +1,8 @@
 node_modules
-dist
-config*yml
+bin
+configs
+runtime
+scripts
 *.pem
 db.bat
 

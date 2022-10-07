@@ -1,12 +1,12 @@
 {
   "name": "commercial-enterprise",
   "version": "1.0.0",
-  "main": "./dist/index.js",
+  "main": "./bin/index.js",
   "author": "imjiimages",
   "license": "MIT",
   "scripts": {
-    "start": "tsc && node ./dist/index.js",
-    "dev": "npm run prettier && npm run lint && tsc && node ./dist/index.js",
+    "start": "tsc && node ./bin/index.js",
+    "dev": "npm run prettier && npm run lint && tsc && node ./bin/index.js",
     "watch": "nodemon",
     "clear:logs": "del /S logs",
     "clear:dist": "del /S dist",
