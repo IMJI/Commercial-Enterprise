@@ -1,12 +1,9 @@
 import { Router } from 'express';
-import OutgoingsController from '../controllers/api/outgoings/OutgoingsController';
-// import OutgoingsController from '../controllers/api/Outgoings';
+import TaxController from '../controllers/api/taxes/TaxController';
 
 const apiRouter: Router = Router();
 const apiPath = '/api';
 
-apiRouter.route(`${apiPath}/outgoings/:id?`).get(OutgoingsController.get).post(OutgoingsController.post);
-// .put(OutgoingsController.Put)
-// .delete(OutgoingsController.Delete);
+apiRouter.route(`${apiPath}/taxes/:id?`).get(TaxController.get);
 
 export default apiRouter;

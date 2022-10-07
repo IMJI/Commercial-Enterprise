@@ -1,6 +1,6 @@
 import { join } from 'path';
 
-const pathToPagesDir = join(__dirname + '/../../public/pages/');
+const pathToPagesDir = join(__dirname + '/../../resources/pages/');
 
 const routes: object = {
 	index: pathToPagesDir + 'index.html',

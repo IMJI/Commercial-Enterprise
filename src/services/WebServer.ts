@@ -65,8 +65,10 @@ class WebServer {
 		this.express = ValidationMiddleware.mount(this.express);
 		this.express = StaticMiddleware.mount(this.express);
 		this.express = HttpMiddleware.mount(this.express);
-		if (Config.webServer.enableCORS) this.express = CorsMiddleware.mount(this.express);
-		if (Config.webServer.enableHTTPLog) this.express = LogMiddleware.mount(this.express);
+		if (Config.webServer.enableCORS)
+			this.express = CorsMiddleware.mount(this.express);
+		if (Config.webServer.enableHTTPLog)
+			this.express = LogMiddleware.mount(this.express);
 		this.express = StatusMonitorMiddleware.mount(this.express);
 		this.mountRoutes(WebRouter);
 		this.mountRoutes(ApiRouter);

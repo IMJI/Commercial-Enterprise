@@ -55,35 +55,46 @@ class Logger {
 	public static isInitialized = false;
 
 	public static initialize(config: LoggerConfig) {
-		if (this.isInitialized) throw new Error('Logger has already been initialized');
-		this.uptimeStart = Date.now();
+		try {
+			if (this.isInitialized)
+				throw new Error('Logger has already been initialized');
+			this.uptimeStart = Date.now();
 
-		this.dir = config.dir;
-		this.cacheSize = config.maxCacheSize;
-		this.showSummary = config.showSummary;
-		this.format = config.format;
-		this.filePath = path.join(this.dir, `latest.log`);
-		this.rowsRotation = config.rowsRotation;
-		// this.timeRotation = config.timeRotation || 0;
-		// this.hideFromConsole = config.hideFromConsole || [];
-		// this.hideFromFile = config.hideFromFile || [];
-		this.timeRotation = 0;
-		this.hideFromConsole = [];
-		this.hideFromFile = [];
-		this.writeCombinedLog = config.writeCombinedLog;
-		this.writeSeparatedLog = config.writeSeparatedLog;
-		// this.separatedLogLevels = config.separatedLogLevels || [];
-		this.separatedLogLevels = [];
+			this.dir = config.dir;
+			this.cacheSize = config.maxCacheSize;
+			this.showSummary = config.showSummary;
+			this.format = config.format;
+			this.filePath = path.join(this.dir, `latest.log`);
+			this.rowsRotation = config.rowsRotation;
+			// this.timeRotation = config.timeRotation || 0;
+			// this.hideFromConsole = config.hideFromConsole || [];
+			// this.hideFromFile = config.hideFromFile || [];
+			this.timeRotation = 0;
+			this.hideFromConsole = [];
+			this.hideFromFile = [];
+			this.writeCombinedLog = config.writeCombinedLog;
+			this.writeSeparatedLog = config.writeSeparatedLog;
+			// this.separatedLogLevels = config.separatedLogLevels || [];
+			this.separatedLogLevels = [];
 
-		if (this.writeSeparatedLog) {
-			for (const loglvl in LogLevels) {
-				if (this.separatedLogLevels.find((l: string) => l === loglvl.toUpperCase())) this.separetedLogFilenames.push(loglvl);
+			if (this.writeSeparatedLog) {
+				for (const loglvl in LogLevels) {
+					if (
+						this.separatedLogLevels.find(
+							(l: string) => l === loglvl.toUpperCase()
+						)
+					)
+						this.separetedLogFilenames.push(loglvl);
+				}
 			}
+			if (this.rowsRotation || this.timeRotation)
+				this.lastRotation = Date.now();
+			if (!fs.existsSync(this.dir)) fs.mkdirSync(this.dir, { recursive: true });
+			this.perfTimeStamp = new TimeStamp('LOGPERF');
+			this.isInitialized = true;
+		} catch (e) {
+			console.log(e);
 		}
-		if (this.rowsRotation || this.timeRotation) this.lastRotation = Date.now();
-		if (!fs.existsSync(this.dir)) fs.mkdirSync(this.dir);
-		this.perfTimeStamp = new TimeStamp('LOGPERF');
-		this.isInitialized = true;
 	}
 
 	private static checkRotation(): void {
@@ -107,7 +118,10 @@ class Logger {
 
 	private static rotateFiles(): void {
 		this.writeCache();
-		const filename: string = new Date(this.lastRotation).toISOString().replace(/:/g, '-').split('.')[0];
+		const filename: string = new Date(this.lastRotation)
+			.toISOString()
+			.replace(/:/g, '-')
+			.split('.')[0];
 		fs.copyFileSync(this.filePath, path.join(this.dir, `${filename}.log`));
 		fs.truncateSync(this.filePath, 0);
 		this.separetedLogFilenames.forEach((lfn) => {
@@ -119,12 +133,18 @@ class Logger {
 	}
 
 	private static writeCache(): void {
-		if (this.writeCombinedLog) fs.appendFileSync(this.filePath, this.cache.map((l) => `${l.message}\n`).join(''));
+		if (this.writeCombinedLog)
+			fs.appendFileSync(
+				this.filePath,
+				this.cache.map((l) => `${l.message}\n`).join('')
+			);
 		if (this.writeSeparatedLog) {
 			this.separetedLogFilenames.forEach((lfn: string) => {
 				fs.appendFileSync(
 					path.join(this.dir, `latest-${lfn}.log`),
-					this.cache.map((l) => (lfn.toUpperCase() === l.level ? `${l.message}\n` : '')).join('')
+					this.cache
+						.map((l) => (lfn.toUpperCase() === l.level ? `${l.message}\n` : ''))
+						.join('')
 				);
 			});
 		}
@@ -132,9 +152,9 @@ class Logger {
 	}
 
 	private static summary(): string {
-		return `Uptime: ${prettyDate(Date.now() - this.uptimeStart)}, Warnings: ${this.messages['WARN']}, Errors: ${this.messages['ERROR']}, Fatal: ${
-			this.messages['FATAL']
-		}`;
+		return `Uptime: ${prettyDate(Date.now() - this.uptimeStart)}, Warnings: ${
+			this.messages['WARN']
+		}, Errors: ${this.messages['ERROR']}, Fatal: ${this.messages['FATAL']}`;
 	}
 
 	private static formatString(level: string, message: string): object {
@@ -153,7 +173,9 @@ class Logger {
 		const consoleOut = fileOut
 			.replace('$LEVEL', chalk.bold(colors[level.toLowerCase()](`[${level}]`)))
 			.replace('$PERF', chalk.greenBright(`+${prettyDate(perf)}`));
-		fileOut = fileOut.replace('$LEVEL', `[${level}]`).replace('$PERF', `+${prettyDate(perf)}`);
+		fileOut = fileOut
+			.replace('$LEVEL', `[${level}]`)
+			.replace('$PERF', `+${prettyDate(perf)}`);
 		return { fileOut, consoleOut };
 	}
 
@@ -161,8 +183,10 @@ class Logger {
 		this.checkRotation();
 		if (!this.isInitialized) throw new Error('Logger was not initialized.');
 		const output: object = this.formatString(level, message);
-		if (!this.hideFromConsole.find((loglvl) => loglvl === level)) console.log(output['consoleOut']);
-		if (!this.hideFromFile.find((loglvl) => loglvl === level)) this.cache.push({ level: level, message: output['fileOut'] });
+		if (!this.hideFromConsole.find((loglvl) => loglvl === level))
+			console.log(output['consoleOut']);
+		if (!this.hideFromFile.find((loglvl) => loglvl === level))
+			this.cache.push({ level: level, message: output['fileOut'] });
 		this.messages[level]++;
 		this.rowsCount++;
 		if (this.cache.length >= this.cacheSize) {
@@ -210,7 +234,9 @@ class Logger {
 	}
 
 	public static stopTimer(name: string): void {
-		const ts: TimeStamp = this.timeStamps.find((ts: TimeStamp) => ts.name === name);
+		const ts: TimeStamp = this.timeStamps.find(
+			(ts: TimeStamp) => ts.name === name
+		);
 		if (ts) {
 			this.debug(`Timer ${name} finished at ${prettyDate(ts.stamp())}`);
 			this.timeStamps.splice(this.timeStamps.indexOf(ts), 1);

@@ -15,7 +15,11 @@ class App {
 					resolve();
 				})
 				.catch((error) => {
-					Logger.error(`Error while initializing database module. ${error.message || error}`);
+					Logger.error(
+						`Error while initializing database module. ${
+							error.message || error
+						}`
+					);
 					reject(error);
 				});
 		});
@@ -30,7 +34,11 @@ class App {
 					resolve();
 				})
 				.catch((error) => {
-					Logger.error(`Error while initializing web server module. ${error.message || error}`);
+					Logger.error(
+						`Error while initializing web server module. ${
+							error.message || error
+						}`
+					);
 					reject(error);
 				});
 		});
@@ -49,7 +57,9 @@ class App {
 					resolve();
 				})
 				.catch((error) => {
-					Logger.error(`Error while closing database. ${error.message || error}`);
+					Logger.error(
+						`Error while closing database. ${error.message || error}`
+					);
 					reject(error);
 				});
 		});
@@ -63,7 +73,9 @@ class App {
 					resolve();
 				})
 				.catch((error) => {
-					Logger.error(`Error while closing web server. ${error.message || error}`);
+					Logger.error(
+						`Error while closing web server. ${error.message || error}`
+					);
 					reject(error);
 				});
 		});
@@ -73,7 +85,8 @@ class App {
 		Logger.info('Shutting down...');
 		const shutdownList: Promise<void>[] = [];
 		if (this.isDatabaseInitialized) shutdownList.push(this.databaseShutdown());
-		if (this.isWebServerInitialized) shutdownList.push(this.webServerShutdown());
+		if (this.isWebServerInitialized)
+			shutdownList.push(this.webServerShutdown());
 		return Promise.all(shutdownList);
 	}
 }
