@@ -49,10 +49,16 @@ export function convertToNumber(str: string, canBeNegative = true): number {
 	if (isNaN(num)) {
 		throw new InvalidNumberException(`Invalid numeric value: ${str}`);
 	}
-	if (!canBeNegative && num < 0) throw new InvalidNumberException(`Value can't be negative`);
+	if (!canBeNegative && num < 0)
+		throw new InvalidNumberException(`Value can't be negative`);
 	return num;
 }
 
 export function convertArrayToNumber(strs: string[]): number[] {
 	return strs.map((str) => convertToNumber(str));
+}
+
+export function toArray<T>(input: T | T[]): T[] {
+	if (input instanceof Array<T>) return input;
+	return [input];
 }
