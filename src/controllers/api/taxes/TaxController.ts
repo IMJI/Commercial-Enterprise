@@ -26,9 +26,10 @@ class TaxController implements IController {
 					);
 			} else {
 				const findOptions = new TaxFindOptions(req.query);
-				const rows = await TaxReader.read(findOptions);
-				const count = await TaxReader.count(findOptions);
-				if (rows && count > 0) res.status(200).json({ rows, count });
+				// const rows = await TaxReader.read(findOptions);
+				// const count = await TaxReader.count(findOptions);
+				const result = await TaxReader.readAndCount(findOptions);
+				if (result.rows && result.count > 0) res.status(200).json(result);
 				else
 					throw new NotFoundException(`Can't find tax by query: ${req.path}`);
 			}

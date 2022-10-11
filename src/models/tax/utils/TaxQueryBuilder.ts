@@ -24,7 +24,7 @@ class TaxQueryBuilder {
 			builder = builder.andWhere('tax.cost <= :valueTo', {
 				valueTo: options.valueTo
 			});
-		if (options.isDeleted)
+		if (options.isDeleted !== undefined)
 			builder = builder.andWhere('tax.isDeleted = :isDeleted', {
 				isDeleted: options.isDeleted
 			});

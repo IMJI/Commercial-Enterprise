@@ -13,7 +13,10 @@ class TaxFindOptions extends FindOptions {
 		this.name = obj.name ? toArray<string>(obj.name) : [];
 		this.valueFrom = obj.valueFrom;
 		this.valueTo = obj.valueTo;
-		this.isDeleted = obj.isDeleted;
+	}
+
+	public setIsDeleted?(value: boolean): void {
+		this.isDeleted = value;
 	}
 }
 

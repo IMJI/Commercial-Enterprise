@@ -4,8 +4,7 @@ import SortableColumn from '../../../types/utils/SortableColumns';
 const taxQueryScheme = Schemes.query.append({
 	name: Schemes.oneOrMoreShortString,
 	valueFrom: Schemes.percent,
-	valueTo: Schemes.percent,
-	isDeleted: Schemes.bool
+	valueTo: Schemes.percent
 });
 
 const taxBodyScheme = Schemes.query.append({
@@ -20,8 +19,7 @@ const taxBodyStrictScheme = Schemes.query.append({
 
 const taxSortableColumns: SortableColumn[] = [
 	{ name: 'name', column: 'tax.name' },
-	{ name: 'value', column: 'tax.value' },
-	{ name: 'isDeleted', column: 'tax.isDeleted' }
+	{ name: 'value', column: 'tax.value' }
 ];
 
 export {
