@@ -5,7 +5,7 @@ import * as fs from 'fs';
 import * as toobusy from 'toobusy-js';
 import Config from './Config';
 import WebRouter from '../routes/WebRouter';
-import ApiRouter from '../routes/ApiRouter';
+import APIRouter from '../routes/APIRouter';
 import Logger from './logger/Logger';
 import HttpMiddleware from '../middlewares/Http';
 import LogMiddleware from '../middlewares/Log';
@@ -68,7 +68,7 @@ class WebServer {
 			this.express = LogMiddleware.mount(this.express);
 		this.express = StatusMonitorMiddleware.mount(this.express);
 		this.mountRoutes(WebRouter);
-		this.mountRoutes(ApiRouter);
+		this.mountRoutes(APIRouter);
 		this.express.use('/', express.Router().get('*', NotFoundController.get));
 		this.express = ExceptionHandler.mount(this.express);
 	}
