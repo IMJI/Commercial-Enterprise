@@ -5,10 +5,12 @@ import { ICreator } from '../../../../types/interfaces/DatabaseAPI';
 class TaxAdminCreator implements ICreator<Tax> {
 	public async create(options: TaxCreateOptions): Promise<Tax> {
 		const { name, value } = options;
+		let isDeleted = false;
+		if (options.isDeleted !== undefined) isDeleted = options.isDeleted;
 		const tax = Tax.create({
 			name,
 			value,
-			isDeleted: false
+			isDeleted
 		});
 		await Tax.save(tax);
 
