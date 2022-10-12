@@ -1,6 +1,6 @@
-import TaxCreateOptions from '../../../models/tax/dto/TaxCreateOptions';
-import Tax from '../../../models/tax/Tax';
-import { ICreator } from '../../../types/interfaces/DatabaseAPI';
+import TaxCreateOptions from '../../../../models/tax/dto/TaxCreateOptions';
+import Tax from '../../../../models/tax/Tax';
+import { ICreator } from '../../../../types/interfaces/DatabaseAPI';
 
 class TaxCreator implements ICreator<Tax> {
 	public async create(options: TaxCreateOptions): Promise<Tax> {

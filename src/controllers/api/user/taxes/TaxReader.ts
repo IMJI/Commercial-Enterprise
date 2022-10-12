@@ -1,8 +1,8 @@
-import Tax from '../../../models/tax/Tax';
-import TaxQueryBuilder from '../../../models/tax/utils/TaxQueryBuilder';
-import { IReader } from '../../../types/interfaces/DatabaseAPI';
-import TaxFindOptions from '../../../types/dto/FindOptions';
-import ReadAndCountResult from '../../../types/dto/ReadAndCountResult';
+import Tax from '../../../../models/tax/Tax';
+import TaxQueryBuilder from '../../../../models/tax/utils/TaxQueryBuilder';
+import { IReader } from '../../../../types/interfaces/DatabaseAPI';
+import TaxFindOptions from '../../../../types/dto/FindOptions';
+import ReadAndCountResult from '../../../../types/dto/ReadAndCountResult';
 
 class TaxReader implements IReader<Tax> {
 	public async readOne(id: number, showDeleted = false): Promise<Tax> {

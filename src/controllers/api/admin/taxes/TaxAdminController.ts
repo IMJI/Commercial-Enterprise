@@ -1,16 +1,16 @@
 import { Request, Response, NextFunction } from 'express';
-import EntityCreationException from '../../../exception/EntityCreationException';
-import EntityDeletionException from '../../../exception/EntityDeletionException';
-import EntityIsNotSpecified from '../../../exception/EntityIsNotSpecified';
-import NotFoundException from '../../../exception/NotFoundException';
-import TaxFindOptions from '../../../models/tax/dto/TaxFindOptions';
-import IController from '../../../types/interfaces/IController';
-import TaxCreator from './TaxCreator';
-import TaxDeleter from './TaxDeleter';
-import TaxReader from './TaxReader';
-import TaxUpdater from './TaxUpdater';
+import EntityCreationException from '../../../../exception/EntityCreationException';
+import EntityDeletionException from '../../../../exception/EntityDeletionException';
+import EntityIsNotSpecified from '../../../../exception/EntityIsNotSpecified';
+import NotFoundException from '../../../../exception/NotFoundException';
+import TaxFindOptions from '../../../../models/tax/dto/TaxFindOptions';
+import IController from '../../../../types/interfaces/IController';
+import TaxCreator from './TaxAdminCreator';
+import TaxDeleter from './TaxAdminDeleter';
+import TaxReader from './TaxAdminReader';
+import TaxUpdater from './TaxAdminUpdater';
 
-class TaxController implements IController {
+class TaxAdminController implements IController {
 	public async get(
 		req: Request,
 		res: Response,
@@ -26,8 +26,6 @@ class TaxController implements IController {
 					);
 			} else {
 				const findOptions = new TaxFindOptions(req.query);
-				// const rows = await TaxReader.read(findOptions);
-				// const count = await TaxReader.count(findOptions);
 				const result = await TaxReader.readAndCount(findOptions);
 				if (result.rows && result.count > 0) res.status(200).json(result);
 				else
@@ -85,4 +83,4 @@ class TaxController implements IController {
 	}
 }
 
-export default new TaxController();
+export default new TaxAdminController();

@@ -1,6 +1,6 @@
-import TaxUpdateOptions from '../../../models/tax/dto/TaxUpdateOptions';
-import Tax from '../../../models/tax/Tax';
-import { IUpdater } from '../../../types/interfaces/DatabaseAPI';
+import TaxUpdateOptions from '../../../../models/tax/dto/TaxUpdateOptions';
+import Tax from '../../../../models/tax/Tax';
+import { IUpdater } from '../../../../types/interfaces/DatabaseAPI';
 
 class TaxUpdater implements IUpdater<Tax> {
 	public async update(id: number, options: TaxUpdateOptions): Promise<Tax> {

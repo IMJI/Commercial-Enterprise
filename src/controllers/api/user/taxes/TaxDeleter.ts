@@ -1,5 +1,5 @@
-import Tax from '../../../models/tax/Tax';
-import { IDeleter } from '../../../types/interfaces/DatabaseAPI';
+import Tax from '../../../../models/tax/Tax';
+import { IDeleter } from '../../../../types/interfaces/DatabaseAPI';
 
 class TaxDeleter implements IDeleter<Tax> {
 	public async delete(id: number): Promise<Tax> {
