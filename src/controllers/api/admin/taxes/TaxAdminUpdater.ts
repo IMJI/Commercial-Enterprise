@@ -7,6 +7,7 @@ class TaxAdminUpdater implements IUpdater<Tax> {
 		const tax: Tax = await Tax.findOneBy({ id });
 		if (options.name) tax.name = options.name;
 		if (options.value) tax.value = options.value;
+		if (options.isDeleted !== undefined) tax.isDeleted = options.isDeleted;
 		await Tax.save(tax);
 
 		return tax;
