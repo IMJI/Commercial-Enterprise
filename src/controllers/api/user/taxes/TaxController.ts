@@ -3,7 +3,7 @@ import EntityCreationException from '../../../../exception/EntityCreationExcepti
 import EntityDeletionException from '../../../../exception/EntityDeletionException';
 import EntityIsNotSpecified from '../../../../exception/EntityIsNotSpecified';
 import NotFoundException from '../../../../exception/NotFoundException';
-import TaxFindOptions from '../../../../models/tax/dto/TaxFindOptions';
+import { TaxFindOptions } from '../../../../models/tax/dto/TaxFindOptions';
 import IController from '../../../../types/interfaces/IController';
 import TaxCreator from './TaxCreator';
 import TaxDeleter from './TaxDeleter';

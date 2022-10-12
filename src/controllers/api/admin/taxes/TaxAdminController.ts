@@ -3,12 +3,12 @@ import EntityCreationException from '../../../../exception/EntityCreationExcepti
 import EntityDeletionException from '../../../../exception/EntityDeletionException';
 import EntityIsNotSpecified from '../../../../exception/EntityIsNotSpecified';
 import NotFoundException from '../../../../exception/NotFoundException';
-import TaxFindOptions from '../../../../models/tax/dto/TaxFindOptions';
+import { ExtendedTaxFindOptions } from '../../../../models/tax/dto/TaxFindOptions';
 import IController from '../../../../types/interfaces/IController';
-import TaxCreator from './TaxAdminCreator';
-import TaxDeleter from './TaxAdminDeleter';
-import TaxReader from './TaxAdminReader';
-import TaxUpdater from './TaxAdminUpdater';
+import TaxAdminCreator from './TaxAdminCreator';
+import TaxAdminDeleter from './TaxAdminDeleter';
+import TaxAdminReader from './TaxAdminReader';
+import TaxAdminUpdater from './TaxAdminUpdater';
 
 class TaxAdminController implements IController {
 	public async get(
@@ -18,15 +18,15 @@ class TaxAdminController implements IController {
 	): Promise<void> {
 		try {
 			if (req.params.id) {
-				const result = await TaxReader.readOne(+req.params.id);
+				const result = await TaxAdminReader.readOne(+req.params.id);
 				if (result) res.status(200).json(result);
 				else
 					throw new NotFoundException(
 						`Can't find tax with id = ${req.params.id}`
 					);
 			} else {
-				const findOptions = new TaxFindOptions(req.query);
-				const result = await TaxReader.readAndCount(findOptions);
+				const findOptions = new ExtendedTaxFindOptions(req.query);
+				const result = await TaxAdminReader.readAndCount(findOptions);
 				if (result.rows && result.count > 0) res.status(200).json(result);
 				else
 					throw new NotFoundException(`Can't find tax by query: ${req.path}`);
@@ -42,7 +42,7 @@ class TaxAdminController implements IController {
 		next: NextFunction
 	): Promise<void> {
 		try {
-			const result = await TaxCreator.create(req.body);
+			const result = await TaxAdminCreator.create(req.body);
 			if (result) res.status(200).json(result);
 			else throw new EntityCreationException(`Can't create new tax`);
 		} catch (error) {
@@ -58,7 +58,7 @@ class TaxAdminController implements IController {
 		try {
 			const id: number = +req.params.id;
 			if (!id) throw new EntityIsNotSpecified(`Specify entity to be updated`);
-			const result = await TaxUpdater.update(id, req.body);
+			const result = await TaxAdminUpdater.update(id, req.body);
 			if (result) res.status(200).json(result);
 			else throw new EntityCreationException(`Can't update tax by id: ${id}`);
 		} catch (error) {
@@ -74,7 +74,7 @@ class TaxAdminController implements IController {
 		try {
 			const id: number = +req.params.id;
 			if (!id) throw new EntityIsNotSpecified(`Specify entity to be deleted`);
-			const result = await TaxDeleter.delete(id);
+			const result = await TaxAdminDeleter.delete(id);
 			if (result) res.status(200).json(result);
 			else throw new EntityDeletionException(`Can't delete tax by id: ${id}`);
 		} catch (error) {

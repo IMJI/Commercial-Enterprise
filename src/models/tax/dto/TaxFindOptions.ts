@@ -6,7 +6,6 @@ class TaxFindOptions extends FindOptions {
 	name?: string[];
 	valueFrom?: number;
 	valueTo?: number;
-	isDeleted?: boolean;
 
 	constructor(obj: TaxQueryData) {
 		super(obj);
@@ -14,10 +13,15 @@ class TaxFindOptions extends FindOptions {
 		this.valueFrom = obj.valueFrom;
 		this.valueTo = obj.valueTo;
 	}
+}
 
-	public setIsDeleted?(value: boolean): void {
-		this.isDeleted = value;
+class ExtendedTaxFindOptions extends TaxFindOptions {
+	isDeleted?: boolean;
+
+	constructor(obj: TaxQueryData) {
+		super(obj);
+		this.isDeleted = obj.isDeleted;
 	}
 }
 
-export default TaxFindOptions;
+export { TaxFindOptions, ExtendedTaxFindOptions };

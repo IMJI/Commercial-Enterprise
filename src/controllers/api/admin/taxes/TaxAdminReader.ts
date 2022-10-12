@@ -1,8 +1,8 @@
 import Tax from '../../../../models/tax/Tax';
 import TaxQueryBuilder from '../../../../models/tax/utils/TaxQueryBuilder';
 import { IReader } from '../../../../types/interfaces/DatabaseAPI';
-import TaxFindOptions from '../../../../types/dto/FindOptions';
 import ReadAndCountResult from '../../../../types/dto/ReadAndCountResult';
+import { ExtendedTaxFindOptions } from '../../../../models/tax/dto/TaxFindOptions';
 
 class TaxAdminReader implements IReader<Tax> {
 	public async readOne(id: number): Promise<Tax> {
@@ -10,23 +10,25 @@ class TaxAdminReader implements IReader<Tax> {
 		return result;
 	}
 
-	public async read(options: TaxFindOptions): Promise<Tax[]> {
-		const opts: TaxFindOptions = { ...options };
-		const query = TaxQueryBuilder.build(opts);
+	public async read(options: ExtendedTaxFindOptions): Promise<Tax[]> {
+		const opts: ExtendedTaxFindOptions = { ...options };
+		const query = TaxQueryBuilder.buildExtended(opts);
 		const result = await query.getMany();
 		return result;
 	}
 
-	public async count(options: TaxFindOptions): Promise<number> {
-		const opts: TaxFindOptions = { ...options };
-		const query = TaxQueryBuilder.build(opts);
+	public async count(options: ExtendedTaxFindOptions): Promise<number> {
+		const opts: ExtendedTaxFindOptions = { ...options };
+		const query = TaxQueryBuilder.buildExtended(opts);
 		const result = await query.getCount();
 		return result;
 	}
 
-	public async readAndCount(options: TaxFindOptions): Promise<ReadAndCountResult<Tax>> {
-		const opts: TaxFindOptions = { ...options };
-		const query = TaxQueryBuilder.build(opts);
+	public async readAndCount(
+		options: ExtendedTaxFindOptions
+	): Promise<ReadAndCountResult<Tax>> {
+		const opts: ExtendedTaxFindOptions = { ...options };
+		const query = TaxQueryBuilder.buildExtended(opts);
 		const rows = await query.getMany();
 		const count = await query.getCount();
 		return { rows, count };
