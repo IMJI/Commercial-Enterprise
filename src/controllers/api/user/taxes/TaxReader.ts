@@ -7,7 +7,7 @@ import { TaxFindOptions } from '../../../../models/tax/dto/TaxFindOptions';
 class TaxReader implements IReader<Tax> {
 	public async readOne(id: number): Promise<Tax> {
 		const result = await Tax.findOneBy({ id });
-		if (result.isDeleted) return null;
+		if (result && result.isDeleted) return null;
 		return result;
 	}
 

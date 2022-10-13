@@ -35,6 +35,7 @@ class ValidationException extends Exception {
 		if (type === 'string.max')
 			return `Maximum length of ${context.key} is ${context.limit}. Recieved ${context.value}`;
 		if (type === 'object.unknown') return `${context.key} key is not allowed`;
+		if (type == 'any.required') return `Field ${context.key} is required`;
 
 		return `Unknown validation error. For key ${context.key} value ${context.value} is incorrect.`;
 	}

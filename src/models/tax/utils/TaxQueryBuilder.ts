@@ -20,11 +20,11 @@ class TaxQueryBuilder {
 				name: options.name
 			});
 		if (options.valueFrom)
-			builder = builder.andWhere('tax.cost >= :valueFrom', {
+			builder = builder.andWhere('tax.value >= :valueFrom', {
 				valueFrom: options.valueFrom
 			});
 		if (options.valueTo)
-			builder = builder.andWhere('tax.cost <= :valueTo', {
+			builder = builder.andWhere('tax.value <= :valueTo', {
 				valueTo: options.valueTo
 			});
 		builder = BaseQueryBuilder.build<Tax>(builder, taxSortableColumns, options);
