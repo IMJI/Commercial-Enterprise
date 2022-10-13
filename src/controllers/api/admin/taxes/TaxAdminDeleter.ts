@@ -4,8 +4,7 @@ import { IDeleter } from '../../../../types/interfaces/DatabaseAPI';
 class TaxAdminDeleter implements IDeleter<Tax> {
 	public async delete(id: number): Promise<Tax> {
 		const tax: Tax = await Tax.findOneBy({ id });
-		tax.isDeleted = true;
-		await Tax.save(tax);
+		await Tax.delete(id);
 
 		return tax;
 	}
