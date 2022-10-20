@@ -1,8 +1,14 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
-import Product from './Product';
+import {
+	Entity,
+	Column,
+	PrimaryGeneratedColumn,
+	OneToMany,
+	BaseEntity
+} from 'typeorm';
+import Product from '../Product';
 
 @Entity()
-class Category {
+class Category extends BaseEntity {
 	@PrimaryGeneratedColumn()
 	id!: number;
 

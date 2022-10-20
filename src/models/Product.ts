@@ -7,7 +7,7 @@ import {
 	MinLength
 } from 'class-validator';
 import { Entity, Column, PrimaryColumn, ManyToOne, OneToOne } from 'typeorm';
-import Category from './Category';
+import Category from './category/Category';
 import Color from './Color';
 import Size from './Size';
 

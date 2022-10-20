@@ -1,4 +1,4 @@
-import Category from './Category';
+import Category from './category/Category';
 import Color from './Color';
 import Incoming from './Incoming';
 import Log from './Log';
