@@ -8,10 +8,9 @@ class TaxDeleter implements IDeleter<Tax> {
 		if (tax) {
 			tax.isDeleted = true;
 			await Tax.save(tax);
-	
+
 			return tax;
-		}
-		else throw new NotFoundException(`Can't find tax with id = ${id}`);
+		} else throw new NotFoundException(`Can't find tax with id = ${id}`);
 	}
 }
 

@@ -9,8 +9,7 @@ class TaxAdminDeleter implements IDeleter<Tax> {
 			await Tax.delete(id);
 
 			return tax;
-		}
-		else throw new NotFoundException(`Can't find tax with id = ${id}`);
+		} else throw new NotFoundException(`Can't find tax with id = ${id}`);
 	}
 }
 

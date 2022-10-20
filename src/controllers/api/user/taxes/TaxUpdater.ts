@@ -10,10 +10,9 @@ class TaxUpdater implements IUpdater<Tax> {
 			if (options.name) tax.name = options.name;
 			if (options.value) tax.value = options.value;
 			await Tax.save(tax);
-	
+
 			return tax;
-		}
-		else throw new NotFoundException(`Can't find tax with id = ${id}`);
+		} else throw new NotFoundException(`Can't find tax with id = ${id}`);
 	}
 }
 

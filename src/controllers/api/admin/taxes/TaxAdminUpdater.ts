@@ -11,10 +11,9 @@ class TaxAdminUpdater implements IUpdater<Tax> {
 			if (options.value) tax.value = options.value;
 			if (options.isDeleted !== undefined) tax.isDeleted = options.isDeleted;
 			await Tax.save(tax);
-	
+
 			return tax;
-		}
-		else throw new NotFoundException(`Can't find tax with id = ${id}`);
+		} else throw new NotFoundException(`Can't find tax with id = ${id}`);
 	}
 }
 
