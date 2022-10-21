@@ -7,7 +7,7 @@ import {
 	BaseEntity,
 	OneToMany
 } from 'typeorm';
-import Manager from './Manager';
+import Manager from './manager/Manager';
 import Product from './Product';
 import Status from './Status';
 import Tax from './tax/Tax';

@@ -2,7 +2,7 @@ import Category from './category/Category';
 import Color from './Color';
 import Incoming from './Incoming';
 import Log from './Log';
-import Manager from './Manager';
+import Manager from './manager/Manager';
 import Outgoing from './Outgoing';
 import Price from './Price';
 import Product from './Product';

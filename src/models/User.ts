@@ -5,7 +5,7 @@ import {
 	OneToOne,
 	JoinColumn
 } from 'typeorm';
-import Manager from './Manager';
+import Manager from './manager/Manager';
 import UserPassword from './UserPassword';
 
 @Entity()

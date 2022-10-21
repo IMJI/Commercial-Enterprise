@@ -5,7 +5,7 @@ import {
 	ManyToOne,
 	BaseEntity
 } from 'typeorm';
-import Manager from './Manager';
+import Manager from './manager/Manager';
 import Product from './Product';
 import Tax from './tax/Tax';
 
