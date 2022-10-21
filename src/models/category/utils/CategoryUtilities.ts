@@ -17,7 +17,7 @@ const categoryBodyStrictScheme = Schemes.query.append({
 });
 
 const categorySortableColumns: SortableColumn[] = [
-	{ name: 'name', column: 'tax.name' }
+	{ name: 'name', column: 'category.name' }
 ];
 
 export {
