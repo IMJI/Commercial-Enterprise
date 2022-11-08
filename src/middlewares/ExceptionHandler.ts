@@ -1,5 +1,6 @@
 import * as express from 'express';
 import Exception from '../exception/Exception';
+import ServerIsBusyException from '../exception/ServerIsBusyException';
 import Logger from '../services/logger/Logger';
 import Pages from '../services/Pages';
 
@@ -18,7 +19,7 @@ class ExceptionHandler {
 		next: express.NextFunction
 	) {
 		const status = (error as Exception).statusCode;
-		if (!(status >= 400 && status <= 499)) Logger.error(error);
+		if (!(status >= 400 && status <= 499) && !((error as Exception).name === 'ServerIsBusyException')) Logger.error(error);
 		next(error);
 	}
 
