@@ -19,7 +19,11 @@ class ExceptionHandler {
 		next: express.NextFunction
 	) {
 		const status = (error as Exception).statusCode;
-		if (!(status >= 400 && status <= 499) && !((error as Exception).name === 'ServerIsBusyException')) Logger.error(error);
+		if (
+			!(status >= 400 && status <= 499) &&
+			!((error as Exception).name === 'ServerIsBusyException')
+		)
+			Logger.error(error);
 		next(error);
 	}
 
