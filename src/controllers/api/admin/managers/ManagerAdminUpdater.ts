@@ -11,7 +11,8 @@ class ManagerAdminUpdater implements IUpdater<Manager> {
 	): Promise<Manager> {
 		const manager: Manager = await Manager.findOneBy({ id });
 		let parent: Manager = null;
-		if (options.parent) parent = await ManagerAdminReader.readOne(options.parent);
+		if (options.parent)
+			parent = await ManagerAdminReader.readOne(options.parent);
 		if (!parent)
 			throw new NotFoundException(
 				`Can't find parent manager with id = ${parent}`
