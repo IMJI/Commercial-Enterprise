@@ -7,6 +7,7 @@ class Schemes {
 		this.shortString,
 		Joi.array().items(this.shortString)
 	];
+	public static text = Joi.string().min(10).max(2048);
 	public static bool = Joi.boolean();
 	public static money = Joi.number().positive().precision(2);
 	public static percent = Joi.number().positive().precision(2).min(0).max(1);
