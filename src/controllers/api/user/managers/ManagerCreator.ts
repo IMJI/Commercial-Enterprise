@@ -15,7 +15,7 @@ class ManagerCreator implements ICreator<Manager> {
 					`Can't find parent manager with id = ${options.parent}`
 				);
 		}
-		
+
 		const manager = Manager.create({
 			firstName,
 			lastName,

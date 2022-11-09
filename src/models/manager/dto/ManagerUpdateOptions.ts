@@ -1,6 +1,6 @@
 import UpdateOptions from '../../../types/dto/UpdateOptions';
 
-class TaxUpdateOptions extends UpdateOptions {
+class ManagerUpdateOptions extends UpdateOptions {
 	firstName?: string;
 	lastName?: string;
 	patronymic?: string;
@@ -10,4 +10,4 @@ class TaxUpdateOptions extends UpdateOptions {
 	parent?: number;
 }
 
-export default TaxUpdateOptions;
+export default ManagerUpdateOptions;
