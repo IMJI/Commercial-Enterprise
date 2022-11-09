@@ -7,7 +7,7 @@ import {
 	OneToOne,
 	ManyToOne
 } from 'typeorm';
-import Product from './Product';
+import Product from './product/Product';
 
 @Entity()
 class Price extends BaseEntity {

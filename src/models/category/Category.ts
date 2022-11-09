@@ -5,7 +5,7 @@ import {
 	OneToMany,
 	BaseEntity
 } from 'typeorm';
-import Product from '../Product';
+import Product from '../product/Product';
 
 @Entity()
 class Category extends BaseEntity {

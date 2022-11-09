@@ -8,7 +8,7 @@ import {
 	OneToMany
 } from 'typeorm';
 import Manager from './manager/Manager';
-import Product from './Product';
+import Product from './product/Product';
 import Status from './Status';
 import Tax from './tax/Tax';
 

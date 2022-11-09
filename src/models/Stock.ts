@@ -2,13 +2,12 @@ import {
 	Entity,
 	Column,
 	BaseEntity,
-	PrimaryColumn,
 	JoinColumn,
 	OneToOne,
 	PrimaryGeneratedColumn,
 	Check
 } from 'typeorm';
-import Product from './Product';
+import Product from './product/Product';
 
 @Entity()
 class Stock extends BaseEntity {

@@ -1,30 +1,30 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
-import Product from './Product';
+// import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+// import Product from './product/Product';
 
-@Entity()
-class Color {
-	@PrimaryGeneratedColumn()
-	id!: number;
+// @Entity()
+// class Color {
+// 	@PrimaryGeneratedColumn()
+// 	id!: number;
 
-	@Column({ length: 64 })
-	name!: string;
+// 	@Column({ length: 64 })
+// 	name!: string;
 
-	@Column()
-	redValue!: number;
+// 	@Column()
+// 	redValue!: number;
 
-	@Column()
-	blueValue!: number;
+// 	@Column()
+// 	blueValue!: number;
 
-	@Column()
-	greenValue!: number;
+// 	@Column()
+// 	greenValue!: number;
 
-	@Column({
-		default: false
-	})
-	isDeleted!: boolean;
+// 	@Column({
+// 		default: false
+// 	})
+// 	isDeleted!: boolean;
 
-	@OneToMany(() => Product, (product: Product) => product.color)
-	products: Product[];
-}
+// 	@OneToMany(() => Product, (product: Product) => product.color)
+// 	products: Product[];
+// }
 
-export default Color;
+// export default Color;
