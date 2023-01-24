@@ -4,7 +4,7 @@ import Incoming from './Incoming';
 import Log from './Log';
 import Manager from './manager/Manager';
 import Outgoing from './Outgoing';
-import Price from './Price';
+import Price from './price/Price';
 import Product from './product/Product';
 //import Size from './Size';
 import Status from './Status';

@@ -5,9 +5,10 @@ import {
 	PrimaryColumn,
 	JoinColumn,
 	OneToOne,
-	ManyToOne
+	ManyToOne,
+	CreateDateColumn
 } from 'typeorm';
-import Product from './product/Product';
+import Product from '../product/Product';
 
 @Entity()
 class Price extends BaseEntity {
@@ -15,6 +16,7 @@ class Price extends BaseEntity {
 	productId!: number;
 
 	@PrimaryColumn()
+	@CreateDateColumn()
 	dateFrom!: Date;
 
 	@ManyToOne(() => Product, (product) => product.vendorCode)

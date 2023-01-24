@@ -7,6 +7,8 @@ import {
 	taxBodyStrictScheme,
 	taxQueryScheme
 } from '../../models/tax/utils/TaxUtilities';
+import Controller from '../../controllers/api/taxes/Controller';
+import TaxService from '../../controllers/api/taxes/TaxService';
 
 const taxUserRouter: Router = Router();
 const taxAdminRouter: Router = Router();
@@ -23,6 +25,13 @@ taxUserRouter
 	.post(taxValidation, TaxController.post)
 	.put(taxValidation, TaxController.put)
 	.delete(taxValidation, TaxController.delete);
+// const taxController = new Controller('tax', TaxService);
+// taxUserRouter
+// 	.route(`/taxes/:id?`)
+// 	.get((req, res, next) => taxController.get(req, res, next))
+// 	.post((req, res, next) => taxController.post(req, res, next))
+// 	.put((req, res, next) => taxController.put(req, res, next))
+// 	.delete((req, res, next) => taxController.delete(req, res, next));
 
 taxAdminRouter
 	.route(`/admin/taxes/:id?`)

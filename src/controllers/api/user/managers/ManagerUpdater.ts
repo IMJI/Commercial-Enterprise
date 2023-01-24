@@ -11,16 +11,19 @@ class ManagerUpdater implements IUpdater<Manager> {
 	): Promise<Manager> {
 		const manager: Manager = await Manager.findOneBy({ id });
 		let parent: Manager = null;
-		if (options.parent) parent = await ManagerReader.readOne(options.parent);
-		if (!parent)
-			throw new NotFoundException(
-				`Can't find parent manager with id = ${parent}`
-			);
+		if (options.parent) {
+			parent = await ManagerReader.readOne(options.parent);
+			if (!parent)
+				throw new NotFoundException(
+					`Can't find parent manager with id = ${parent}`
+				);
+		}
 		if (manager) {
 			if (options.firstName) manager.firstName = options.firstName;
 			if (options.lastName) manager.lastName = options.lastName;
 			if (options.patronymic) manager.patronymic = options.patronymic;
 			if (options.hireDate) manager.hireDate = options.hireDate;
+			if (options.percent) manager.percent = options.percent;
 			if (parent) manager.parent = parent;
 			await Manager.save(manager);
 
