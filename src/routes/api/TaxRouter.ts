@@ -8,7 +8,7 @@ import {
 	taxQueryScheme
 } from '../../models/tax/utils/TaxUtilities';
 import Controller from '../../controllers/api/APIController';
-import TaxService from '../../controllers/api/taxes/TaxService';
+import TaxService from '../../services/TaxService';
 
 const taxUserRouter: Router = Router();
 const taxAdminRouter: Router = Router();
