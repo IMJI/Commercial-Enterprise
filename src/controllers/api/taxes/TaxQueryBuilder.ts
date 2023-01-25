@@ -1,6 +1,6 @@
 import Tax from '../../../models/tax/Tax';
-import Database from '../../../services/Database';
-import { toArray } from '../../../services/utils/Utils';
+import Database from '../../../Database';
+import { toArray } from '../../../utils/Utils';
 import QueryBuilder from '../../../types/utils/QueryBuilder';
 import TaxFindOptions from './TaxFindOptions';
 

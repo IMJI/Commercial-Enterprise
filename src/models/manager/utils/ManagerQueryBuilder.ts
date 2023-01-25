@@ -3,7 +3,7 @@ import {
 	ManagerFindOptions,
 	ExtendedManagerFindOptions
 } from '../dto/ManagerFindOptions';
-import Database from '../../../services/Database';
+import Database from '../../../Database';
 import BaseQueryBuilder from '../../../types/utils/BaseQueryBuilder';
 import Manager from '../Manager';
 import { managerSortableColumns } from './ManagerUtilities';

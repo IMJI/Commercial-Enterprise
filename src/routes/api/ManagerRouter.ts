@@ -1,5 +1,4 @@
 import { Router } from 'express';
-import ManagerAdminController from '../../controllers/api/admin/managers/ManagerAdminController';
 import ManagerController from '../../controllers/api/user/managers/ManagerController';
 import ValidationMiddleware from '../../middlewares/Validation';
 import {
@@ -8,8 +7,7 @@ import {
 	managerQueryScheme
 } from '../../models/manager/utils/ManagerUtilities';
 
-const managerUserRouter: Router = Router();
-const managerAdminRouter: Router = Router();
+const managerRouter: Router = Router();
 
 const managerValidation = ValidationMiddleware.validate(
 	managerQueryScheme,
@@ -17,18 +15,11 @@ const managerValidation = ValidationMiddleware.validate(
 	managerBodyStrictScheme
 );
 
-managerUserRouter
+managerRouter
 	.route(`/manager/:id?`)
 	.get(managerValidation, ManagerController.get)
 	.post(managerValidation, ManagerController.post)
 	.put(managerValidation, ManagerController.put)
 	.delete(managerValidation, ManagerController.delete);
 
-managerAdminRouter
-	.route(`/admin/manager/:id?`)
-	.get(managerValidation, ManagerAdminController.get)
-	.post(managerValidation, ManagerAdminController.post)
-	.put(managerValidation, ManagerAdminController.put)
-	.delete(managerValidation, ManagerAdminController.delete);
-
-export { managerUserRouter, managerAdminRouter };
+export default managerRouter;

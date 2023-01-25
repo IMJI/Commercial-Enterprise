@@ -1,4 +1,4 @@
-import Schemes from '../../../services/utils/Schemes';
+import Schemes from '../../../utils/Schemes';
 import SortableColumn from '../../../types/utils/SortableColumns';
 
 const categoryQueryScheme = Schemes.query.append({

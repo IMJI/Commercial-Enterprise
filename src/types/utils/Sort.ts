@@ -1,4 +1,4 @@
-import { toArray } from '../../services/utils/Utils';
+import { toArray } from '../../utils/Utils';
 
 enum SortingOrders {
 	ascending = 'ASC',
@@ -20,9 +20,9 @@ class Sort {
 		this._order = order;
 	}
 
-	public static fromString(strs: string | string[]): Sort[] {
+	public static fromString(sortStrings: string | string[]): Sort[] {
 		const sortings: Sort[] = [];
-		strs = toArray<string>(strs);
+		const strs = toArray<string>(sortStrings);
 		strs.forEach((sorting) => {
 			const opts = sorting.split(':');
 			const order: SortingOrders =

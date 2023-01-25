@@ -1,7 +1,7 @@
 import * as express from 'express';
 import * as cors from 'cors';
 import Logger from '../logger/Logger';
-import Config from '../services/Config';
+import Config from '../Config';
 
 class CorsMiddleware {
 	public static mount(app: express.Application): express.Application {

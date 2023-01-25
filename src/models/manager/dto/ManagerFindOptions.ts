@@ -1,4 +1,4 @@
-import { toArray } from '../../../services/utils/Utils';
+import { toArray } from '../../../utils/Utils';
 import FindOptions from '../../../types/dto/FindOptions';
 import ManagerQueryData from './ManagerQueryData';
 

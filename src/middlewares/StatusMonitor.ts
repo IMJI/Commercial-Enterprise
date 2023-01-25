@@ -1,7 +1,7 @@
 import * as express from 'express';
 import * as expressStatusMonitor from 'express-status-monitor';
 import Logger from '../logger/Logger';
-import Config from '../services/Config';
+import Config from '../Config';
 
 class StatusMonitorMiddleware {
 	public static mount(app: express.Application): express.Application {

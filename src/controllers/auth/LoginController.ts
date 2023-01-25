@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import Pages from '../../services/Pages';
+import Pages from '../../Pages';
 
 class LoginController {
 	public static get(req: Request, res: Response, next: NextFunction): void {

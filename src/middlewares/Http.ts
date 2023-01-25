@@ -2,9 +2,9 @@ import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import helmet from 'helmet';
 import * as toobusy from 'toobusy-js';
-import { reviveJSON } from '../services/utils/Utils';
+import { reviveJSON } from '../utils/Utils';
 import Logger from '../logger/Logger';
-import Config from '../services/Config';
+import Config from '../Config';
 import ServerIsBusyException from '../exceptions/ServerIsBusyException';
 
 class HttpMiddleware {

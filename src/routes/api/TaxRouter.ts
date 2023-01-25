@@ -1,6 +1,4 @@
 import { Router } from 'express';
-import TaxController from '../../controllers/api/user/taxes/TaxController';
-import TaxAdminController from '../../controllers/api/admin/taxes/TaxAdminController';
 import ValidationMiddleware from '../../middlewares/Validation';
 import {
 	taxBodyScheme,
@@ -19,12 +17,6 @@ const taxValidation = ValidationMiddleware.validate(
 	taxBodyStrictScheme
 );
 
-// taxUserRouter
-// 	.route(`/taxes/:id?`)
-// 	.get(taxValidation, TaxController.get)
-// 	.post(taxValidation, TaxController.post)
-// 	.put(taxValidation, TaxController.put)
-// 	.delete(taxValidation, TaxController.delete);
 const taxController = new Controller('tax', TaxService);
 taxUserRouter
 	.route(`/taxes/:id?`)
@@ -35,11 +27,4 @@ taxUserRouter
 		taxController.delete(req, res, next)
 	);
 
-taxAdminRouter
-	.route(`/admin/taxes/:id?`)
-	.get(taxValidation, TaxAdminController.get)
-	.post(taxValidation, TaxAdminController.post)
-	.put(taxValidation, TaxAdminController.put)
-	.delete(taxValidation, TaxAdminController.delete);
-
-export { taxUserRouter, taxAdminRouter };
+export default taxUserRouter;

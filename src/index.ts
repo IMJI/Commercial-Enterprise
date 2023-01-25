@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import * as dotenv from 'dotenv';
-import App from './services/App';
-import Config from './services/Config';
+import App from './App';
+import Config from './Config';
 import Logger from './logger/Logger';
 
 const PROD = 'production';
@@ -16,6 +16,7 @@ function startup(): void {
 		throw new Error(
 			`Unknown NODE_ENV value. Use 'production' or 'development' values`
 		);
+	console.log(1);
 	Logger.initialize(Config.logger);
 	if (process.env.NODE_ENV === DEV)
 		Logger.warn('Application is running in DEVELOPMENT mode!');
@@ -54,6 +55,7 @@ process.on('SIGINT', () => {
 });
 
 process.on('uncaughtException', (err: Error) => {
+	console.log(err.name + ' ' + err.message);
 	Logger.error('Uncaught exception');
 	Logger.fatal(err.name + ' ' + err.message);
 	shutdown();

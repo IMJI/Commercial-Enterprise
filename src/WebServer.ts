@@ -4,16 +4,16 @@ import * as path from 'path';
 import * as fs from 'fs';
 import * as toobusy from 'toobusy-js';
 import Config from './Config';
-import WebRouter from '../routes/WebRouter';
-import APIRouter from '../routes/APIRouter';
+import WebRouter from './routes/WebRouter';
+import APIRouter from './routes/APIRouter';
 import Logger from './logger/Logger';
-import HttpMiddleware from '../middlewares/Http';
-import LogMiddleware from '../middlewares/Log';
-import StaticMiddleware from '../middlewares/Static';
-import CorsMiddleware from '../middlewares/Cors';
-import StatusMonitorMiddleware from '../middlewares/StatusMonitor';
-import ExceptionHandler from '../middlewares/ExceptionHandler';
-import NotFoundController from '../controllers/NotFoundController';
+import HttpMiddleware from './middlewares/Http';
+import LogMiddleware from './middlewares/Log';
+import StaticMiddleware from './middlewares/Static';
+import CorsMiddleware from './middlewares/Cors';
+import StatusMonitorMiddleware from './middlewares/StatusMonitor';
+import ExceptionHandler from './middlewares/ExceptionHandler';
+import NotFoundController from './controllers/NotFoundController';
 
 class WebServer {
 	private static express: express.Application;
@@ -25,8 +25,8 @@ class WebServer {
 			Logger.info('Initializing web server module');
 			const port: number = Config.webServer.port;
 			this.serverOptions = {
-				key: fs.readFileSync(path.join(__dirname, '../../key.pem')),
-				cert: fs.readFileSync(path.join(__dirname, '../../cert.pem'))
+				key: fs.readFileSync(path.join(__dirname, '../key.pem')),
+				cert: fs.readFileSync(path.join(__dirname, '../cert.pem'))
 			};
 			this.express = express();
 			this.mountMiddlewares();

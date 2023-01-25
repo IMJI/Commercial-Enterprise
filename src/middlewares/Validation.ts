@@ -2,7 +2,7 @@ import * as express from 'express';
 import Joi = require('joi');
 import { JSDocPrivateTag } from 'typescript';
 import ValidationException from '../exceptions/ValidationException';
-import Schemes from '../services/utils/Schemes';
+import Schemes from '../utils/Schemes';
 
 class ValidationMiddleware {
 	public static validate(

@@ -3,7 +3,7 @@ import {
 	CategoryFindOptions,
 	ExtendedCategoryFindOptions
 } from '../../category/dto/CategoryFindOptions';
-import Database from '../../../services/Database';
+import Database from '../../../Database';
 import BaseQueryBuilder from '../../../types/utils/BaseQueryBuilder';
 import Category from '../Category';
 import { categorySortableColumns } from './CategoryUtilities';

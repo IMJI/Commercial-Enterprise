@@ -75,9 +75,9 @@ class Config {
 	public static initialize(nodeEnv: string): void {
 		let filePath: string;
 		if (nodeEnv === 'production')
-			filePath = path.join(__dirname + '../../../configs/config.prod.yml');
+			filePath = path.join(__dirname + '../../configs/config.prod.yml');
 		else if (nodeEnv === 'development')
-			filePath = path.join(__dirname + '../../../configs/config.dev.yml');
+			filePath = path.join(__dirname + '../../configs/config.dev.yml');
 		else
 			throw new Error(
 				"Incorrect NODE_ENV value. Can't initialize config module."

@@ -3,7 +3,7 @@ import {
 	TaxFindOptions,
 	ExtendedTaxFindOptions
 } from '../../../models/tax/dto/TaxFindOptions';
-import Database from '../../../services/Database';
+import Database from '../../../Database';
 import BaseQueryBuilder from '../../../types/utils/BaseQueryBuilder';
 import Tax from '../Tax';
 import { taxSortableColumns } from './TaxUtilities';
