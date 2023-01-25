@@ -41,6 +41,7 @@ abstract class QueryBuilder<T> {
 
 	protected abstract buildQueryBody(options: FindOptions): void;
 
+	// TODO: Change and refactor sorting. Remove multiple sort options feature
 	private buildSortingOptions(options: FindOptions): void {
 		const sortsArray = options.sort ? Sort.fromString(options.sort) : [];
 		if (sortsArray && sortsArray.length > 0) {
