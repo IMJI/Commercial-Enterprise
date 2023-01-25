@@ -1,7 +1,7 @@
 import * as express from 'express';
 import Exception from '../exception/Exception';
 import ServerIsBusyException from '../exception/ServerIsBusyException';
-import Logger from '../services/logger/Logger';
+import Logger from '../logger/Logger';
 import Pages from '../services/Pages';
 
 class ExceptionHandler {

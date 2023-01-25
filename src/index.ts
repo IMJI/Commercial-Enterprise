@@ -2,7 +2,7 @@ import 'reflect-metadata';
 import * as dotenv from 'dotenv';
 import App from './services/App';
 import Config from './services/Config';
-import Logger from './services/logger/Logger';
+import Logger from './logger/Logger';
 
 const PROD = 'production';
 const DEV = 'development';

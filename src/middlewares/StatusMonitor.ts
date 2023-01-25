@@ -1,6 +1,6 @@
 import * as express from 'express';
 import * as expressStatusMonitor from 'express-status-monitor';
-import Logger from '../services/logger/Logger';
+import Logger from '../logger/Logger';
 import Config from '../services/Config';
 
 class StatusMonitorMiddleware {

@@ -3,7 +3,7 @@ import * as bodyParser from 'body-parser';
 import helmet from 'helmet';
 import * as toobusy from 'toobusy-js';
 import { reviveJSON } from '../services/utils/Utils';
-import Logger from '../services/logger/Logger';
+import Logger from '../logger/Logger';
 import Config from '../services/Config';
 import ServerIsBusyException from '../exception/ServerIsBusyException';
 

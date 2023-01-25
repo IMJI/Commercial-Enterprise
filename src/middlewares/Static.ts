@@ -1,6 +1,6 @@
 import * as express from 'express';
 import * as path from 'path';
-import Logger from '../services/logger/Logger';
+import Logger from '../logger/Logger';
 
 class StaticMiddleware {
 	public static mount(app: express.Application): express.Application {

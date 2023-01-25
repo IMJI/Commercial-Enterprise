@@ -1,6 +1,6 @@
 import Tax from '../../../models/tax/Tax';
 import TaxQueryBuilder from './TaxQueryBuilder';
-import Logger from '../../../services/logger/Logger';
+import Logger from '../../../logger/Logger';
 import ReadAndCountResult from '../../../types/dto/ReadAndCountResult';
 import BaseDTO from '../../../types/dto/BaseDTO';
 import CreateTaxDTO from './CreateTaxDTO';

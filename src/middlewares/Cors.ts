@@ -1,6 +1,6 @@
 import * as express from 'express';
 import * as cors from 'cors';
-import Logger from '../services/logger/Logger';
+import Logger from '../logger/Logger';
 import Config from '../services/Config';
 
 class CorsMiddleware {
