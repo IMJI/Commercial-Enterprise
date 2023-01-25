@@ -1,4 +1,4 @@
-import NotFoundException from '../../../../exception/NotFoundException';
+import NotFoundException from '../../../../exceptions/NotFoundException';
 import Product from '../../../../models/product/Product';
 import { IDeleter } from '../../../../types/interfaces/DatabaseAPI';
 

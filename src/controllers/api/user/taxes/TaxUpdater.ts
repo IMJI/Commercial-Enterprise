@@ -1,4 +1,4 @@
-import NotFoundException from '../../../../exception/NotFoundException';
+import NotFoundException from '../../../../exceptions/NotFoundException';
 import TaxUpdateOptions from '../../../../models/tax/dto/TaxUpdateOptions';
 import Tax from '../../../../models/tax/Tax';
 import { IUpdater } from '../../../../types/interfaces/DatabaseAPI';

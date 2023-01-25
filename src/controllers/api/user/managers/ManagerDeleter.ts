@@ -1,4 +1,4 @@
-import NotFoundException from '../../../../exception/NotFoundException';
+import NotFoundException from '../../../../exceptions/NotFoundException';
 import Manager from '../../../../models/manager/Manager';
 import { IDeleter } from '../../../../types/interfaces/DatabaseAPI';
 import ManagerReader from './ManagerReader';

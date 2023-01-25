@@ -1,6 +1,6 @@
 import * as express from 'express';
-import Exception from '../exception/Exception';
-import ServerIsBusyException from '../exception/ServerIsBusyException';
+import Exception from '../exceptions/Exception';
+import ServerIsBusyException from '../exceptions/ServerIsBusyException';
 import Logger from '../logger/Logger';
 import Pages from '../services/Pages';
 

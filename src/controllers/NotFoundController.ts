@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import NotFoundException from '../exception/NotFoundException';
+import NotFoundException from '../exceptions/NotFoundException';
 
 class NotFoundController {
 	public static get(req: Request, res: Response): void {

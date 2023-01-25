@@ -1,4 +1,4 @@
-import NotFoundException from '../../../../exception/NotFoundException';
+import NotFoundException from '../../../../exceptions/NotFoundException';
 import ManagerCreateOptions from '../../../../models/manager/dto/ManagerCreateOptions';
 import Manager from '../../../../models/manager/Manager';
 import { ICreator } from '../../../../types/interfaces/DatabaseAPI';

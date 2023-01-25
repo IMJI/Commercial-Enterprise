@@ -5,7 +5,7 @@ import * as toobusy from 'toobusy-js';
 import { reviveJSON } from '../services/utils/Utils';
 import Logger from '../logger/Logger';
 import Config from '../services/Config';
-import ServerIsBusyException from '../exception/ServerIsBusyException';
+import ServerIsBusyException from '../exceptions/ServerIsBusyException';
 
 class HttpMiddleware {
 	public static mount(app: express.Application): express.Application {

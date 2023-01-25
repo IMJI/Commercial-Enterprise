@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
-import EntityCreationException from '../../../../exception/EntityCreationException';
-import EntityDeletionException from '../../../../exception/EntityDeletionException';
-import EntityIsNotSpecified from '../../../../exception/EntityIsNotSpecified';
-import NotFoundException from '../../../../exception/NotFoundException';
+import EntityCreationException from '../../../../exceptions/EntityCreationException';
+import EntityDeletionException from '../../../../exceptions/EntityDeletionException';
+import EntityIsNotSpecified from '../../../../exceptions/EntityIsNotSpecified';
+import NotFoundException from '../../../../exceptions/NotFoundException';
 import { ProductFindOptions } from '../../../../models/product/dto/ProductFindOptions';
 import IController from '../../../../types/interfaces/IController';
 import ProductCreator from './ProductCreator';

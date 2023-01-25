@@ -1,4 +1,4 @@
-import NotFoundException from '../../../../exception/NotFoundException';
+import NotFoundException from '../../../../exceptions/NotFoundException';
 import ManagerUpdateOptions from '../../../../models/manager/dto/ManagerUpdateOptions';
 import Manager from '../../../../models/manager/Manager';
 import { IUpdater } from '../../../../types/interfaces/DatabaseAPI';

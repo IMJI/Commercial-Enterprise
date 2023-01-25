@@ -1,4 +1,4 @@
-import NotFoundException from '../../../../exception/NotFoundException';
+import NotFoundException from '../../../../exceptions/NotFoundException';
 import { Category } from '../../../../models/Models';
 import ProductCreateOptions from '../../../../models/product/dto/ProductCreateOptions';
 import Product from '../../../../models/product/Product';

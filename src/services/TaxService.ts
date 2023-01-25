@@ -8,7 +8,7 @@ import DeleteResult from '../types/dto/DeleteResult';
 import IService from '../types/interfaces/IService';
 import TaxFindOptions from '../controllers/api/taxes/TaxFindOptions';
 import UpdateTaxDTO from '../controllers/api/taxes/UpdateTaxDTO';
-import NotFoundException from '../exception/NotFoundException';
+import NotFoundException from '../exceptions/NotFoundException';
 
 class TaxService implements IService<Tax> {
 	public async findOne(id: number): Promise<Tax> {

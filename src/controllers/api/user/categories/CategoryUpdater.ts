@@ -1,4 +1,4 @@
-import NotFoundException from '../../../../exception/NotFoundException';
+import NotFoundException from '../../../../exceptions/NotFoundException';
 import CategoryUpdateOptions from '../../../../models/category/dto/CategoryUpdateOptions';
 import Category from '../../../../models/category/Category';
 import { IUpdater } from '../../../../types/interfaces/DatabaseAPI';
