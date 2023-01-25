@@ -1,4 +1,4 @@
-import BaseDTO from './BaseDTO';
+import BaseDTO from '../../../types/dto/BaseDTO';
 
 class CreateTaxDTO extends BaseDTO {
 	name!: string;

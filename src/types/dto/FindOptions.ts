@@ -4,12 +4,12 @@ import QueryData from './QueryData';
 class FindOptions {
 	limit?: number;
 	skip?: number;
-	sort?: Sort[];
+	sort?: string[]; //Sort[];
 
 	constructor(obj: QueryData) {
 		this.limit = obj.limit;
 		this.skip = obj.skip;
-		this.sort = obj.sort ? Sort.fromString(obj.sort) : [];
+		//this.sort = obj.sort ? Sort.fromString(obj.sort) : [];
 	}
 }
 

@@ -7,7 +7,7 @@ import {
 	taxBodyStrictScheme,
 	taxQueryScheme
 } from '../../models/tax/utils/TaxUtilities';
-import Controller from '../../controllers/api/taxes/APIController';
+import Controller from '../../controllers/api/APIController';
 import TaxService from '../../controllers/api/taxes/TaxService';
 
 const taxUserRouter: Router = Router();
@@ -28,10 +28,12 @@ const taxValidation = ValidationMiddleware.validate(
 const taxController = new Controller('tax', TaxService);
 taxUserRouter
 	.route(`/taxes/:id?`)
-	.get((req, res, next) => taxController.get(req, res, next))
-	.post((req, res, next) => taxController.post(req, res, next))
-	.put((req, res, next) => taxController.put(req, res, next))
-	.delete((req, res, next) => taxController.delete(req, res, next));
+	.get(taxValidation, (req, res, next) => taxController.get(req, res, next))
+	.post(taxValidation, (req, res, next) => taxController.post(req, res, next))
+	.put(taxValidation, (req, res, next) => taxController.put(req, res, next))
+	.delete(taxValidation, (req, res, next) =>
+		taxController.delete(req, res, next)
+	);
 
 taxAdminRouter
 	.route(`/admin/taxes/:id?`)
