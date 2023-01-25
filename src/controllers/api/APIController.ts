@@ -1,13 +1,13 @@
 import { Request, Response, NextFunction } from 'express';
-import EntityCreationException from '../../../exception/EntityCreationException';
-import EntityDeletionException from '../../../exception/EntityDeletionException';
-import EntityIsNotSpecified from '../../../exception/EntityIsNotSpecified';
-import NotFoundException from '../../../exception/NotFoundException';
-import Controller from './Controller';
-import IService from './IService';
+import EntityCreationException from '../../exception/EntityCreationException';
+import EntityDeletionException from '../../exception/EntityDeletionException';
+import EntityIsNotSpecified from '../../exception/EntityIsNotSpecified';
+import NotFoundException from '../../exception/NotFoundException';
+import Controller from '../Controller';
+import IService from '../../types/interfaces/IService';
 
-class APIController extends Controller {
-	constructor(name: string, service: IService) {
+class APIController<T> extends Controller<T> {
+	constructor(name: string, service: IService<T>) {
 		super(name, service);
 	}
 
