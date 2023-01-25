@@ -1,0 +1,30 @@
+import Tax from '../../../models/tax/Tax';
+import Database from '../../../services/Database';
+import { toArray } from '../../../services/utils/Utils';
+import QueryBuilder from '../../../types/utils/QueryBuilder';
+import TaxFindOptions from './TaxFindOptions';
+
+class TaxQueryBuilder extends QueryBuilder<Tax> {
+	constructor(name: string) {
+		const repoitory = Database.dataSource.getRepository(Tax);
+		const sortableColumns = ['name', 'value'];
+		super(name, repoitory, sortableColumns);
+	}
+
+	protected buildQueryBody(options: TaxFindOptions): void {
+		if (options.name && options.name.length > 0)
+			this.builder = this.builder.andWhere(`${this.name}.name IN (:...name)`, {
+				name: toArray<string>(options.name)
+			});
+		if (options.valueFrom)
+			this.builder = this.builder.andWhere(`${this.name}.value >= :valueFrom`, {
+				valueFrom: options.valueFrom
+			});
+		if (options.valueTo)
+			this.builder = this.builder.andWhere(`${this.name}.value <= :valueTo`, {
+				valueTo: options.valueTo
+			});
+	}
+}
+
+export default TaxQueryBuilder;
