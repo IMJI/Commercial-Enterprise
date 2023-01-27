@@ -14,6 +14,18 @@ class User extends BaseEntity {
 	@PrimaryGeneratedColumn()
 	id!: number;
 
+	@Column({ length: 64 })
+	firstName!: string;
+
+	@Column({ length: 64 })
+	lastName!: string;
+
+	@Column({
+		length: 64,
+		nullable: true
+	})
+	patronymic: string;
+
 	@OneToOne(() => UserPassword)
 	@JoinColumn()
 	manager!: Manager;

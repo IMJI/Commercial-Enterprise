@@ -12,18 +12,6 @@ class Manager extends BaseEntity {
 	@PrimaryGeneratedColumn()
 	id!: number;
 
-	@Column({ length: 64 })
-	firstName!: string;
-
-	@Column({ length: 64 })
-	lastName!: string;
-
-	@Column({
-		length: 64,
-		nullable: true
-	})
-	patronymic: string;
-
 	@Column({
 		type: 'numeric',
 		precision: 3,
