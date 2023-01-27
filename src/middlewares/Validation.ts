@@ -1,6 +1,5 @@
 import * as express from 'express';
 import Joi = require('joi');
-import { JSDocPrivateTag } from 'typescript';
 import ValidationException from '../exceptions/ValidationException';
 import Schemes from '../utils/Schemes';
 
@@ -17,7 +16,7 @@ class ValidationMiddleware {
 		) {
 			if (!strictBodyScheme) strictBodyScheme = bodyScheme;
 			try {
-				req.params.id = Joi.attempt(req.params.id, Schemes.id);
+				req.params.id = String(Joi.attempt(req.params.id, Schemes.id));
 				req.query = Joi.attempt(req.query, queryScheme);
 				if (req.method === 'POST')
 					req.body = Joi.attempt(req.body, strictBodyScheme);
