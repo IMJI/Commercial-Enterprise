@@ -1,7 +1,13 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToOne } from 'typeorm';
+import {
+	Entity,
+	Column,
+	PrimaryGeneratedColumn,
+	OneToOne,
+	BaseEntity
+} from 'typeorm';
 
 @Entity()
-class UserPassword {
+class UserPassword extends BaseEntity {
 	@PrimaryGeneratedColumn()
 	id!: number;
 

@@ -3,13 +3,14 @@ import {
 	Column,
 	PrimaryGeneratedColumn,
 	OneToOne,
-	JoinColumn
+	JoinColumn,
+	BaseEntity
 } from 'typeorm';
 import Manager from './manager/Manager';
 import UserPassword from './UserPassword';
 
 @Entity()
-class User {
+class User extends BaseEntity {
 	@PrimaryGeneratedColumn()
 	id!: number;
 
