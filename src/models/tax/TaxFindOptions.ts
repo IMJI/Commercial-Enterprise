@@ -1,4 +1,4 @@
-import FindOptions from '../../../types/dto/FindOptions';
+import FindOptions from '../../types/dto/FindOptions';
 
 class TaxFindOptions extends FindOptions {
 	name?: string[];

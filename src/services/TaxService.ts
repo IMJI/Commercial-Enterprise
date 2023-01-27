@@ -1,13 +1,13 @@
 import Tax from '../models/tax/Tax';
-import TaxQueryBuilder from '../controllers/api/taxes/TaxQueryBuilder';
+import TaxQueryBuilder from '../models/tax/TaxQueryBuilder';
 import Logger from '../logger/Logger';
 import ReadAndCountResult from '../types/dto/ReadAndCountResult';
 import BaseDTO from '../types/dto/BaseDTO';
-import CreateTaxDTO from '../controllers/api/taxes/CreateTaxDTO';
+import CreateTaxDTO from '../models/tax/CreateTaxDTO';
 import DeleteResult from '../types/dto/DeleteResult';
 import IService from '../types/interfaces/IService';
-import TaxFindOptions from '../controllers/api/taxes/TaxFindOptions';
-import UpdateTaxDTO from '../controllers/api/taxes/UpdateTaxDTO';
+import TaxFindOptions from '../models/tax/TaxFindOptions';
+import UpdateTaxDTO from '../models/tax/UpdateTaxDTO';
 import NotFoundException from '../exceptions/NotFoundException';
 
 class TaxService implements IService<Tax> {

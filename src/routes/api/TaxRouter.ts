@@ -4,7 +4,7 @@ import {
 	taxBodyScheme,
 	taxBodyStrictScheme,
 	taxQueryScheme
-} from '../../models/tax/utils/TaxUtilities';
+} from '../../models/tax/TaxUtilities';
 import Controller from '../../controllers/api/APIController';
 import TaxService from '../../services/TaxService';
 

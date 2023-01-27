@@ -1,5 +1,5 @@
-import Schemes from '../../../utils/Schemes';
-import SortableColumn from '../../../types/utils/SortableColumns';
+import Schemes from '../../utils/Schemes';
+import SortableColumn from '../../types/utils/SortableColumns';
 
 const taxQueryScheme = Schemes.query.append({
 	name: Schemes.oneOrMoreShortString,
