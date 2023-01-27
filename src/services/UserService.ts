@@ -1,4 +1,4 @@
-import User from '../models/User';
+import User from '../models/user/User';
 import BaseDTO from '../types/dto/BaseDTO';
 import DeleteResult from '../types/dto/DeleteResult';
 import FindOptions from '../types/dto/FindOptions';

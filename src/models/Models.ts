@@ -10,8 +10,8 @@ import Product from './product/Product';
 import Status from './Status';
 import Stock from './Stock';
 import Tax from './tax/Tax';
-import User from './User';
-import UserPassword from './UserPassword';
+import User from './user/User';
+import UserPassword from './user/UserPassword';
 
 export default [
 	Tax,

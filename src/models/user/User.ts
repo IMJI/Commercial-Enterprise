@@ -6,7 +6,7 @@ import {
 	JoinColumn,
 	BaseEntity
 } from 'typeorm';
-import Manager from './manager/Manager';
+import Manager from '../manager/Manager';
 import UserPassword from './UserPassword';
 
 @Entity()
