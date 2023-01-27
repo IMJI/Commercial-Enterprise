@@ -1,13 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
-import IService from '../types/interfaces/IService';
 
-abstract class Controller<T> {
+abstract class Controller {
 	protected name: string;
-	protected service: IService<T>;
 
-	constructor(name: string, service: IService<T>) {
+	constructor(name: string) {
 		this.name = name;
-		this.service = service;
 	}
 
 	public async get(
@@ -15,7 +12,7 @@ abstract class Controller<T> {
 		res: Response,
 		next: NextFunction
 	): Promise<void> {
-		res.status(405).send('Method not allowed');
+		res.status(404).send('Not found');
 	}
 
 	public async post(
