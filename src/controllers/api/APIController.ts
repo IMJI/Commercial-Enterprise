@@ -3,10 +3,10 @@ import EntityCreationException from '../../exceptions/EntityCreationException';
 import EntityDeletionException from '../../exceptions/EntityDeletionException';
 import EntityIsNotSpecified from '../../exceptions/EntityIsNotSpecified';
 import NotFoundException from '../../exceptions/NotFoundException';
-import Controller from '../Controller';
+import ServiceController from '../ServiceController';
 import IService from '../../types/interfaces/IService';
 
-class APIController<T> extends Controller<T> {
+class APIController<T> extends ServiceController<T> {
 	constructor(name: string, service: IService<T>) {
 		super(name, service);
 	}
@@ -25,7 +25,6 @@ class APIController<T> extends Controller<T> {
 						`Can't find ${this.name} with id = ${req.params.id}`
 					);
 			} else {
-				/* const findOptions = new ProductFindOptions(req.query); */
 				const findOptions = req.query;
 				console.log(this);
 				const result = await this.service.findAndCount(findOptions);
