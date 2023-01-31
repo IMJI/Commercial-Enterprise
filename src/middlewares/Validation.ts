@@ -1,7 +1,7 @@
 import * as express from 'express';
 import Joi = require('joi');
 import ValidationException from '../exceptions/ValidationException';
-import Schemes from '../utils/Schemes';
+import Schemes from '../validation/Schemes';
 
 class ValidationMiddleware {
 	public static validate(
