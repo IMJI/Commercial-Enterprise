@@ -10,7 +10,7 @@ class UserController extends ServiceController<UserService> {
 		next: NextFunction
 	): Promise<void> {
 		try {
-			if (req.params.id) {
+			if (+req.params.id) {
 				this.getById(+req.params.id, res);
 			} else {
 				this.getByFindOptions(req, res);

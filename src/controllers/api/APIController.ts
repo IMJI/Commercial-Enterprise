@@ -17,7 +17,7 @@ class APIController<T> extends ServiceController<T> {
 		next: NextFunction
 	): Promise<void> {
 		try {
-			if (req.params.id) {
+			if (+req.params.id) {
 				const result = await this.service.findOne(+req.params.id);
 				if (result) res.status(200).json(result);
 				else
@@ -62,7 +62,7 @@ class APIController<T> extends ServiceController<T> {
 			const id: number = +req.params.id;
 			if (!id)
 				throw new EntityIsNotSpecified(`Specify ${this.name} to be updated`);
-			const result = await this.service.update(id, req.body);
+			const result = await this.service.update({ id, ...req.body });
 			if (result) res.status(200).json(result);
 			else
 				throw new EntityCreationException(
