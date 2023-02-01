@@ -1,6 +1,6 @@
 import Joi = require('joi');
 
-class Schemes {
+class Schemas {
 	public static id = Joi.number().integer().positive();
 	public static shortString = Joi.string().min(2).max(64);
 	public static oneOrMoreShortString = [
@@ -14,10 +14,10 @@ class Schemes {
 	public static positiveInt = Joi.number().integer().min(0);
 	public static date = Joi.date();
 	public static query = Joi.object({
-		limit: Schemes.positiveInt,
-		skip: Schemes.positiveInt,
+		limit: Schemas.positiveInt,
+		skip: Schemas.positiveInt,
 		sort: Joi.string().pattern(new RegExp('[a-zA-Z]+:(ASC|DESC|asc|desc)$'))
 	});
 }
 
-export default Schemes;
+export default Schemas;

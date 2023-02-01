@@ -1,7 +1,7 @@
 import * as express from 'express';
 import Joi = require('joi');
 import ValidationException from '../exceptions/ValidationException';
-import Schemes from '../validation/Schemes';
+import Schemas from '../validation/Schemas';
 
 class ValidationMiddleware {
 	public static validate(
@@ -16,7 +16,7 @@ class ValidationMiddleware {
 		) {
 			if (!strictBodyScheme) strictBodyScheme = bodyScheme;
 			try {
-				req.params.id = String(Joi.attempt(req.params.id, Schemes.id));
+				req.params.id = String(Joi.attempt(req.params.id, Schemas.id));
 				req.query = Joi.attempt(req.query, queryScheme);
 				if (req.method === 'POST')
 					req.body = Joi.attempt(req.body, strictBodyScheme);
