@@ -1,25 +1,35 @@
 import { Router } from 'express';
-import ProductController from '../../controllers/api/user/products/ProductController';
+import APIController from '../../controllers/api/APIController';
 import ValidationMiddleware from '../../middlewares/Validation';
+import ProductService from '../../services/ProductService';
 import {
-	productBodyScheme,
-	productBodyStrictScheme,
-	productQueryScheme
-} from '../../models/product/utils/ProductUtilities';
+	productBodySchema,
+	productBodyStrictSchema,
+	productQuerySchema
+} from '../../validation/ProductValidator';
 
 const productRouter: Router = Router();
 
 const productValidation = ValidationMiddleware.validate(
-	productQueryScheme,
-	productBodyScheme,
-	productBodyStrictScheme
+	productQuerySchema,
+	productBodySchema,
+	productBodyStrictSchema
 );
 
+const productController = new APIController('product', ProductService);
 productRouter
 	.route(`/products/:id?`)
-	.get(productValidation, ProductController.get)
-	.post(productValidation, ProductController.post)
-	.put(productValidation, ProductController.put)
-	.delete(productValidation, ProductController.delete);
+	.get(productValidation, (req, res, next) =>
+		productController.get(req, res, next)
+	)
+	.post(productValidation, (req, res, next) =>
+		productController.post(req, res, next)
+	)
+	.put(productValidation, (req, res, next) =>
+		productController.put(req, res, next)
+	)
+	.delete(productValidation, (req, res, next) =>
+		productController.delete(req, res, next)
+	);
 
 export default productRouter;
