@@ -1,26 +1,35 @@
 import { Router } from 'express';
-import CategoryController from '../../controllers/api/user/categories/CategoryController';
+import APIController from '../../controllers/api/APIController';
 import ValidationMiddleware from '../../middlewares/Validation';
+import CategoryService from '../../services/CategoryService';
 import {
-	categoryBodyScheme,
-	categoryBodyStrictScheme,
-	categoryQueryScheme
-} from '../../models/category/utils/CategoryUtilities';
+	categoryQuerySchema,
+	categoryBodySchema,
+	categoryBodyStrictSchema
+} from '../../validation/CategoryValidator';
 
-const categoryUserRouter: Router = Router();
-const categoryAdminRouter: Router = Router();
+const categoryRouter: Router = Router();
 
 const categoryValidation = ValidationMiddleware.validate(
-	categoryQueryScheme,
-	categoryBodyScheme,
-	categoryBodyStrictScheme
+	categoryQuerySchema,
+	categoryBodySchema,
+	categoryBodyStrictSchema
 );
 
-categoryUserRouter
-	.route(`/category/:id?`)
-	.get(categoryValidation, CategoryController.get)
-	.post(categoryValidation, CategoryController.post)
-	.put(categoryValidation, CategoryController.put)
-	.delete(categoryValidation, CategoryController.delete);
+const categoryController = new APIController('category', CategoryService);
+categoryRouter
+	.route(`/categories/:id?`)
+	.get(categoryValidation, (req, res, next) =>
+		categoryController.get(req, res, next)
+	)
+	.post(categoryValidation, (req, res, next) =>
+		categoryController.post(req, res, next)
+	)
+	.put(categoryValidation, (req, res, next) =>
+		categoryController.put(req, res, next)
+	)
+	.delete(categoryValidation, (req, res, next) =>
+		categoryController.delete(req, res, next)
+	);
 
-export default categoryUserRouter;
+export default categoryRouter;
