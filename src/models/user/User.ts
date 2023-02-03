@@ -6,7 +6,8 @@ import {
 	JoinColumn,
 	BaseEntity,
 	CreateDateColumn,
-	UpdateDateColumn
+	UpdateDateColumn,
+	Unique
 } from 'typeorm';
 import Manager from '../manager/Manager';
 import UserPassword from './UserPassword';
@@ -16,7 +17,10 @@ class User extends BaseEntity {
 	@PrimaryGeneratedColumn()
 	id!: number;
 
-	@Column({ length: 64 })
+	@Column({
+		length: 64,
+		unique: true
+	})
 	email!: string;
 
 	@Column({ length: 64 })
