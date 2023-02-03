@@ -6,6 +6,7 @@ import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
 import AuthException from '../../exceptions/AuthException';
 import Config from '../../Config';
+import Payload from '../../types/dto/Payload';
 
 class LoginController extends Controller {
 	public async get(
@@ -30,7 +31,7 @@ class LoginController extends Controller {
 			);
 			if (!isPasswordMatches)
 				throw new AuthException('Invalid email or password');
-			const payload = {
+			const payload: Payload = {
 				id: user.id,
 				role: user.role
 			};
