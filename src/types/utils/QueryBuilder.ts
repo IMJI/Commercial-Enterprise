@@ -1,5 +1,6 @@
 import { Repository, SelectQueryBuilder } from 'typeorm';
 import FindOptions from '../dto/FindOptions';
+import Join from './Join';
 import { Sort } from './Sort';
 
 abstract class QueryBuilder<T> {
@@ -7,22 +8,25 @@ abstract class QueryBuilder<T> {
 	protected name: string;
 	private repository: Repository<T>;
 	private sortableColumns: string[];
+	private joins: Join[];
 
 	constructor(
 		name: string,
 		repoitory: Repository<T>,
-		sortableColumns: string[]
+		sortableColumns: string[],
+		joins: Join[] = []
 	) {
 		this.name = name;
 		this.repository = repoitory;
 		this.sortableColumns = sortableColumns;
+		this.joins = joins;
 	}
 
 	public build(
 		options: FindOptions,
 		excludeDeleted = false
 	): SelectQueryBuilder<T> {
-		this.initializeBuilder(this.name);
+		this.initializeBuilder();
 		if (excludeDeleted) this.excludeDeleted();
 		this.buildQueryBody(options);
 		this.buildSortingOptions(options);
@@ -31,8 +35,19 @@ abstract class QueryBuilder<T> {
 		return this.builder;
 	}
 
-	private initializeBuilder(name: string): void {
-		this.builder = this.repository.createQueryBuilder(this.name).where('1=1');
+	private initializeBuilder(): void {
+		this.builder = this.repository.createQueryBuilder(this.name);
+		this.initializeJoins();
+		this.builder = this.builder.where('1=1');
+	}
+
+	private initializeJoins(): void {
+		for (const join of this.joins) {
+			this.builder = this.builder.leftJoinAndSelect(
+				`${this.name}.${join.column}`,
+				join.relation
+			);
+		}
 	}
 
 	private excludeDeleted(): void {
