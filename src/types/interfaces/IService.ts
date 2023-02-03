@@ -1,6 +1,5 @@
 import FindOptions from '../dto/FindOptions';
 import ReadAndCountResult from '../dto/ReadAndCountResult';
-import BaseDTO from '../dto/BaseDTO';
 import DeleteResult from '../dto/DeleteResult';
 
 interface IService<T> {
@@ -12,9 +11,10 @@ interface IService<T> {
 
 	findAndCount(options: FindOptions): Promise<ReadAndCountResult<T>>;
 
-	create(dto: BaseDTO): Promise<T>;
+	create(dto: object): Promise<T>;
 
-	update(id: number, dto: BaseDTO): Promise<T>;
+	//update(id: number, dto: object): Promise<T>;
+	update(dto: object): Promise<T>;
 
 	delete(id: number): Promise<DeleteResult>;
 }
