@@ -18,6 +18,7 @@ class Schemas {
 		skip: Schemas.positiveInt,
 		sort: Joi.string().pattern(new RegExp('[a-zA-Z]+:(ASC|DESC|asc|desc)$'))
 	});
+	public static email = Joi.string().email();
 }
 
 export default Schemas;
