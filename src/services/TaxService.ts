@@ -1,14 +1,12 @@
 import Tax from '../models/tax/Tax';
 import TaxQueryBuilder from '../models/tax/TaxQueryBuilder';
-import Logger from '../logger/Logger';
 import ReadAndCountResult from '../types/dto/ReadAndCountResult';
-import BaseDTO from '../types/dto/BaseDTO';
-import CreateTaxDTO from '../models/tax/CreateTaxDTO';
 import DeleteResult from '../types/dto/DeleteResult';
 import IService from '../types/interfaces/IService';
 import TaxFindOptions from '../models/tax/TaxFindOptions';
-import UpdateTaxDTO from '../models/tax/UpdateTaxDTO';
 import NotFoundException from '../exceptions/NotFoundException';
+import TaxDTO from '../models/tax/TaxDTO';
+import TaxMapper from '../models/tax/TaxMapper';
 
 class TaxService implements IService<Tax> {
 	public async findOne(id: number): Promise<Tax> {
@@ -37,6 +35,7 @@ class TaxService implements IService<Tax> {
 		options: TaxFindOptions
 	): Promise<ReadAndCountResult<Tax>> {
 		const opts: TaxFindOptions = { ...options };
+		console.log(opts);
 		const builder = new TaxQueryBuilder('tax');
 		const query = builder.build(opts);
 
@@ -46,27 +45,22 @@ class TaxService implements IService<Tax> {
 		return { rows, count };
 	}
 
-	public async create(dto: CreateTaxDTO): Promise<Tax> {
-		const { name, value } = dto;
-		const tax = Tax.create({
-			name,
-			value,
-			isDeleted: false
-		});
+	public async create(dto: TaxDTO): Promise<Tax> {
+		const tax = TaxMapper.toDomain(dto);
 		await Tax.save(tax);
 
 		return tax;
 	}
 
-	public async update(id: number, dto: UpdateTaxDTO): Promise<Tax> {
-		const tax: Tax = await Tax.findOneBy({ id });
-		if (tax) {
+	public async update(dto: TaxDTO): Promise<Tax> {
+		const tax: Tax = await Tax.findOneBy({ id: dto.id });
+		if (tax && !tax.isDeleted) {
 			if (dto.name) tax.name = dto.name;
 			if (dto.value) tax.value = dto.value;
 			await Tax.save(tax);
 
 			return tax;
-		} else throw new NotFoundException(`Can't find tax with id = ${id}`);
+		} else throw new NotFoundException(`Can't find tax with id = ${dto.id}`);
 	}
 
 	public async delete(id: number): Promise<DeleteResult> {

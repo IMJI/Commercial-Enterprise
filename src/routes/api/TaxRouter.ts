@@ -1,23 +1,22 @@
 import { Router } from 'express';
 import ValidationMiddleware from '../../middlewares/Validation';
 import {
-	taxBodyScheme,
-	taxBodyStrictScheme,
-	taxQueryScheme
-} from '../../models/tax/TaxUtilities';
-import Controller from '../../controllers/api/APIController';
+	taxBodySchema,
+	taxBodyStrictSchema,
+	taxQuerySchema
+} from '../../validation/TaxValidator';
+import APIController from '../../controllers/api/APIController';
 import TaxService from '../../services/TaxService';
 
 const taxUserRouter: Router = Router();
-const taxAdminRouter: Router = Router();
 
 const taxValidation = ValidationMiddleware.validate(
-	taxQueryScheme,
-	taxBodyScheme,
-	taxBodyStrictScheme
+	taxQuerySchema,
+	taxBodySchema,
+	taxBodyStrictSchema
 );
 
-const taxController = new Controller('tax', TaxService);
+const taxController = new APIController('tax', TaxService);
 taxUserRouter
 	.route(`/taxes/:id?`)
 	.get(taxValidation, (req, res, next) => taxController.get(req, res, next))
