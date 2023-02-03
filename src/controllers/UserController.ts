@@ -1,9 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
+import EntityCreationException from '../exceptions/EntityCreationException';
 import NotFoundException from '../exceptions/NotFoundException';
-import UserService from '../services/UserService';
+import { User } from '../models/Models';
 import ServiceController from './ServiceController';
 
-class UserController extends ServiceController<UserService> {
+class UserController extends ServiceController<User> {
 	public async get(
 		req: Request,
 		res: Response,
@@ -25,7 +26,13 @@ class UserController extends ServiceController<UserService> {
 		res: Response,
 		next: NextFunction
 	): Promise<void> {
-		res.status(405).send('Method not allowed');
+		try {
+			const result = await this.service.create(req.body);
+			if (result) res.status(200).json(result);
+			else throw new EntityCreationException(`Can't create new user`)
+		} catch (error) {
+			next(error);
+		}
 	}
 
 	private async getById(id: number, res: Response) {

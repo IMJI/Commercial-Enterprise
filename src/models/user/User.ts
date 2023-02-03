@@ -4,7 +4,9 @@ import {
 	PrimaryGeneratedColumn,
 	OneToOne,
 	JoinColumn,
-	BaseEntity
+	BaseEntity,
+	CreateDateColumn,
+	UpdateDateColumn
 } from 'typeorm';
 import Manager from '../manager/Manager';
 import UserPassword from './UserPassword';
@@ -13,6 +15,9 @@ import UserPassword from './UserPassword';
 class User extends BaseEntity {
 	@PrimaryGeneratedColumn()
 	id!: number;
+
+	@Column({ length: 64 })
+	email!: string;
 
 	@Column({ length: 64 })
 	firstName!: string;
@@ -26,7 +31,7 @@ class User extends BaseEntity {
 	})
 	patronymic: string;
 
-	@OneToOne(() => UserPassword)
+	@OneToOne(() => Manager)
 	@JoinColumn()
 	manager!: Manager;
 
@@ -36,6 +41,12 @@ class User extends BaseEntity {
 	@OneToOne(() => UserPassword)
 	@JoinColumn()
 	password!: UserPassword;
+
+	@CreateDateColumn()
+	createdAt!: Date;
+
+	@UpdateDateColumn()
+	updatedAt!: Date;
 }
 
 export default User;
