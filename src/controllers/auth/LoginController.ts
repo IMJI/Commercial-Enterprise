@@ -34,7 +34,9 @@ class LoginController extends Controller {
 				id: user.id,
 				role: user.role
 			};
-			const token = jwt.sign(payload, Config.database.secretKey);
+			const token = jwt.sign(payload, Config.database.secretKey, {
+				expiresIn: '1h'
+			});
 
 			res.send({
 				user: user,
