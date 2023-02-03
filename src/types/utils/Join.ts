@@ -1,6 +1,6 @@
 type Join = {
-    column: string;
-    relation: string;
-}
+	column: string;
+	relation: string;
+};
 
 export default Join;

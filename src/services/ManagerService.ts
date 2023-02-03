@@ -11,7 +11,7 @@ import IService from '../types/interfaces/IService';
 class ManagerService implements IService<Manager> {
 	public async findOne(id: number): Promise<Manager> {
 		const result = await Manager.findOneBy({ id });
-        if (result && result.dismissalDate) return null;
+		if (result && result.dismissalDate) return null;
 		return result;
 	}
 	public async find(options: ManagerFindOptions): Promise<Manager[]> {

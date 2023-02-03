@@ -1,8 +1,6 @@
 import Schemas from './Schemas';
 
-const userQuerySchema = Schemas.query.append({
-	
-});
+const userQuerySchema = Schemas.query.append({});
 
 const userBodySchema = Schemas.query.append({
 	email: Schemas.email,

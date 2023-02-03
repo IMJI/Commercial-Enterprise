@@ -7,7 +7,7 @@ const loginController = new LoginController('login');
 
 webRouter.get('/', IndexController.get);
 webRouter
-    .get('/login', loginController.get)
-    .post('/login', loginController.post);
+	.get('/login', loginController.get)
+	.post('/login', loginController.post);
 
 export default webRouter;

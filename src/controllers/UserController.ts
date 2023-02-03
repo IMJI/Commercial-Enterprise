@@ -29,7 +29,7 @@ class UserController extends ServiceController<User> {
 		try {
 			const result = await this.service.create(req.body);
 			if (result) res.status(200).json(result);
-			else throw new EntityCreationException(`Can't create new user`)
+			else throw new EntityCreationException(`Can't create new user`);
 		} catch (error) {
 			next(error);
 		}

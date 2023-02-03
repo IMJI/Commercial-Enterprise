@@ -8,7 +8,7 @@ class ManagerMapper {
 		if (dto.id) manager.id = dto.id;
 		if (dto.percent) manager.percent = dto.percent;
 		if (dto.hireDate) manager.hireDate = dto.hireDate;
-        else manager.hireDate = new Date();
+		else manager.hireDate = new Date();
 		if (dto.dismissalDate) manager.dismissalDate = dto.dismissalDate;
 		if (dto.parent) manager.parent = await ManagerService.findOne(dto.parent);
 

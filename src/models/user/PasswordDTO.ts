@@ -1,5 +1,5 @@
 class PasswordDTO {
-    hash: string;
+	hash: string;
 }
 
 export default PasswordDTO;

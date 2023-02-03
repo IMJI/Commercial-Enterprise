@@ -10,17 +10,17 @@ import UserMapper from '../models/user/UserMapper';
 
 class UserService implements IService<User> {
 	public async findOne(id: number): Promise<User> {
-		const result = await User.findOne({ 
+		const result = await User.findOne({
 			where: { id },
-			relations: ['manager', 'password'] 
+			relations: ['manager', 'password']
 		});
 		return result;
 	}
 
 	public async findOneByEmail(email: string): Promise<User> {
-		const result = await User.findOne({ 
+		const result = await User.findOne({
 			where: { email },
-			relations: ['manager', 'password'] 
+			relations: ['manager', 'password']
 		});
 		return result;
 	}

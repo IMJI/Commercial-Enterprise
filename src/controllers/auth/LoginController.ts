@@ -24,12 +24,16 @@ class LoginController extends Controller {
 		const { email, password } = req.body;
 		try {
 			const user = await UserService.findOneByEmail(email);
-			const isPasswordMatches = await bcrypt.compare(password, user.password.hash);
-			if (!isPasswordMatches) throw new AuthException('Invalid email or password');
+			const isPasswordMatches = await bcrypt.compare(
+				password,
+				user.password.hash
+			);
+			if (!isPasswordMatches)
+				throw new AuthException('Invalid email or password');
 			const payload = {
 				id: user.id,
 				role: user.role
-			}
+			};
 			const token = jwt.sign(payload, Config.database.secretKey);
 
 			res.send({
