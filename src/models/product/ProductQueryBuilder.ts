@@ -8,7 +8,7 @@ class ProductQueryBuilder extends QueryBuilder<Product> {
 	constructor(name: string) {
 		const repoitory = Database.dataSource.getRepository(Product);
 		const sortableColumns = ['name', 'category'];
-		super(name, repoitory, sortableColumns, ['category']);
+		super(name, repoitory, sortableColumns, [{ column: 'category', relation: 'category' }]);
 	}
 
 	protected buildQueryBody(options: ProductFindOptions): void {
