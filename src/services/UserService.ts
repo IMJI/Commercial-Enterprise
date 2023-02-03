@@ -1,23 +1,27 @@
 import UserDTO from '../models/user/UserDTO';
 import User from '../models/user/User';
-import BaseDTO from '../types/dto/BaseDTO';
 import DeleteResult from '../types/dto/DeleteResult';
 import FindOptions from '../types/dto/FindOptions';
 import ReadAndCountResult from '../types/dto/ReadAndCountResult';
 import IService from '../types/interfaces/IService';
 import * as bcrypt from 'bcrypt';
-import NotFoundException from '../exceptions/NotFoundException';
 import PasswordService from './PasswordService';
 import UserMapper from '../models/user/UserMapper';
 
 class UserService implements IService<User> {
 	public async findOne(id: number): Promise<User> {
-		const result = await User.findOneBy({ id });
+		const result = await User.findOne({ 
+			where: { id },
+			relations: ['manager', 'password'] 
+		});
 		return result;
 	}
 
 	public async findOneByEmail(email: string): Promise<User> {
-		const result = await User.findOneBy({ email });
+		const result = await User.findOne({ 
+			where: { email },
+			relations: ['manager', 'password'] 
+		});
 		return result;
 	}
 
