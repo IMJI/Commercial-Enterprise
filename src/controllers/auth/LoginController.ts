@@ -31,7 +31,7 @@ class LoginController extends Controller {
 			);
 			if (!isPasswordMatches)
 				throw new AuthException('Invalid email or password');
-			const payload: Payload = {
+			const payload = {
 				id: user.id,
 				role: user.role
 			};
