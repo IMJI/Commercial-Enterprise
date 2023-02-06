@@ -26,7 +26,6 @@ class APIController<T> extends ServiceController<T> {
 					);
 			} else {
 				const findOptions = req.query;
-				console.log(this);
 				const result = await this.service.findAndCount(findOptions);
 				if (result.rows && result.count > 0) res.status(200).json(result);
 				else
