@@ -6,7 +6,6 @@ class PriceMapper {
         const price = new Price();
         if (dto.productId) price.productId = dto.productId;
         if (dto.dateFrom) price.dateFrom = dto.dateFrom;
-        if (dto.dateTo) price.dateTo = dto.dateTo;
         if (dto.value) price.value = dto.value;
 
         return price;
@@ -16,9 +15,10 @@ class PriceMapper {
         const dto = new PriceDTO();
         dto.productId = domain.productId;
         dto.dateFrom = domain.dateFrom;
-        dto.dateTo = domain.dateTo;
         dto.value = domain.value;
 
         return dto;
     }
 }
+
+export default PriceMapper;
