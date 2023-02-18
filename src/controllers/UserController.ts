@@ -11,11 +11,19 @@ class UserController extends ServiceController<User> {
 		next: NextFunction
 	): Promise<void> {
 		try {
-			if (+req.params.id) {
-				this.getById(+req.params.id, res);
-			} else {
-				this.getByFindOptions(req, res);
+			// if (+req.params.id) {
+			// 	this.getById(+req.params.id, res);
+			// } else {
+			// 	this.getByFindOptions(req, res);
+			// }
+			const user = req['user'];
+			console.log(user)
+			const id = user ? user['id'] : null;
+			if (id) {
+				const result = await this.service.findOne(id);
+				res.status(200).json(result);
 			}
+			else throw new NotFoundException(`Can't find ${this.name} with id = ${id}`);
 		} catch (error) {
 			next(error);
 		}
