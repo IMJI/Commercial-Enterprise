@@ -5,14 +5,16 @@ import Config from '../Config';
 
 class CorsMiddleware {
 	public static mount(app: express.Application): express.Application {
-		Logger.info('Booting CORS middleware...');
-
-		app.use(
-			cors({
-				origin: Config.webServer.url,
-				optionsSuccessStatus: 200
-			})
-		);
+		// if (Config.webServer.enableCORS) {
+		// 	Logger.info('Booting CORS middleware...');
+		// 	app.use(
+		// 		cors({
+		// 			origin: Config.webServer.url,
+		// 			optionsSuccessStatus: 200
+		// 		})
+		// 	);
+		// }
+		app.use(cors());
 
 		return app;
 	}
