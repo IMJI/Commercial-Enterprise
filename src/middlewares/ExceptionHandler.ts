@@ -35,9 +35,10 @@ class ExceptionHandler {
 	) {
 		let status = 500;
 		const isApiPath = req.path.split('/')[1] === 'api';
+		const isLoginPath = req.path.split('/')[1] === 'login';
 		if (error instanceof Exception) status = (error as Exception).statusCode;
 		if (status >= 400 && status <= 499) {
-			if (isApiPath) {
+			if (isApiPath || isLoginPath) {
 				res.status(status).json({
 					name: error.name,
 					message: error.message,
