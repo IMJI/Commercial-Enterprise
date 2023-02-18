@@ -21,7 +21,8 @@ const anyAuth = new Auth();
 const taxController = new APIController('tax', TaxService);
 taxUserRouter
 	.route(`/taxes/:id?`)
-	.get(taxValidation,
+	.get(
+		taxValidation,
 		(req, res, next) => anyAuth.auth(req, res, next),
 		(req, res, next) => taxController.get(req, res, next)
 	)
