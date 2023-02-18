@@ -1,7 +1,7 @@
 class Payload {
-    id: number;
-    role: string;
-    iat: number;
+	id: number;
+	role: string;
+	iat: number;
 }
 
 export default Payload;
