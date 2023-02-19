@@ -10,7 +10,7 @@ import {
 } from 'typeorm';
 import Manager from '../manager/Manager';
 import Product from '../product/Product';
-import Status from '../Status';
+import Status from '../status/Status';
 import Tax from '../tax/Tax';
 
 @Entity()

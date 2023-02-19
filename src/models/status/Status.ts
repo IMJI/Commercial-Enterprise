@@ -7,7 +7,7 @@ import {
 	OneToOne,
 	ManyToOne
 } from 'typeorm';
-import Outgoing from './outgoing/Outgoing';
+import Outgoing from '../outgoing/Outgoing';
 
 @Entity()
 class Status extends BaseEntity {

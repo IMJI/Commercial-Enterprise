@@ -7,7 +7,7 @@ import Outgoing from './outgoing/Outgoing';
 import Price from './price/Price';
 import Product from './product/Product';
 //import Size from './Size';
-import Status from './Status';
+import Status from './status/Status';
 import Stock from './Stock';
 import Tax from './tax/Tax';
 import User from './user/User';
