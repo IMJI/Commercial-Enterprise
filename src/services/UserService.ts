@@ -7,6 +7,8 @@ import IService from '../types/interfaces/IService';
 import * as bcrypt from 'bcrypt';
 import PasswordService from './PasswordService';
 import UserMapper from '../models/user/UserMapper';
+import { Manager } from '../models/Models';
+import NotFoundException from '../exceptions/NotFoundException';
 
 class UserService implements IService<User> {
 	public async findOne(id: number): Promise<User> {
@@ -23,6 +25,15 @@ class UserService implements IService<User> {
 			relations: ['manager', 'password']
 		});
 		return result;
+	}
+
+	public async getManagerByUserId(id: number): Promise<Manager> {
+		const user = await User.findOne({
+			where: { id },
+			relations: ['manager']
+		});
+		if (user && user.manager) return user.manager;
+		throw new NotFoundException(`Can't get manager from user with id = ${id}`);
 	}
 
 	public async find(options: FindOptions): Promise<User[]> {
