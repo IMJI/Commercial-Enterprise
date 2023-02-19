@@ -3,7 +3,7 @@ import Category from './category/Category';
 import Incoming from './Incoming';
 import Log from './Log';
 import Manager from './manager/Manager';
-import Outgoing from './Outgoing';
+import Outgoing from './outgoing/Outgoing';
 import Price from './price/Price';
 import Product from './product/Product';
 //import Size from './Size';

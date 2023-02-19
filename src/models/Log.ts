@@ -7,7 +7,7 @@ import {
 	CreateDateColumn
 } from 'typeorm';
 import Manager from './manager/Manager';
-import Outgoing from './Outgoing';
+import Outgoing from './outgoing/Outgoing';
 
 @Entity()
 class Log extends BaseEntity {

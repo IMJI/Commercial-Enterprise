@@ -5,12 +5,13 @@ import {
 	PrimaryGeneratedColumn,
 	ManyToOne,
 	BaseEntity,
-	OneToMany
+	OneToMany,
+	CreateDateColumn
 } from 'typeorm';
-import Manager from './manager/Manager';
-import Product from './product/Product';
-import Status from './Status';
-import Tax from './tax/Tax';
+import Manager from '../manager/Manager';
+import Product from '../product/Product';
+import Status from '../Status';
+import Tax from '../tax/Tax';
 
 @Entity()
 class Outgoing extends BaseEntity {
@@ -25,6 +26,9 @@ class Outgoing extends BaseEntity {
 
 	@ManyToOne((type) => Manager)
 	manager!: Manager;
+
+	@CreateDateColumn()
+	date!: Date;
 
 	@Column()
 	quantity!: number;
