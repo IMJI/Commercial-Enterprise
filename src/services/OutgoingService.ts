@@ -1,9 +1,12 @@
-import { In } from "typeorm";
+import { Equal, In } from "typeorm";
 import Database from "../Database";
 import AuthException from "../exceptions/AuthException";
 import ForbiddenException from "../exceptions/ForbiddenException";
+import Manager from "../models/manager/Manager";
 import Outgoing from "../models/outgoing/Outgoing";
+import OutgoingDTO from "../models/outgoing/OutgoingDTO";
 import OutgoingFindOptions from "../models/outgoing/OutgoingFindOptions";
+import OutgoingMapper from "../models/outgoing/OutgoingMapper";
 import OutgoingQueryBuilder from "../models/outgoing/OutgoingQueryBuilder";
 import Product from "../models/product/Product";
 import User from "../models/user/User";
@@ -12,22 +15,13 @@ import ReadAndCountResult from "../types/dto/ReadAndCountResult";
 import IService from "../types/interfaces/IService";
 
 class OutgoingService /*implements IService<Outgoing>*/ {
-    public async findOne(id: number, userId: number): Promise<Outgoing> {
-        const user = await User.findOne({ 
-            where: { id: userId },
-            relations: ['manager']
+    public async findOne(id: number, managerId: number): Promise<Outgoing> {
+        const result = await Outgoing.findOne({
+            where: { id },
+            relations: ['product', 'tax', 'manager', 'statuses', 'manager.parent', 'product.category']
         });
-        if (user && user.manager) {
-            const result = await Outgoing.findOne({
-                where: { id },
-                relations: ['product', 'tax', 'manager', 'statuses', 'manager.parent', 'product.category']
-            });
-            if (result.manager.id !== user.manager.id) throw new ForbiddenException(`You don't have access to this data`);
-
-            return result;
-        } else {
-            throw new AuthException('Invalid user data');
-        }
+        if (result.manager.id !== managerId) throw new ForbiddenException(`You don't have access to this data`);
+        return result;
     }
     public async find(options: OutgoingFindOptions): Promise<Outgoing[]> {
         const opts: OutgoingFindOptions = { ...options };
@@ -45,7 +39,7 @@ class OutgoingService /*implements IService<Outgoing>*/ {
 
 		return result;
     }
-    public async findAndCount(options: OutgoingFindOptions): Promise<ReadAndCountResult<Outgoing>> {
+    public async findAndCount(options: OutgoingFindOptions, managerId: number): Promise<ReadAndCountResult<Outgoing>> {
         // const opts: OutgoingFindOptions = { ...options };
 		// const builder = new OutgoingQueryBuilder('outgoing');
 		// const query = builder.build(opts);
@@ -58,9 +52,7 @@ class OutgoingService /*implements IService<Outgoing>*/ {
                 tax: options.taxes && options.taxes.length > 0
                     ? In(options.taxes)
                     : true,
-                manager:  options.managers && options.managers.length > 0
-                    ? In(options.managers)
-                    : true
+                manager: Equal(managerId)
             },
             relations: ['product', 'product.category', 'tax', 'manager', 'statuses']
         })
@@ -69,8 +61,11 @@ class OutgoingService /*implements IService<Outgoing>*/ {
 
 		return { rows, count };          
     }
-    public async create(dto: object): Promise<Outgoing> {
-        throw new Error("Method not implemented.");
+    public async create(dto: OutgoingDTO, manager: Manager): Promise<Outgoing> {
+        const outgoing = await OutgoingMapper.toDomain(dto);
+        outgoing.manager = manager;
+        
+        return outgoing;
     }
     public async update(dto: object): Promise<Outgoing> {
         throw new Error("Method not implemented.");

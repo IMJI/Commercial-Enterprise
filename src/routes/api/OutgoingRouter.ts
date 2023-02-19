@@ -22,6 +22,11 @@ outgoingRouter
         outgoingValidation,
         (req, res, next) => { anyAuth.auth(req, res, next); },
         (req, res, next) => { outgoingController.get(req, res, next); }
+    )
+    .post(
+        outgoingValidation,
+        (req, res, next) => { anyAuth.auth(req, res, next); },
+        (req, res, next) => { outgoingController.post(req, res, next); }
     );
 
 export default outgoingRouter;
