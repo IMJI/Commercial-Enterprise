@@ -6,6 +6,7 @@ import {
 	OneToOne,
 	BaseEntity
 } from 'typeorm';
+// import Category from '../category/Category';
 import Category from '../category/Category';
 // import Color from './Color';
 // import Size from './Size';
@@ -19,7 +20,7 @@ class Product extends BaseEntity {
 	@Column({ length: 64 })
 	name!: string;
 
-	@ManyToOne(() => Category, (category: Category) => category.products)
+	@ManyToOne((type) => Category)//, (category: Category) => category.products)
 	category!: Category;
 
 	// @ManyToOne(() => Color, (color: Color) => color.products)
