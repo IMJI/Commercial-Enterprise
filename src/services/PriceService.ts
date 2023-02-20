@@ -1,4 +1,4 @@
-import { LessThanOrEqual, MoreThanOrEqual } from 'typeorm';
+import { LessThanOrEqual, MoreThan } from 'typeorm';
 import NotFoundException from '../exceptions/NotFoundException';
 import { Price } from '../models/Models';
 import PriceDTO from '../models/price/PriceDTO';
@@ -13,7 +13,7 @@ class PriceService {
 				{
 					productId,
 					dateFrom: LessThanOrEqual(date),
-					dateTo: MoreThanOrEqual(date)
+					dateTo: MoreThan(date)
 				},
 				{
 					productId,
