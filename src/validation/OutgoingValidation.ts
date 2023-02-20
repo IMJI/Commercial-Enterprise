@@ -13,7 +13,7 @@ const outgoingBodyScheme = Schemas.query.append({
     product: Schemas.id,
     tax: Schemas.id,
     quantity: Schemas.positiveInt,
-    // status: Schemas.shortString
+    status: Schemas.shortString
 });
 
 const outgoingBodyStrictScheme = Schemas.query.append({
