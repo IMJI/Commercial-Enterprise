@@ -12,3 +12,5 @@ class StatusMapper {
         return status;
     }
 }
+
+export default StatusMapper;
