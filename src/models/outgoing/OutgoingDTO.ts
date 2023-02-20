@@ -4,6 +4,7 @@ class OutgoingDTO {
     tax: number;
     manager: number;
     quantity: number;
+    status?: string;
 }
 
 export default OutgoingDTO;

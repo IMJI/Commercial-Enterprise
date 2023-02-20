@@ -27,6 +27,14 @@ outgoingRouter
         outgoingValidation,
         (req, res, next) => { anyAuth.auth(req, res, next); },
         (req, res, next) => { outgoingController.post(req, res, next); }
+    ).put(
+        outgoingValidation,
+        (req, res, next) => { anyAuth.auth(req, res, next); },
+        (req, res, next) => { outgoingController.put(req, res, next); }
+    ).delete(
+        outgoingValidation,
+        (req, res, next) => { anyAuth.auth(req, res, next); },
+        (req, res, next) => { outgoingController.delete(req, res, next); }
     );
 
 export default outgoingRouter;

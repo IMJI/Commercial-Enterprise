@@ -1,7 +1,9 @@
 import { Equal, In } from "typeorm";
 import Database from "../Database";
 import AuthException from "../exceptions/AuthException";
+import EntityCreationException from "../exceptions/EntityCreationException";
 import ForbiddenException from "../exceptions/ForbiddenException";
+import NotFoundException from "../exceptions/NotFoundException";
 import Manager from "../models/manager/Manager";
 import Outgoing from "../models/outgoing/Outgoing";
 import OutgoingDTO from "../models/outgoing/OutgoingDTO";
@@ -13,6 +15,7 @@ import User from "../models/user/User";
 import DeleteResult from "../types/dto/DeleteResult";
 import ReadAndCountResult from "../types/dto/ReadAndCountResult";
 import IService from "../types/interfaces/IService";
+import StatusService from "./StatusService";
 
 class OutgoingService /*implements IService<Outgoing>*/ {
     public async findOne(id: number, managerId: number): Promise<Outgoing> {
@@ -64,14 +67,35 @@ class OutgoingService /*implements IService<Outgoing>*/ {
     public async create(dto: OutgoingDTO, manager: Manager): Promise<Outgoing> {
         const outgoing = await OutgoingMapper.toDomain(dto);
         outgoing.manager = manager;
+        await Outgoing.save(outgoing);
+        const status = await StatusService.create({ outgoing, status: 'Created' });
+        if (!status) throw new EntityCreationException(`Can't create status for outgoing`);
         
         return outgoing;
     }
-    public async update(dto: object): Promise<Outgoing> {
-        throw new Error("Method not implemented.");
+
+    public async update(dto: OutgoingDTO): Promise<Outgoing> {
+        const outgoing = await Outgoing.findOneBy({ id: dto.id });
+        if (!outgoing) throw new NotFoundException(`Can't find outgoing with id = ${dto.id}`);
+        if (dto.status) {
+            const status = await StatusService.update({ outgoing, status: dto.status });
+            if (!status) throw new EntityCreationException(`Can't create status for outgoing`);
+        }
+        
+        return outgoing;
     }
+
     public async delete(id: number): Promise<DeleteResult> {
-        throw new Error("Method not implemented.");
+        const outgoing = await Outgoing.findOneBy({ id });
+        if (!outgoing) throw new NotFoundException(`Can't find outgoing with id = ${id}`);
+        const status = StatusService.cancel(outgoing);
+        if (!status) throw new EntityCreationException(`Can't create new status for outgoing with id = ${id}`);
+
+        return {
+            id,
+            date: new Date(),
+            success: true
+        }
     }
 }
 
