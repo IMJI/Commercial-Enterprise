@@ -21,13 +21,12 @@ class OutgoingController extends Controller {
 		try {
 			const manager = await this.getManagerFromRequest(req);
 			if (+req.params.id) {
-				const result = await this.service.findOne(+req.params.id, manager.id);
+				const result = await this.service.findOne(+req.params.id, manager);
 				res.status(200).json(result);
 			}
 			else {
                 const findOptions: OutgoingFindOptions = req.body;
-                // findOptions.managers = [manager.id];
-                const result = await this.service.findAndCount(findOptions, manager.id);
+                const result = await this.service.findAndCount(findOptions, manager);
 				if (result.rows && result.count > 0) res.status(200).json(result);
 				else
 					throw new NotFoundException(
@@ -63,7 +62,8 @@ class OutgoingController extends Controller {
 			const id: number = +req.params.id;
 			if (!id)
 				throw new EntityIsNotSpecified(`Specify ${this.name} to be updated`);
-			const result = await this.service.update({ id, ...req.body });
+			const manager = await this.getManagerFromRequest(req);
+			const result = await this.service.update({ id, ...req.body }, manager);
 			if (result) res.status(200).json(result);
 			else
 				throw new EntityCreationException(
@@ -84,8 +84,8 @@ class OutgoingController extends Controller {
 			if (!id)
 				throw new EntityIsNotSpecified(`Specify ${this.name} to be deleted`);
 			const manager = await this.getManagerFromRequest(req);
-
-			const result = await this.service.delete(id);
+			console.log(manager);
+			const result = await this.service.delete(id, manager);
 			if (result) res.status(200).json(result);
 			else
 				throw new EntityDeletionException(

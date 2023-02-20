@@ -1,6 +1,4 @@
 import { Equal, In } from "typeorm";
-import Database from "../Database";
-import AuthException from "../exceptions/AuthException";
 import EntityCreationException from "../exceptions/EntityCreationException";
 import ForbiddenException from "../exceptions/ForbiddenException";
 import NotFoundException from "../exceptions/NotFoundException";
@@ -10,20 +8,18 @@ import OutgoingDTO from "../models/outgoing/OutgoingDTO";
 import OutgoingFindOptions from "../models/outgoing/OutgoingFindOptions";
 import OutgoingMapper from "../models/outgoing/OutgoingMapper";
 import OutgoingQueryBuilder from "../models/outgoing/OutgoingQueryBuilder";
-import Product from "../models/product/Product";
-import User from "../models/user/User";
 import DeleteResult from "../types/dto/DeleteResult";
 import ReadAndCountResult from "../types/dto/ReadAndCountResult";
 import IService from "../types/interfaces/IService";
 import StatusService from "./StatusService";
 
 class OutgoingService /*implements IService<Outgoing>*/ {
-    public async findOne(id: number, managerId: number): Promise<Outgoing> {
+    public async findOne(id: number, manager: Manager): Promise<Outgoing> {
         const result = await Outgoing.findOne({
             where: { id },
             relations: ['product', 'tax', 'manager', 'statuses', 'manager.parent', 'product.category']
         });
-        if (result.manager.id !== managerId) throw new ForbiddenException(`You don't have access to this data`);
+        if (!this.checkAccess(manager, result)) throw new ForbiddenException(`You don't have access to this data`);
         return result;
     }
     public async find(options: OutgoingFindOptions): Promise<Outgoing[]> {
@@ -42,7 +38,7 @@ class OutgoingService /*implements IService<Outgoing>*/ {
 
 		return result;
     }
-    public async findAndCount(options: OutgoingFindOptions, managerId: number): Promise<ReadAndCountResult<Outgoing>> {
+    public async findAndCount(options: OutgoingFindOptions, manager: Manager): Promise<ReadAndCountResult<Outgoing>> {
         // const opts: OutgoingFindOptions = { ...options };
 		// const builder = new OutgoingQueryBuilder('outgoing');
 		// const query = builder.build(opts);
@@ -55,7 +51,7 @@ class OutgoingService /*implements IService<Outgoing>*/ {
                 tax: options.taxes && options.taxes.length > 0
                     ? In(options.taxes)
                     : true,
-                manager: Equal(managerId)
+                manager: Equal(manager.id)
             },
             relations: ['product', 'product.category', 'tax', 'manager', 'statuses']
         })
@@ -74,9 +70,10 @@ class OutgoingService /*implements IService<Outgoing>*/ {
         return outgoing;
     }
 
-    public async update(dto: OutgoingDTO): Promise<Outgoing> {
-        const outgoing = await Outgoing.findOneBy({ id: dto.id });
+    public async update(dto: OutgoingDTO, manager: Manager): Promise<Outgoing> {
+        const outgoing = await Outgoing.findOne({ where: { id: dto.id }, relations: ['manager']});
         if (!outgoing) throw new NotFoundException(`Can't find outgoing with id = ${dto.id}`);
+        if (!this.checkAccess(manager, outgoing)) throw new ForbiddenException(`You don't have access to this data`);
         if (dto.status) {
             const status = await StatusService.update({ outgoing, status: dto.status });
             if (!status) throw new EntityCreationException(`Can't create status for outgoing`);
@@ -85,9 +82,10 @@ class OutgoingService /*implements IService<Outgoing>*/ {
         return outgoing;
     }
 
-    public async delete(id: number): Promise<DeleteResult> {
-        const outgoing = await Outgoing.findOneBy({ id });
+    public async delete(id: number, manager: Manager): Promise<DeleteResult> {
+        const outgoing = await Outgoing.findOne({ where: { id }, relations: ['manager']});
         if (!outgoing) throw new NotFoundException(`Can't find outgoing with id = ${id}`);
+        if (!this.checkAccess(manager, outgoing)) throw new ForbiddenException(`You don't have access to this data`);
         const status = StatusService.cancel(outgoing);
         if (!status) throw new EntityCreationException(`Can't create new status for outgoing with id = ${id}`);
 
@@ -96,6 +94,10 @@ class OutgoingService /*implements IService<Outgoing>*/ {
             date: new Date(),
             success: true
         }
+    }
+
+    private checkAccess(manager: Manager, outgoing: Outgoing): boolean {
+        return manager.id === outgoing.manager.id;
     }
 }
 
