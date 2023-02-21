@@ -6,28 +6,29 @@ import { Outgoing } from "../models/Models";
 import Status from "../models/status/Status";
 import StatusDTO from "../models/status/StatusDTO";
 import StatusMapper from "../models/status/StatusMapper";
+import TimestampService from "./TimestampService";
 
-class StatusService {
-    public async findLatest(outgoingId: number): Promise<Status> {
-        const result = Status.findOne({
+class StatusService extends TimestampService<Status> {
+    public async findLatest(parentId: number): Promise<Status> {
+        const result = await Status.findOne({
             where: {
-                outgoingId,
+                outgoingId: parentId,
                 dateTo: IsNull()
             }
         });
         return result;
     }
 
-    public async findActualOn(outgoingId: number, date: Date): Promise<Status> {
-        const result = Status.findOne({
+    public async findActualOn(parentId: number, date: Date): Promise<Status> {
+        const result = await Status.findOne({
             where: [
                 {
-                    outgoingId,
+                    outgoingId: parentId,
                     dateFrom: LessThanOrEqual(date),
                     dateTo: MoreThan(date)
                 },
                 {
-                    outgoingId,
+                    outgoingId: parentId,
                     dateFrom: LessThanOrEqual(date),
                     dateTo: IsNull()
                 }
@@ -36,16 +37,18 @@ class StatusService {
         return result;
     }
 
-    public async findAll(outgoingId: number): Promise<Status[]> {
-        const result = Status.find({
+    public async findAll(parentId: number): Promise<Status[]> {
+        const result = await Status.find({
             where: {
-                outgoingId
+                outgoingId: parentId
             }
         });
         return result;
     }
 
     public async create(dto: StatusDTO): Promise<Status> {
+        const now = new Date();
+        dto.dateFrom = now;
         const status = StatusMapper.toDomain(dto);
         await Status.save(status);
 
@@ -72,9 +75,9 @@ class StatusService {
         return status;
     }
 
-    private async closePrevious(outgoingId: number, date: Date): Promise<Status> {
+    protected async closePrevious(outgoingId: number, date: Date): Promise<Status> {
         const previous = await this.findLatest(outgoingId);
-        if (!previous) throw new NotFoundException(`Can't find latest sattus for outgoing with id = ${outgoingId}`);
+        if (!previous) throw new NotFoundException(`Can't find latest status for outgoing with id = ${outgoingId}`);
         previous.dateTo = date;
         await Status.save(previous);
         
