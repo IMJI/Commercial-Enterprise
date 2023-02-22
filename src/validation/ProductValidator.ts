@@ -11,6 +11,7 @@ const productQuerySchema = Schemas.query.append({
 const productBodySchema = Schemas.query.append({
 	vendorCode: Schemas.id,
 	name: Schemas.shortString,
+	price: Schemas.money,
 	category: Schemas.id,
 	description: Schemas.text,
 	isDeleted: Schemas.bool
@@ -19,6 +20,7 @@ const productBodySchema = Schemas.query.append({
 const productBodyStrictSchema = Schemas.query.append({
 	vendorCode: Schemas.id.required(),
 	name: Schemas.shortString.required(),
+	price: Schemas.money.required(),
 	category: Schemas.id.required(),
 	description: Schemas.text,
 	isDeleted: Schemas.bool

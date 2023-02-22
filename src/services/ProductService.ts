@@ -1,3 +1,4 @@
+import EntityCreationException from '../exceptions/EntityCreationException';
 import NotFoundException from '../exceptions/NotFoundException';
 import Product from '../models/product/Product';
 import ProductDTO from '../models/product/ProductDTO';
@@ -8,6 +9,7 @@ import DeleteResult from '../types/dto/DeleteResult';
 import ReadAndCountResult from '../types/dto/ReadAndCountResult';
 import IService from '../types/interfaces/IService';
 import CategoryService from './CategoryService';
+import PriceService from './PriceService';
 
 class ProductService implements IService<Product> {
 	public async findOne(id: number): Promise<Product> {
@@ -49,6 +51,12 @@ class ProductService implements IService<Product> {
 	public async create(dto: ProductDTO): Promise<Product> {
 		const product = await ProductMapper.toDomain(dto);
 		await Product.save(product);
+		const price = PriceService.create({
+			productId: product.vendorCode,
+			dateFrom: new Date(),
+			value: dto.price
+		});
+		if (!price) throw new EntityCreationException(`Can't create price for product`);
 
 		return product;
 	}

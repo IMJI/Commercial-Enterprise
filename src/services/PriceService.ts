@@ -124,4 +124,4 @@ class PriceService extends TimestampService<Price> {
 	// }
 }
 
-export default PriceService;
+export default new PriceService();
