@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import EntityCreationException from '../../exceptions/EntityCreationException';
 import EntityDeletionException from '../../exceptions/EntityDeletionException';
-import EntityIsNotSpecified from '../../exceptions/EntityIsNotSpecified';
+import EntityIsNotSpecified from '../../exceptions/EntityIsNotSpecifiedException';
 import NotFoundException from '../../exceptions/NotFoundException';
 import ServiceController from '../ServiceController';
 import IService from '../../types/interfaces/IService';

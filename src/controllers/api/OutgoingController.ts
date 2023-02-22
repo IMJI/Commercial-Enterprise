@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import AuthException from "../../exceptions/AuthException";
 import EntityCreationException from "../../exceptions/EntityCreationException";
 import EntityDeletionException from "../../exceptions/EntityDeletionException";
-import EntityIsNotSpecified from "../../exceptions/EntityIsNotSpecified";
+import EntityIsNotSpecified from "../../exceptions/EntityIsNotSpecifiedException";
 import NotFoundException from "../../exceptions/NotFoundException";
 import { Manager } from "../../models/Models";
 import OutgoingFindOptions from "../../models/outgoing/OutgoingFindOptions";
