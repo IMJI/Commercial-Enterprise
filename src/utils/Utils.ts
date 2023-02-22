@@ -62,3 +62,7 @@ export function toArray<T>(input: T | T[]): T[] {
 	if (input instanceof Array<T>) return input;
 	return [input];
 }
+
+export function isDate(input: string): boolean {
+	return ((new Date(input)).toString() !== 'Invalid Date');
+}
