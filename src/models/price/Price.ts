@@ -16,12 +16,11 @@ class Price extends BaseEntity {
 	productId!: number;
 
 	@PrimaryColumn()
-	@CreateDateColumn()
 	dateFrom!: Date;
 
-	@ManyToOne(() => Product, (product) => product.vendorCode)
+	@ManyToOne((type) => Product, (product) => product.vendorCode)
 	@JoinColumn({ name: 'productId' })
-	product!: Product;
+	public product!: Product;
 
 	@Column({ nullable: true })
 	dateTo?: Date;
