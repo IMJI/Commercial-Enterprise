@@ -14,6 +14,8 @@ class ProductQueryBuilder extends QueryBuilder<Product> {
 	}
 
 	protected buildQueryBody(options: ProductFindOptions): void {
+		this.builder = this.builder.andWhere('product.isDeleted = false');
+
 		if (options.name && options.name.length > 0)
 			this.builder = this.builder.andWhere('product.name IN (:...name)', {
 				name: toArray<string>(options.name)

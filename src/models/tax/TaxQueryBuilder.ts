@@ -12,6 +12,8 @@ class TaxQueryBuilder extends QueryBuilder<Tax> {
 	}
 
 	protected buildQueryBody(options: TaxFindOptions): void {
+		this.builder = this.builder.andWhere(`${this.name}.isDeleted = false`);
+
 		if (options.name && options.name.length > 0)
 			this.builder = this.builder.andWhere(`${this.name}.name IN (:...name)`, {
 				name: toArray<string>(options.name)
