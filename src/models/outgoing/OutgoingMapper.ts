@@ -1,19 +1,26 @@
 import ManagerService from "../../services/ManagerService";
+import PriceService from "../../services/PriceService";
 import ProductService from "../../services/ProductService";
 import TaxService from "../../services/TaxService";
+import Price from "../price/Price";
 import Outgoing from "./Outgoing";
 import OutgoingDTO from "./OutgoingDTO";
 
 class OutgoingMapper {
 	public static async toDomain(dto: OutgoingDTO): Promise<Outgoing> {
 		const outgoing = new Outgoing();
+        let price: Price = null;
         if (dto.id) outgoing.id = dto.id;
-        if (dto.product) outgoing.product = await ProductService.findOne(dto.product);
+        if (dto.product) {
+            outgoing.product = await ProductService.findOne(dto.product);
+            price = await PriceService.findLatest(dto.product);
+        }
         if (dto.tax) outgoing.tax = await TaxService.findOne(dto.tax);
         if (dto.manager) outgoing.manager = await ManagerService.findOne(dto.manager);
+        
         if (dto.quantity) {
             outgoing.quantity = dto.quantity;
-            outgoing.cost = +(1099.99 * dto.quantity).toFixed(2);
+            if (price) outgoing.cost = +(price.value * dto.quantity).toFixed(2);
         }
 
 		return outgoing;
