@@ -16,7 +16,6 @@ function startup(): void {
 		throw new Error(
 			`Unknown NODE_ENV value. Use 'production' or 'development' values`
 		);
-	console.log(1);
 	Logger.initialize(Config.logger);
 	if (process.env.NODE_ENV === DEV)
 		Logger.warn('Application is running in DEVELOPMENT mode!');
@@ -55,7 +54,6 @@ process.on('SIGINT', () => {
 });
 
 process.on('uncaughtException', (err: Error) => {
-	console.log(err.name + ' ' + err.message);
 	Logger.error('Uncaught exception');
 	Logger.fatal(err.name + ' ' + err.message);
 	shutdown();
