@@ -9,37 +9,37 @@ import TimestampService from './TimestampService';
 class PriceService extends TimestampService<Price> {
 	public async findLatest(parentId: number): Promise<Price> {
 		const result = await Price.findOne({
-            where: {
-                productId: parentId,
-                dateTo: IsNull()
-            }
-        });
-        return result;
+			where: {
+				productId: parentId,
+				dateTo: IsNull()
+			}
+		});
+		return result;
 	}
 	public async findActualOn(parentId: number, date: Date): Promise<Price> {
 		const result = await Price.findOne({
-            where: [
-                {
-                    productId: parentId,
-                    dateFrom: LessThanOrEqual(date),
-                    dateTo: MoreThan(date)
-                },
-                {
-                    productId: parentId,
-                    dateFrom: LessThanOrEqual(date),
-                    dateTo: IsNull()
-                }
-            ]
-        });
-        return result;
+			where: [
+				{
+					productId: parentId,
+					dateFrom: LessThanOrEqual(date),
+					dateTo: MoreThan(date)
+				},
+				{
+					productId: parentId,
+					dateFrom: LessThanOrEqual(date),
+					dateTo: IsNull()
+				}
+			]
+		});
+		return result;
 	}
 	public async findAll(parentId: number): Promise<Price[]> {
 		const result = await Price.find({
-            where: {
-                productId: parentId
-            }
-        });
-        return result;
+			where: {
+				productId: parentId
+			}
+		});
+		return result;
 	}
 	public async create(dto: PriceDTO): Promise<Price> {
 		const now = new Date();
@@ -52,22 +52,28 @@ class PriceService extends TimestampService<Price> {
 	public async update(dto: PriceDTO): Promise<Price> {
 		const now = new Date();
 		const previous = await this.closePrevious(dto.productId, now);
-		if (!previous.dateTo) throw new EntityUpdatingException(`Can't close latest price of product with id = ${dto.productId}`);
+		if (!previous.dateTo)
+			throw new EntityUpdatingException(
+				`Can't close latest price of product with id = ${dto.productId}`
+			);
 		dto.dateFrom = now;
-        const price = PriceMapper.toDomain(dto);
-        await Price.save(price);
+		const price = PriceMapper.toDomain(dto);
+		await Price.save(price);
 
-        return price;
+		return price;
 	}
 	protected async closePrevious(parentId: number, date: Date): Promise<Price> {
 		const previous = await this.findLatest(parentId);
-		if (!previous) throw new NotFoundException(`Can't find latest price for product with id = ${parentId}`);
+		if (!previous)
+			throw new NotFoundException(
+				`Can't find latest price for product with id = ${parentId}`
+			);
 		previous.dateTo = date;
 		await Price.save(previous);
 
 		return previous;
 	}
-	
+
 	// public async findOne(productId: number, date: Date): Promise<Price> {
 	// 	const result = await Price.find({
 	// 		where: [
@@ -124,4 +130,4 @@ class PriceService extends TimestampService<Price> {
 	// }
 }
 
-export default new PriceService();
+export default new PriceService('price');
