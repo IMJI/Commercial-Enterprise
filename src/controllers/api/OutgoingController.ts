@@ -1,19 +1,19 @@
-import { Request, Response, NextFunction } from "express";
-import AuthException from "../../exceptions/AuthException";
-import EntityCreationException from "../../exceptions/EntityCreationException";
-import EntityDeletionException from "../../exceptions/EntityDeletionException";
-import EntityIsNotSpecified from "../../exceptions/EntityIsNotSpecifiedException";
-import NotFoundException from "../../exceptions/NotFoundException";
-import { Manager } from "../../models/Models";
-import OutgoingFindOptions from "../../models/outgoing/OutgoingFindOptions";
-import OutgoingService from "../../services/OutgoingService";
-import UserService from "../../services/UserService";
-import Controller from "../Controller";
+import { Request, Response, NextFunction } from 'express';
+import AuthException from '../../exceptions/AuthException';
+import EntityCreationException from '../../exceptions/EntityCreationException';
+import EntityDeletionException from '../../exceptions/EntityDeletionException';
+import EntityIsNotSpecified from '../../exceptions/EntityIsNotSpecifiedException';
+import NotFoundException from '../../exceptions/NotFoundException';
+import { Manager } from '../../models/Models';
+import OutgoingFindOptions from '../../models/outgoing/OutgoingFindOptions';
+import OutgoingService from '../../services/OutgoingService';
+import UserService from '../../services/UserService';
+import Controller from '../Controller';
 
 class OutgoingController extends Controller {
-    private service = OutgoingService;
+	private service = OutgoingService;
 
-    public async get(
+	public async get(
 		req: Request,
 		res: Response,
 		next: NextFunction
@@ -23,16 +23,15 @@ class OutgoingController extends Controller {
 			if (+req.params.id) {
 				const result = await this.service.findOne(+req.params.id, manager);
 				res.status(200).json(result);
-			}
-			else {
-                const findOptions: OutgoingFindOptions = req.body;
-                const result = await this.service.findAndCount(findOptions, manager);
+			} else {
+				const findOptions: OutgoingFindOptions = req.body;
+				const result = await this.service.findAndCount(findOptions, manager);
 				if (result.rows && result.count > 0) res.status(200).json(result);
 				else
 					throw new NotFoundException(
 						`Can't find ${this.name} by query: ${req.path}`
 					);
-            }
+			}
 		} catch (error) {
 			next(error);
 		}

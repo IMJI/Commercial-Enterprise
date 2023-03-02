@@ -10,7 +10,10 @@ import IService from '../types/interfaces/IService';
 
 class ManagerService implements IService<Manager> {
 	public async findOne(id: number): Promise<Manager> {
-		const result = await Manager.findOneBy({ id });
+		const result = await Manager.findOne({
+			where: { id },
+			relations: ['parent', 'children']
+		});
 		if (result && result.dismissalDate) return null;
 		return result;
 	}
@@ -38,6 +41,15 @@ class ManagerService implements IService<Manager> {
 
 		return { rows, count };
 	}
+
+	public async getSubordinates(manager: Manager): Promise<Manager[]> {
+		const man = await Manager.findOne({
+			where: { id: manager.id },
+			relations: ['children']
+		});
+		return man.children;
+	}
+
 	public async create(dto: ManagerDTO): Promise<Manager> {
 		const manager = await ManagerMapper.toDomain(dto);
 		await Manager.save(manager);

@@ -24,7 +24,8 @@ userRouter
 	.get(
 		userValidation,
 		(req, res, next) => anyAuth.auth(req, res, next),
-		(req, res, next) => userController.get(req, res, next))
+		(req, res, next) => userController.get(req, res, next)
+	)
 	.post(
 		userValidation,
 		(req, res, next) => anyAuth.auth(req, res, next),

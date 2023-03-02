@@ -1,10 +1,10 @@
-import { Outgoing } from "../Models";
+import { Outgoing } from '../Models';
 
 class StatusDTO {
-    outgoing?: Outgoing;
-    dateFrom?: Date;
-    dateTo?: Date;
-    status?: string;
+	outgoing?: Outgoing;
+	dateFrom?: Date;
+	dateTo?: Date;
+	status?: string;
 }
 
 export default StatusDTO;

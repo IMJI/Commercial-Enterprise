@@ -20,7 +20,7 @@ class Product extends BaseEntity {
 	@Column({ length: 64 })
 	name!: string;
 
-	@ManyToOne((type) => Category)//, (category: Category) => category.products)
+	@ManyToOne((type) => Category) //, (category: Category) => category.products)
 	category!: Category;
 
 	// @ManyToOne(() => Color, (color: Color) => color.products)
