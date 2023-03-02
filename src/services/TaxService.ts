@@ -35,7 +35,6 @@ class TaxService implements IService<Tax> {
 		options: TaxFindOptions
 	): Promise<ReadAndCountResult<Tax>> {
 		const opts: TaxFindOptions = { ...options };
-		console.log(opts);
 		const builder = new TaxQueryBuilder('tax');
 		const query = builder.build(opts);
 

@@ -56,7 +56,8 @@ class ProductService implements IService<Product> {
 			dateFrom: new Date(),
 			value: dto.price
 		});
-		if (!price) throw new EntityCreationException(`Can't create price for product`);
+		if (!price)
+			throw new EntityCreationException(`Can't create price for product`);
 
 		return product;
 	}

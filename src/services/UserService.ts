@@ -36,6 +36,15 @@ class UserService implements IService<User> {
 		throw new NotFoundException(`Can't get manager from user with id = ${id}`);
 	}
 
+	public async getUserByManagerId(id: number): Promise<User> {
+		const user = await User.findOne({
+			where: { manager: { id } },
+			relations: ['manager']
+		});
+
+		return user;
+	}
+
 	public async find(options: FindOptions): Promise<User[]> {
 		throw new Error('Method not implemented.');
 	}
