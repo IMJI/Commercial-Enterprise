@@ -1,3 +1,5 @@
+import { endOfMonth, startOfMonth } from 'date-fns';
+import { Between, FindOperator } from 'typeorm';
 import InvalidNumberException from '../exceptions/InvalidNumberException';
 
 const iso8601RegExp = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/;
@@ -64,5 +66,12 @@ export function toArray<T>(input: T | T[]): T[] {
 }
 
 export function isDate(input: string): boolean {
-	return ((new Date(input)).toString() !== 'Invalid Date');
+	return new Date(input).toString() !== 'Invalid Date';
+}
+
+export function CurrentMonth(date = new Date()): FindOperator<any> {
+	return Between(
+		startOfMonth(date).toISOString(),
+		endOfMonth(date).toISOString()
+	);
 }
