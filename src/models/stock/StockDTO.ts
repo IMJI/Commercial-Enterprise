@@ -1,4 +1,6 @@
 class StockDTO {
-    product?: number;
-    quantity?: number;
+	product?: number;
+	quantity?: number;
 }
+
+export default StockDTO;
