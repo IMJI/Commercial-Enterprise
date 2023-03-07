@@ -1,4 +1,5 @@
-import { Equal, In, IsNull } from 'typeorm';
+import { Any, Between, Equal, FindManyOptions, FindOptionsOrder, FindOptionsOrderValue, In, IsNull, LessThanOrEqual, MoreThanOrEqual, Not } from 'typeorm';
+import Database from '../Database';
 import EntityCreationException from '../exceptions/EntityCreationException';
 import ForbiddenException from '../exceptions/ForbiddenException';
 import NotFoundException from '../exceptions/NotFoundException';
@@ -11,6 +12,7 @@ import OutgoingQueryBuilder from '../models/outgoing/OutgoingQueryBuilder';
 import DeleteResult from '../types/dto/DeleteResult';
 import ReadAndCountResult from '../types/dto/ReadAndCountResult';
 import IService from '../types/interfaces/IService';
+import { toArray } from '../utils/Utils';
 import StatusService from './StatusService';
 
 class OutgoingService /*implements IService<Outgoing>*/ {
@@ -50,25 +52,54 @@ class OutgoingService /*implements IService<Outgoing>*/ {
 		options: OutgoingFindOptions,
 		manager: Manager
 	): Promise<ReadAndCountResult<Outgoing>> {
-		// const opts: OutgoingFindOptions = { ...options };
-		// const builder = new OutgoingQueryBuilder('outgoing');
-		// const query = builder.build(opts);
-		// const rows = await query.getMany();
-		// const count = await query.getCount();
-
-		// return { rows, count };
-		const query = await Outgoing.findAndCount({
-			where: {
-				tax:
-					options.taxes && options.taxes.length > 0 ? In(options.taxes) : true,
-				manager: Equal(manager.id)
-			},
+		const query: FindManyOptions<Outgoing> = {
 			relations: ['product', 'product.category', 'tax', 'manager', 'statuses']
-		});
-		const rows = query[0];
-		const count = query[1];
+		};
+		const whereOptions = {
+			manager: Equal(manager.id)
+		}
+		if (options.taxes) {
+			const taxes = toArray<number>(options.taxes);
+			if (taxes.length > 0)
+				whereOptions['tax'] = {
+					id: In(taxes)
+				}
+		}
+
+		if (options.products) {
+			const products = toArray<number>(options.products);
+			if (products.length > 0)
+				whereOptions['product'] = {
+					vendorCode: In(products)
+				}
+		}
+		// if (options.costFrom && options.costTo) whereOptions['cost'] = Between(options.costFrom, options.costTo);
+		// if (options.quantityFrom && options.quantityTo) whereOptions['quantity'] = Between(options.quantityFrom, options.quantityTo);
+		query.where = whereOptions;
+		if (options.limit) query.take = options.limit;
+		if (options.skip) query.skip = options.skip;
+		if (options.sort) {
+			console.log(this.getOrderBy(options.sort));
+			query.order = this.getOrderBy(options.sort);
+		}
+		
+		const outgoings = await Outgoing.findAndCount(query);
+		const rows = outgoings[0];
+		const count = outgoings[1];
 
 		return { rows, count };
+	}
+
+	public async getCostRange(manager: Manager) {
+		// const query = Database.dataSource
+		// 	.getRepository(Outgoing)
+		// 	.createQueryBuilder("outgoing");
+		// query.select("MAX(outgoing.cost)", "max");
+		// query.where('outgoing.manager.')
+		// const max = await query.getRawOne();
+		// query.select("MIN(outgoing.cost)", "min");
+		// const min = await query.getRawOne();
+		// return [min.min, max.max];
 	}
 
 	public async create(dto: OutgoingDTO, manager: Manager): Promise<Outgoing> {
@@ -127,6 +158,44 @@ class OutgoingService /*implements IService<Outgoing>*/ {
 
 	private checkAccess(manager: Manager, outgoing: Outgoing): boolean {
 		return manager.id === outgoing.manager.id;
+	}
+
+	private getOrderBy(sort: string): FindOptionsOrder<Outgoing> {
+		const [orderBy, order] = sort.split(':');
+		const orderValue: FindOptionsOrderValue = {
+			direction: order as "ASC" | "DESC" | "asc" | "desc"
+		};
+		if (orderBy === 'product') {
+			return {
+				product: {
+					name: orderValue
+				}
+			}
+		}
+		if (orderBy === 'tax') {
+			return {
+				tax: {
+					value: orderValue,
+					name: orderValue
+				}
+			}
+		}
+		if (orderBy === 'date') {
+			return {
+				date: orderValue
+			}
+		}
+		if (orderBy === 'quantity') {
+			return {
+				quantity: orderValue
+			}
+		}
+		if (orderBy === 'cost') {
+			return {
+				cost: orderValue
+			}
+		}
+		return null;
 	}
 }
 
