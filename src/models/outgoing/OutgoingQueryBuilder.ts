@@ -13,7 +13,8 @@ class OutgoingQueryBuilder extends QueryBuilder<Outgoing> {
 			'manager',
 			'quantity',
 			'cost',
-			'statuses'
+			'statuses',
+			'date'
 		];
 		super(name, repoitory, sortableColumns, [
 			{ column: 'product', relation: 'product' },
