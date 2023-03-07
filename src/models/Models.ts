@@ -8,7 +8,7 @@ import Price from './price/Price';
 import Product from './product/Product';
 //import Size from './Size';
 import Status from './status/Status';
-import Stock from './Stock';
+import Stock from './stock/Stock';
 import Tax from './tax/Tax';
 import User from './user/User';
 import UserPassword from './user/UserPassword';

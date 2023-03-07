@@ -10,7 +10,7 @@ import {
 import Category from '../category/Category';
 // import Color from './Color';
 // import Size from './Size';
-import Stock from '../Stock';
+import Stock from '../stock/Stock';
 
 @Entity()
 class Product extends BaseEntity {

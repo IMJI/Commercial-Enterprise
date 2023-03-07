@@ -7,7 +7,7 @@ import {
 	PrimaryGeneratedColumn,
 	Check
 } from 'typeorm';
-import Product from './product/Product';
+import Product from '../product/Product';
 
 @Entity()
 class Stock extends BaseEntity {
