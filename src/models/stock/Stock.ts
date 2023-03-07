@@ -4,22 +4,22 @@ import {
 	BaseEntity,
 	JoinColumn,
 	OneToOne,
-	PrimaryGeneratedColumn,
+	PrimaryColumn,
 	Check
 } from 'typeorm';
 import Product from '../product/Product';
 
 @Entity()
 class Stock extends BaseEntity {
-	@PrimaryGeneratedColumn()
-	id!: number;
+	@PrimaryColumn()
+	productVendorCode!: number;
 
-	@OneToOne((type) => Product)
-	@JoinColumn()
-	product!: Product;
+	@OneToOne((type) => Product, (product) => product.vendorCode)
+	@JoinColumn({ name: 'productVendorCode' })
+	public product!: Product;
 
 	@Column()
-	@Check('"quantity" > 0')
+	@Check('"quantity" >= 0')
 	quantity!: number;
 }
 
