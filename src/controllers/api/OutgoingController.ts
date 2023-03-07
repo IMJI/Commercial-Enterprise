@@ -24,7 +24,7 @@ class OutgoingController extends Controller {
 				const result = await this.service.findOne(+req.params.id, manager);
 				res.status(200).json(result);
 			} else {
-				const findOptions: OutgoingFindOptions = req.body;
+				const findOptions = req.query as OutgoingFindOptions;
 				const result = await this.service.findAndCount(findOptions, manager);
 				if (result.rows && result.count > 0) res.status(200).json(result);
 				else
