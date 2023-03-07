@@ -2,6 +2,10 @@ import Joi = require('joi');
 
 class Schemas {
 	public static id = Joi.number().integer().positive();
+	public static oneOrMoreId = [
+		this.id,
+		Joi.array().items(this.id)
+	];
 	public static shortString = Joi.string().min(2).max(64);
 	public static oneOrMoreShortString = [
 		this.shortString,
