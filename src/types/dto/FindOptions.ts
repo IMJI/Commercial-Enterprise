@@ -10,7 +10,7 @@ class FindOptions {
 	constructor(obj: QueryData) {
 		this.limit = obj.limit;
 		this.skip = obj.skip;
-		this.sort = obj.sort;//obj.sort ? Sort.fromString(obj.sort) : [];
+		this.sort = obj.sort; //obj.sort ? Sort.fromString(obj.sort) : [];
 	}
 }
 

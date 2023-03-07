@@ -1,4 +1,16 @@
-import { Any, Between, Equal, FindManyOptions, FindOptionsOrder, FindOptionsOrderValue, In, IsNull, LessThanOrEqual, MoreThanOrEqual, Not } from 'typeorm';
+import {
+	Any,
+	Between,
+	Equal,
+	FindManyOptions,
+	FindOptionsOrder,
+	FindOptionsOrderValue,
+	In,
+	IsNull,
+	LessThanOrEqual,
+	MoreThanOrEqual,
+	Not
+} from 'typeorm';
 import Database from '../Database';
 import EntityCreationException from '../exceptions/EntityCreationException';
 import ForbiddenException from '../exceptions/ForbiddenException';
@@ -57,13 +69,13 @@ class OutgoingService /*implements IService<Outgoing>*/ {
 		};
 		const whereOptions = {
 			manager: Equal(manager.id)
-		}
+		};
 		if (options.taxes) {
 			const taxes = toArray<number>(options.taxes);
 			if (taxes.length > 0)
 				whereOptions['tax'] = {
 					id: In(taxes)
-				}
+				};
 		}
 
 		if (options.products) {
@@ -71,7 +83,7 @@ class OutgoingService /*implements IService<Outgoing>*/ {
 			if (products.length > 0)
 				whereOptions['product'] = {
 					vendorCode: In(products)
-				}
+				};
 		}
 		// if (options.costFrom && options.costTo) whereOptions['cost'] = Between(options.costFrom, options.costTo);
 		// if (options.quantityFrom && options.quantityTo) whereOptions['quantity'] = Between(options.quantityFrom, options.quantityTo);
@@ -82,7 +94,7 @@ class OutgoingService /*implements IService<Outgoing>*/ {
 			console.log(this.getOrderBy(options.sort));
 			query.order = this.getOrderBy(options.sort);
 		}
-		
+
 		const outgoings = await Outgoing.findAndCount(query);
 		const rows = outgoings[0];
 		const count = outgoings[1];
@@ -163,14 +175,14 @@ class OutgoingService /*implements IService<Outgoing>*/ {
 	private getOrderBy(sort: string): FindOptionsOrder<Outgoing> {
 		const [orderBy, order] = sort.split(':');
 		const orderValue: FindOptionsOrderValue = {
-			direction: order as "ASC" | "DESC" | "asc" | "desc"
+			direction: order as 'ASC' | 'DESC' | 'asc' | 'desc'
 		};
 		if (orderBy === 'product') {
 			return {
 				product: {
 					name: orderValue
 				}
-			}
+			};
 		}
 		if (orderBy === 'tax') {
 			return {
@@ -178,22 +190,22 @@ class OutgoingService /*implements IService<Outgoing>*/ {
 					value: orderValue,
 					name: orderValue
 				}
-			}
+			};
 		}
 		if (orderBy === 'date') {
 			return {
 				date: orderValue
-			}
+			};
 		}
 		if (orderBy === 'quantity') {
 			return {
 				quantity: orderValue
-			}
+			};
 		}
 		if (orderBy === 'cost') {
 			return {
 				cost: orderValue
-			}
+			};
 		}
 		return null;
 	}
