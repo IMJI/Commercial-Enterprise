@@ -1,11 +1,13 @@
 import Schemas from './Schemas';
 
 const outgoingQueryScheme = Schemas.query.append({
-	product: Schemas.id,
-	tax: Schemas.id,
-	manager: Schemas.id,
-	quantity: Schemas.positiveInt,
-	cost: Schemas.money,
+	products: Schemas.oneOrMoreId,
+	taxes: Schemas.oneOrMoreId,
+	managers: Schemas.oneOrMoreId,
+	quantityFrom: Schemas.positiveInt,
+	quantityTo: Schemas.positiveInt,
+	costFrom: Schemas.money,
+	costTo: Schemas.money,
 	status: Schemas.shortString
 });
 
