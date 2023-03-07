@@ -13,6 +13,7 @@ class Schemas {
 	public static money = Joi.number().positive().precision(2);
 	public static percent = Joi.number().positive().precision(2).min(0).max(1);
 	public static positiveInt = Joi.number().integer().min(0);
+	public static int = Joi.number().integer();
 	public static date = Joi.date();
 	public static query = Joi.object({
 		limit: Schemas.positiveInt,
