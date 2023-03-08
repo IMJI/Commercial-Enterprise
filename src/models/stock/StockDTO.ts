@@ -1,5 +1,5 @@
 class StockDTO {
-	product?: number;
+	id?: number;
 	quantity?: number;
 }
 
