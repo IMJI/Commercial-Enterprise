@@ -10,6 +10,7 @@ import ReadAndCountResult from '../types/dto/ReadAndCountResult';
 import IService from '../types/interfaces/IService';
 import CategoryService from './CategoryService';
 import PriceService from './PriceService';
+import StockService from './StockService';
 
 class ProductService implements IService<Product> {
 	public async findOne(id: number): Promise<Product> {
@@ -58,6 +59,9 @@ class ProductService implements IService<Product> {
 		});
 		if (!price)
 			throw new EntityCreationException(`Can't create price for product`);
+		const stock = StockService.create({ id: dto.vendorCode });
+		if (!stock)
+			throw new EntityCreationException(`Can't create stock for product`);
 
 		return product;
 	}

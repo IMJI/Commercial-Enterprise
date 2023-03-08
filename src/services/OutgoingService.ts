@@ -15,6 +15,7 @@ import Database from '../Database';
 import EntityCreationException from '../exceptions/EntityCreationException';
 import ForbiddenException from '../exceptions/ForbiddenException';
 import NotFoundException from '../exceptions/NotFoundException';
+import StockException from '../exceptions/StockException';
 import Manager from '../models/manager/Manager';
 import Outgoing from '../models/outgoing/Outgoing';
 import OutgoingDTO from '../models/outgoing/OutgoingDTO';
@@ -26,6 +27,7 @@ import ReadAndCountResult from '../types/dto/ReadAndCountResult';
 import IService from '../types/interfaces/IService';
 import { toArray } from '../utils/Utils';
 import StatusService from './StatusService';
+import StockService from './StockService';
 
 class OutgoingService /*implements IService<Outgoing>*/ {
 	public async findOne(id: number, manager: Manager): Promise<Outgoing> {
@@ -115,6 +117,9 @@ class OutgoingService /*implements IService<Outgoing>*/ {
 	}
 
 	public async create(dto: OutgoingDTO, manager: Manager): Promise<Outgoing> {
+		const stock = await StockService.findOne(dto.product);
+		if (dto.quantity > stock.quantity)
+			throw new StockException(`Not enought items to sell`);
 		const outgoing = await OutgoingMapper.toDomain(dto);
 		outgoing.manager = manager;
 		await Outgoing.save(outgoing);
