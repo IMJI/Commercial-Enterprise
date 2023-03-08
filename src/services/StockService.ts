@@ -42,21 +42,28 @@ class StockService implements IService<Stock> {
 	}
 	public async update(dto: StockDTO): Promise<Stock> {
 		const stock = await Stock.findOne({
-			where: { productVendorCode: dto.product },
+			where: { productVendorCode: dto.id },
 			relations: ['product']
 		});
 		if (stock.quantity + dto.quantity >= 0) stock.quantity += dto.quantity;
-		else throw new StockException(`Mot enought ${stock.product.name} in stock`);
+		else throw new StockException(`Not enought ${stock.product.name} in stock`);
+		await Stock.save(stock);
 
 		return stock;
 	}
 	public async delete(id: number): Promise<DeleteResult> {
 		// Permanently remove stock entity if there are 0 products in stock
-		throw new Error('Method not implemented.');
-	}
-	// public async findOne(id: number): Promise<number> {
+        // throw new Error('Not implemented');
+		const stock = await Stock.findOneBy({ productVendorCode: id });
+        if (stock.quantity > 0) throw new StockException(`Can't delete while product in stock`);
+		await Stock.delete(stock.productVendorCode);
 
-	// }
+		return {
+			id,
+			success: true,
+			date: new Date()
+		};
+	}
 }
 
 export default new StockService();
