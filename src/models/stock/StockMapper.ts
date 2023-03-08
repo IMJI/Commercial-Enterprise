@@ -11,7 +11,6 @@ class StockMapper {
 		}
 		if (dto.quantity) stock.quantity = dto.quantity;
 		else stock.quantity = 0;
-		console.log(stock)
 
 		return stock;
 	}

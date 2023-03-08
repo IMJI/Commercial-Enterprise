@@ -9,7 +9,6 @@ import IService from '../types/interfaces/IService';
 
 class StockService implements IService<Stock> {
 	public async findOne(id: number): Promise<Stock> {
-		// Find stock by produvt vendor code
 		const stock = await Stock.findOne({
 			where: { productVendorCode: id },
 			relations: ['product']
@@ -17,7 +16,6 @@ class StockService implements IService<Stock> {
 		return stock;
 	}
 	public async find(options: FindOptions): Promise<Stock[]> {
-		// Return all products in stock
 		const stocks = await Stock.find({ relations: ['product'] });
 		return stocks;
 	}
@@ -33,7 +31,6 @@ class StockService implements IService<Stock> {
 		return { rows, count };
 	}
 	public async create(dto: StockDTO): Promise<Stock> {
-		// Create new stock entity. Used when product firstly created
 		dto.quantity = 0;
 		const stock = await StockMapper.toDomain(dto);
 		await Stock.save(stock);
@@ -52,10 +49,9 @@ class StockService implements IService<Stock> {
 		return stock;
 	}
 	public async delete(id: number): Promise<DeleteResult> {
-		// Permanently remove stock entity if there are 0 products in stock
-        // throw new Error('Not implemented');
 		const stock = await Stock.findOneBy({ productVendorCode: id });
-        if (stock.quantity > 0) throw new StockException(`Can't delete while product in stock`);
+		if (stock.quantity > 0)
+			throw new StockException(`Can't delete while product in stock`);
 		await Stock.delete(stock.productVendorCode);
 
 		return {
