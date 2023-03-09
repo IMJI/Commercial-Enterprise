@@ -122,6 +122,11 @@ class OutgoingService /*implements IService<Outgoing>*/ {
 			throw new StockException(`Not enought items to sell`);
 		const outgoing = await OutgoingMapper.toDomain(dto);
 		outgoing.manager = manager;
+		const updatedStock = await StockService.update({
+			id: dto.product,
+			quantity: -dto.quantity
+		});
+		if (!updatedStock) throw new StockException(`Can't update stock`);
 		await Outgoing.save(outgoing);
 		const status = await StatusService.create({ outgoing, status: 'Created' });
 		if (!status)
