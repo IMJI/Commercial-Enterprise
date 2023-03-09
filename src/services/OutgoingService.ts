@@ -29,6 +29,9 @@ import { toArray } from '../utils/Utils';
 import StatusService from './StatusService';
 import StockService from './StockService';
 
+type RangeColumns = 'cost' | 'quantity' | 'date';
+type ColumnRange = { min: number | Date, max: number | Date };
+
 class OutgoingService /*implements IService<Outgoing>*/ {
 	public async findOne(id: number, manager: Manager): Promise<Outgoing> {
 		const result = await Outgoing.findOne({
@@ -104,16 +107,32 @@ class OutgoingService /*implements IService<Outgoing>*/ {
 		return { rows, count };
 	}
 
-	public async getCostRange(manager: Manager) {
-		// const query = Database.dataSource
-		// 	.getRepository(Outgoing)
-		// 	.createQueryBuilder("outgoing");
-		// query.select("MAX(outgoing.cost)", "max");
-		// query.where('outgoing.manager.')
-		// const max = await query.getRawOne();
-		// query.select("MIN(outgoing.cost)", "min");
-		// const min = await query.getRawOne();
-		// return [min.min, max.max];
+	public async getRange(column: RangeColumns, manager: Manager): Promise<ColumnRange> {
+		const min = await this.getMinCost(column, manager);
+		const max = await this.getMaxCost(column, manager);
+		return { min, max };
+	}
+
+	private async getMaxCost(column: RangeColumns, manager: Manager) {
+		const query = Database.dataSource
+			.getRepository(Outgoing)
+			.createQueryBuilder("outgoing")
+			.leftJoin('outgoing.manager', 'manager')
+			.select(`MAX(outgoing.${column})`, "max")
+			.where('outgoing.manager.id = :id', { id: manager.id });
+		const max = await query.getRawOne();
+		return +max.max;
+	}
+
+	private async getMinCost(column: RangeColumns, manager: Manager) {
+		const query = Database.dataSource
+			.getRepository(Outgoing)
+			.createQueryBuilder("outgoing")
+			.leftJoin('outgoing.manager', 'manager')
+			.select(`MIN(outgoing.${column})`, "min")
+			.where('outgoing.manager.id = :id', { id: manager.id });
+		const min = await query.getRawOne();
+		return +min.min;
 	}
 
 	public async create(dto: OutgoingDTO, manager: Manager): Promise<Outgoing> {

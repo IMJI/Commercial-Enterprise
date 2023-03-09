@@ -9,6 +9,7 @@ import testRouter from './api/TimestampTestRouter';
 import profitRouter from './api/ProfitRoute';
 import subsRouter from './api/SubordinatesRouter';
 import stockRouter from './api/StockRouter';
+import rangesRouter from './api/RangesRouter';
 
 const apiRouter: Router = Router();
 const apiPath = '/api';
@@ -23,6 +24,7 @@ apiRouter
 	.use(apiPath, testRouter)
 	.use(apiPath, profitRouter)
 	.use(apiPath, subsRouter)
-	.use(apiPath, stockRouter);
+	.use(apiPath, stockRouter)
+	.use(apiPath, rangesRouter);
 
 export default apiRouter;
