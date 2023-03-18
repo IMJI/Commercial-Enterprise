@@ -90,8 +90,8 @@ class OutgoingService /*implements IService<Outgoing>*/ {
 					vendorCode: In(products)
 				};
 		}
-		// if (options.costFrom && options.costTo) whereOptions['cost'] = Between(options.costFrom, options.costTo);
-		// if (options.quantityFrom && options.quantityTo) whereOptions['quantity'] = Between(options.quantityFrom, options.quantityTo);
+		if (options.costFrom && options.costTo) whereOptions['cost'] = Between(options.costFrom, options.costTo);
+		if (options.quantityFrom && options.quantityTo) whereOptions['quantity'] = Between(options.quantityFrom, options.quantityTo);
 		query.where = whereOptions;
 		if (options.limit) query.take = options.limit;
 		if (options.skip) query.skip = options.skip;
