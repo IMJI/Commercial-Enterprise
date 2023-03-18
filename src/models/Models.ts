@@ -1,12 +1,12 @@
+import Address from './address/Address';
 import Category from './category/Category';
-//import Color from './Color';
+import Counterparty from './counterparty/Counterparty';
 import Incoming from './Incoming';
 import Log from './Log';
 import Manager from './manager/Manager';
 import Outgoing from './outgoing/Outgoing';
 import Price from './price/Price';
 import Product from './product/Product';
-//import Size from './Size';
 import Status from './status/Status';
 import Stock from './stock/Stock';
 import Tax from './tax/Tax';
@@ -16,8 +16,8 @@ import UserPassword from './user/UserPassword';
 export default [
 	Tax,
 	Category,
-	//Size,
-	//Color,
+	Address,
+	Counterparty,
 	Product,
 	Manager,
 	User,
@@ -32,8 +32,6 @@ export default [
 export {
 	Tax,
 	Category,
-	//Size,
-	//Color,
 	Product,
 	Manager,
 	User,
