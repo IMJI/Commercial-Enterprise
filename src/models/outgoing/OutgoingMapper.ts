@@ -26,7 +26,7 @@ class OutgoingMapper {
 
 		if (dto.quantity) {
 			outgoing.quantity = dto.quantity;
-			if (price) outgoing.cost = +(price.value * dto.quantity * (tax ? 1 - tax.value : 1)).toFixed(2);
+			if (price) outgoing.cost = +(price.value * dto.quantity * (tax ? 1 + tax.value : 1)).toFixed(2);
 		}
 
 		return outgoing;
